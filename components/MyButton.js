@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 // import { ColorPalate } from "../constants/ColorPalate";
 import {ColorPalate} from '../constants/var';
-
+// test
 const MyButton = ({ children, onPressBtn, mode, style,width }) => {
   return (
     <View style={style}>
