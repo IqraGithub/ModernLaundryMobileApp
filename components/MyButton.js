@@ -44,6 +44,3 @@ const styles = StyleSheet.create({
 });
 
 
-
-
-// test
