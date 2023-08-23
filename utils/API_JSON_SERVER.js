@@ -348,3 +348,4 @@ const postOTP = async (data) => {
 // export {getCustomers, getProducts, getServices, getDeliveryTypes,getEmirates,getArea, postOrder,getOrders, postSignUp,putProfile,postOTP};
 //updated changes
 // changes by Imran
+// Mobile app
