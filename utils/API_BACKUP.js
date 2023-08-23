@@ -299,3 +299,5 @@ const postOTP = async (data) => {
 
 
 // export {getCustomers, getProducts, getServices, getDeliveryTypes,getEmirates,getArea, postOrder,getOrders, postSignUp,putProfile,postOTP};
+
+// changes in another file 
