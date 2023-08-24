@@ -4,41 +4,45 @@ import {
   Button,
   TouchableOpacity,
   ActivityIndicator,
-} from 'react-native';
-import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import {StyleSheet} from 'react-native';
-import {ColorPalate, MyFonts} from '../../constants/var';
-import {getCustomers} from '../../utils/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {AuthContext} from '../../store/checkAuth';
-import {confirmationAlert} from '../../utils/helperFunctions';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwsomeIcon from 'react-native-vector-icons/FontAwesome';
-import useCustomerId from '../../components/customHooks/customerId';
-import useCurrentCustomer from '../../components/customHooks/currentCustomer';
-import {Linking} from 'react-native';
-import { useSelector } from 'react-redux';
+} from "react-native";
+import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { StyleSheet } from "react-native";
+import { ColorPalate, MyFonts } from "../../constants/var";
+import { getCustomers } from "../../utils/api";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../../store/checkAuth";
+import { confirmationAlert } from "../../utils/helperFunctions";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import FontAwsomeIcon from "react-native-vector-icons/FontAwesome";
+import useCustomerId from "../../components/customHooks/customerId";
+import useCurrentCustomer from "../../components/customHooks/currentCustomer";
+import { Linking } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { emptyProducts } from "../../store/redux/reduxToolkit/cartSlice";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useDispatch()
   // const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId, setIsLoading);
 
-    const currentCustomer = useSelector((state) =>  state?.filteredData?.currentCustomerData);
-  console.log('cuurrent customer', currentCustomer)
+  const currentCustomer = useSelector(
+    (state) => state?.filteredData?.currentCustomerData
+  );
+  console.log("cuurrent customer", currentCustomer);
 
-  useEffect(()=>{
-    currentCustomer ? setIsLoading(false) : setIsLoading(true)
-  },[currentCustomer])
+  useEffect(() => {
+    currentCustomer ? setIsLoading(false) : setIsLoading(true);
+  }, [currentCustomer]);
 
-  console.log("CC", currentCustomer)
+  // console.log("CC", currentCustomer);
 
   const authCntx = useContext(AuthContext);
 
-  const handleLinkPress = async url => {
+  const handleLinkPress = async (url) => {
     // Check if the device supports the URL
     const supported = await Linking.openURL(url);
 
@@ -51,23 +55,26 @@ const ProfileScreen = () => {
   };
 
   const savedAdress = () => {
-    console.log('savedAdress clicked');
+    console.log("savedAdress clicked");
     console.log(customerId);
     console.log(currentCustomer);
   };
   const termsConditions = () => {
-    console.log('logged termsConditions clicked');
+    console.log("logged termsConditions clicked");
   };
   const supprtHandler = () => {
-    console.log('supprtHandler clicked');
+    console.log("supprtHandler clicked");
   };
 
   const logoutHandler = () => {
     confirmationAlert(
-      'Logout',
-      'confirm to logout',
-      () => console.log('logout cancelled'),
-      () => authCntx.logout(),
+      "Logout",
+      "confirm to logout",
+      () => console.log("logout cancelled"),
+      () => {
+        authCntx.logout();
+        dispatch(emptyProducts());
+      }
     );
   };
   return (
@@ -85,7 +92,8 @@ const ProfileScreen = () => {
                 {currentCustomer?.first_name} {currentCustomer?.last_name}
               </Text>
               <TouchableOpacity
-                onPress={() => navigation.navigate('UpdateProfile')}>
+                onPress={() => navigation.navigate("UpdateProfile")}
+              >
                 <Text style={styles.editText}>
                   <MaterialIcons
                     name="edit"
@@ -98,27 +106,25 @@ const ProfileScreen = () => {
 
             {currentCustomer?.contact_number && (
               <Text style={styles.infoText}>
-               
-             {currentCustomer?.contact_number}{' '}
+                {currentCustomer?.contact_number}{" "}
               </Text>
             )}
 
-           { currentCustomer?.email && <Text style={styles.infoText}>
-             {currentCustomer?.email}
-            </Text>}
+            {currentCustomer?.email && (
+              <Text style={styles.infoText}>{currentCustomer?.email}</Text>
+            )}
             <Text style={styles.infoText}>
-              {currentCustomer?.apartment && currentCustomer?.apartment +  ' '}
-              {currentCustomer?.street_name  && currentCustomer?.street_name + ', '}
-              
-              {currentCustomer?.area && currentCustomer?.area+ ", "}
-              {currentCustomer?.rate_code} {''}
+              {currentCustomer?.apartment && currentCustomer?.apartment + " "}
+              {currentCustomer?.street_name &&
+                currentCustomer?.street_name + ", "}
+              {currentCustomer?.area && currentCustomer?.area + ", "}
+              {currentCustomer?.rate_code} {""}
             </Text>
             {/* <Text style={styles.infoText}>
                
                {currentCustomer?.address}{' '}
              </Text> */}
           </View>
-          
         )
         // : (
         //   <Text>There is something wrong</Text>
@@ -168,7 +174,7 @@ const ProfileScreen = () => {
 
         <View style={styles.logoutContainer}>
           <Text style={styles.iconText}>
-            <MaterialIcons name="exit-to-app" size={18} color={'red'} />
+            <MaterialIcons name="exit-to-app" size={18} color={"red"} />
           </Text>
           <TouchableOpacity onPress={logoutHandler}>
             <Text style={styles.logoutText}>Logout</Text>
@@ -179,7 +185,8 @@ const ProfileScreen = () => {
       <View style={styles.footerContainer}>
         <Text style={styles.footerTextPart1}>Developed by</Text>
         <TouchableOpacity
-          onPress={() => handleLinkPress('https://iqratechnology.com/')}>
+          onPress={() => handleLinkPress("https://iqratechnology.com/")}
+        >
           <Text style={styles.footerTextPart2}>Iqra Technology</Text>
         </TouchableOpacity>
       </View>
@@ -200,9 +207,9 @@ const styles = StyleSheet.create({
     borderBottomWidth: 4,
   },
   nameEditContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     // marginBottom: 10,
   },
   nameText: {
@@ -227,23 +234,23 @@ const styles = StyleSheet.create({
     fontFamily: MyFonts.fontregular,
   },
   addressContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   TnCContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   supportContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 10,
   },
   logoutContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   iconText: {
     fontSize: 16,
@@ -276,10 +283,10 @@ const styles = StyleSheet.create({
 
   footerContainer: {
     // alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 'auto',
+    justifyContent: "space-between",
+    marginTop: "auto",
     // marginBottom: 20,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   footerTextPart1: {
     fontSize: 15,

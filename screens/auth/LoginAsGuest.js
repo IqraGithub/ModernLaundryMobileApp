@@ -1,23 +1,22 @@
-import {View, StyleSheet, Alert} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import Input from '../../components/Auth/Input';
-import {getCustomers, getEmirates, postSignUp} from '../../utils/api';
-import {ColorPalate, MyFonts} from '../../constants/var';
-import Title from '../../components/Title';
-import MyGradientButton from '../../components/MyGradientButton';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useContext} from 'react';
-import {AuthContext} from '../../store/checkAuth';
-import Dropdown from '../../components/Dropdown';
+import { View, StyleSheet, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import Input from "../../components/Auth/Input";
+import { getCustomers, getEmirates, postSignUp } from "../../utils/api";
+import { ColorPalate, MyFonts } from "../../constants/var";
+import Title from "../../components/Title";
+import MyGradientButton from "../../components/MyGradientButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useContext } from "react";
+import { AuthContext } from "../../store/checkAuth";
+import Dropdown from "../../components/Dropdown";
 
-
-const LoginAsGuest = ({navigation}) => {
-  const [enteredEmail, setEnteredEmail] = useState('');
-  const [enteredPassword, setEnteredPassword] = useState('');
+const LoginAsGuest = ({ navigation }) => {
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
   const [selectedEmirate, setSelectedEmirate] = useState();
   const [emirates, setEmirates] = useState([]);
   const [isReadyToLogin, setIsReadyToLogin] = useState(false);
-
+  const [EnteredConfirmPassword, setEnteredConfirmPassword] = useState("");
   // Context for authentication
   const authCntx = useContext(AuthContext);
 
@@ -37,11 +36,14 @@ const LoginAsGuest = ({navigation}) => {
   // Function to Update input values based on input type
   function updateInputValueHandler(inputType, enteredValue) {
     switch (inputType) {
-      case 'email':
+      case "email":
         setEnteredEmail(enteredValue);
         break;
-      case 'password':
+      case "password":
         setEnteredPassword(enteredValue);
+        break;
+      case "confirmPassword":
+        setEnteredConfirmPassword(enteredValue); // Correctly set EnteredConfirmPassword state
         break;
     }
   }
@@ -57,12 +59,19 @@ const LoginAsGuest = ({navigation}) => {
       };
 
       // Check if any field is empty
-      if (Object.values(userData).some(value => !value)) {
-        Alert.alert('All the Fields are', 'please fill all the fields');
+      if (Object.values(userData).some((value) => !value)) {
+        Alert.alert("All the Fields are", "please fill all the fields");
         return;
       }
 
-      console.log('User Data:', userData);
+      if(userData.Password != EnteredConfirmPassword){
+        Alert.alert(
+          "Password Error",
+          "The entered passwords do not match. Please try again.",
+        );
+        return
+      }
+      console.log("User Data:", userData);
 
       try {
         // Post sign up data
@@ -70,28 +79,28 @@ const LoginAsGuest = ({navigation}) => {
 
         // User data to be sent for login
         if (response.errors.email) {
-          console.log('this is an existing email. ');
-          Alert.alert('Existing Email', 'please try another email');
+          console.log("this is an existing email. ");
+          Alert.alert("Existing Email", "please try another email");
           return;
         }
 
         // Get customers and filter by entered email
         const customers = await getCustomers();
         const filtered = customers?.data?.find(
-          customer => customer?.email === userData.email,
+          (customer) => customer?.email === userData.email
         );
 
         // If response and filtered customer exists. Then it will execute this condition
         if (response && filtered) {
           // Set customer id in async storage and authenticate user
-          await AsyncStorage.setItem('customerId', filtered.serialNo);
+          await AsyncStorage.setItem("customerId", filtered.serialNo);
           authCntx.authenticate(filtered.serialNo);
-          navigation.navigate('Category', {id: filtered.serialNo});
+          navigation.navigate("Category", { id: filtered.serialNo });
           setisUserLogging(true);
         }
       } catch (error) {
         console.log(error);
-        throw new Error('Unable to login. Please try again later.');
+        throw new Error("Unable to login. Please try again later.");
       }
     };
 
@@ -115,24 +124,30 @@ const LoginAsGuest = ({navigation}) => {
       <View style={styles.container}>
         <Input
           label="Email Address"
-          onUpdateValue={updateInputValueHandler.bind(this, 'email')}
+          onUpdateValue={updateInputValueHandler.bind(this, "email")}
           value={enteredEmail}
           keyboardType="email-address"
         />
         <Input
           label="Password"
-          onUpdateValue={updateInputValueHandler.bind(this, 'password')}
+          onUpdateValue={updateInputValueHandler.bind(this, "password")}
           secure
           value={enteredPassword}
+        />
+        <Input
+          label="Confirm Password"
+          onUpdateValue={updateInputValueHandler.bind(this, "confirmPassword")}
+          secure
+          value={EnteredConfirmPassword}
         />
 
         <View style={styles.section}>
           <Dropdown
             options={emirates}
             onSelect={setSelectedEmirate}
-            label={'Emirate'}
-            key={'RateCodeID'}
-            value={'rate_code'}
+            label={"Emirate"}
+            key={"RateCodeID"}
+            value={"rate_code"}
             selectedValue={selectedEmirate}
           />
         </View>
@@ -147,13 +162,13 @@ const LoginAsGuest = ({navigation}) => {
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     backgroundColor: ColorPalate.white,
   },
   container: {
     backgroundColor: ColorPalate.white,
     marginHorizontal: 20,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   section: {
     marginBottom: 20,

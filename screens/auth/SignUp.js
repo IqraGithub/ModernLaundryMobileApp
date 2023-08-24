@@ -12,22 +12,33 @@ const Signup = ({navigation}) => {
   const [isUserSigningUp, setIsUserSigningUp] = useState(false);
   const authContext = useContext(AuthContext);
 
-  const handleSignUp = async userData => {
+  const handleSignUp = async (userData) => {
     const isFieldEmpty = Object.values(userData).some(value => !value);
     if (isFieldEmpty) {
       console.log('One or more fields are empty');
       return;
+    }
+    if(userData.Password != userData.confirmPassword){
+      console.log('userdata', userData  )
+      
+      Alert.alert(
+        "Password Error",
+        "The entered passwords do not match. Please try again.",
+      );
+      return
     }
     console.log('userData', userData);
     try {
       const response = await postSignUp(userData);
       console.log('Response', response);
 
+      console.log('1')
       if (response.errors.email) {
-        console.log('this is an existing email. ');
+        console.log('this is an existing email. ', response.errors.email);
         Alert.alert('Existing Email', 'please try another email');
         return;
       }
+      console.log('1')
       setIsUserSigningUp(true);
 
       if (response) {

@@ -261,7 +261,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
               activeOpacity={0.7}
               style={styles.quantityBtn}
             >
-              <Text style={[styles.quantityBtnText, {fontSize:25}]}>-</Text>
+              <Text style={[styles.quantityBtnText]}>-</Text>
             </TouchableOpacity>
             <Text
               style={{

@@ -19,6 +19,7 @@ const AuthContent = ({isLogin, onAuthenticate}) => {
     alter_Contact_Number:false,
     email:false,
     Password:false,
+    confirmPassword:false
   });
 
   function switchAuthModeHandler() {
@@ -38,6 +39,7 @@ const AuthContent = ({isLogin, onAuthenticate}) => {
       alter_Contact_Number,
       email,
       Password,
+      confirmPassword
     } = credentials;
 
     onAuthenticate({
@@ -52,11 +54,12 @@ const AuthContent = ({isLogin, onAuthenticate}) => {
       alter_Contact_Number,
       email,
       Password,
+      confirmPassword
     });
   }
 
   return (
-    <View style={styles.authContent}>
+    <View style={[styles.authContent,{marginTop: isLogin && 64,}]}>
       <AuthForm
         isLogin={isLogin}
         onSubmit={submitHandler}
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
   //   marginTop: 8,
   // },
   authContent: {
-    marginTop: 64,
+    // 
     marginHorizontal: 20,
     padding: 16,
     borderRadius: 8,

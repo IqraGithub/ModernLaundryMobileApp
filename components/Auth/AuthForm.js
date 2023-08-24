@@ -23,6 +23,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   const [enteredContactNumber, setEnteredContactNumber] = useState("");
   const [enteredEmail, setEnteredEmail] = useState("");
   const [enteredPassword, setEnteredPassword] = useState("");
+  const [EnteredConfirmPassword, setEnteredConfirmPassword] = useState("");
   const [enteredAlternativeContactNumber, setEnteredAlternativeContactNumber] =
     useState("");
 
@@ -70,6 +71,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
     email: emailIsInvalid,
     password: passwordIsInvalid,
     alter_Contact_Number: alternativeContactNumbetIsInvalid,
+    confirmPassword: confirmPasswordIsInvalid
   } = credentialsInvalid;
 
   function updateInputValueHandler(inputType, enteredValue) {
@@ -102,7 +104,10 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
         setEnteredEmail(enteredValue);
         break;
       case "password":
-        setEnteredPassword(enteredValue);
+        setEnteredPassword(enteredValue);  
+        break;
+      case "confirmPassword":
+        setEnteredConfirmPassword(enteredValue); 
         break;
     }
   }
@@ -132,7 +137,9 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
       alter_Contact_Number: enteredAlternativeContactNumber,
       email: enteredEmail,
       Password: enteredPassword,
+      confirmPassword : EnteredConfirmPassword
     };
+    console.log('confirm password auth form ',)
     onSubmit(data);
   }
 const navigation = useNavigation()
@@ -142,7 +149,7 @@ const navigation = useNavigation()
   }
   return (
     <View>
-      <View style={{ height: 400 }}>
+      <View style={{ height: isLogin ? 400: 450 }}>
         <ScrollView>
           {!isLogin && (
             <>
@@ -152,7 +159,7 @@ const navigation = useNavigation()
                 value={enteredFirstName}
                 keyboardType="default"
                 isInvalid={firstNameIsValid}
-              />
+              />  
               <Input
                 label="Last Name"
                 onUpdateValue={updateInputValueHandler.bind(this, "lastName")}
@@ -238,11 +245,18 @@ const navigation = useNavigation()
             value={enteredPassword}
             isInvalid={passwordIsInvalid}
             />
-          {/* <View> */}
+       {  !isLogin && <Input
+            label="Confirm Password"
+            onUpdateValue={updateInputValueHandler.bind(this, "confirmPassword")}
+            secure
+            value={EnteredConfirmPassword}
+            isInvalid={confirmPasswordIsInvalid}
+            />}
+        { isLogin && (<View>
             <TouchableOpacity onPress={forgotPasswordHandler}>
               <Text style={{color:ColorPalate.dgrey,fontFamily:MyFonts.fontregular, marginLeft:3,marginTop:4}}>Forgot Password</Text>
             </TouchableOpacity>
-          {/* </View>s */}
+          </View>)}
             </>
         </ScrollView>
       </View>

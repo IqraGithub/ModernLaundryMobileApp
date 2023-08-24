@@ -1,59 +1,3 @@
-// import {StyleSheet, TouchableOpacity, View, Text} from 'react-native';
-// import {useSelector} from 'react-redux';
-// import {ColorPalate, MyFonts} from '../constants/var';
-// import {useNavigation} from '@react-navigation/native';
-// import {
-//   selectCartTotalPrice,
-//   selectCartTotalQuantity,
-// } from '../store/redux/reduxToolkit/cartSlice';
-
-// export const Totaling = ({navigateTo, detailRoute}) => {
-//   const usenavigation = useNavigation(); // Importing and initializing the useNavigation hook from a navigation library
-
-//   // Retrieving the total price from the Redux store using the selectCartTotalPrice selector
-//   const totalPrice = useSelector(selectCartTotalPrice);
-
-//   // Retrieving the total quantity from the Redux store using the selectCartTotalQuantity selector
-//   const totalQty = useSelector(selectCartTotalQuantity);
-
-//   return (
-//     <View style={styles.totalContainer}>
-//       <View>
-//         <Text style={styles.totalText}>
-//           Total ${totalPrice} |
-//           <Text style={{fontSize: 14}}> {totalQty} items added</Text>
-//         </Text>
-//       </View>
-//       <View>
-//         <TouchableOpacity
-//           onPress={() => usenavigation.navigate(navigateTo, detailRoute)}>
-//           <Text>Next</Text>
-//         </TouchableOpacity>
-//       </View>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   totalContainer: {
-//     backgroundColor: ColorPalate.themesecondary,
-//     paddingHorizontal: 10,
-//     paddingVertical: 15,
-//     justifyContent: 'center',
-//     flexDirection: 'row',
-//     borderWidth: 1,
-//     borderColor: ColorPalate.lgrey,
-//   },
-//   totalText: {
-//     color: ColorPalate.white,
-//     fontFamily: MyFonts.fontregular,
-//     fontSize: 18,
-//   },
-// });
-
-// ____________________________
-// -----------------------------
-
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
 import { useSelector } from "react-redux";
@@ -86,7 +30,7 @@ export const Totaling = ({ navigateTo, detailRoute }) => {
       {/* <View style={styles.totalContainer}> */}
       <View style={[styles.totalContainer]}>
         <Text style={styles.totalText}>
-          Total ${totalPrice} |{" "}
+          Total AED {totalPrice} |{" "}
           <Text style={styles.totalQtyText}>{totalQty} items added</Text>
         </Text>
       </View>
