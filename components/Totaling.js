@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import { StyleSheet, Pressable, View, Text } from "react-native";
 import { useSelector } from "react-redux";
 import { ColorPalate, MyFonts } from "../constants/var";
 import { useNavigation } from "@react-navigation/native";
@@ -36,7 +36,7 @@ export const Totaling = ({ navigateTo, detailRoute }) => {
       </View>
 
       <View style={[styles.nextBTNContainer]}>
-        <TouchableOpacity
+        <Pressable
           disabled={isDisabled}
           style={[
             styles.nextButton,
@@ -53,7 +53,7 @@ export const Totaling = ({ navigateTo, detailRoute }) => {
               style={styles.icon}
             />
           </View>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

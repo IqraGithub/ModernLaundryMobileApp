@@ -2,7 +2,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   ScrollView,
   ActivityIndicator,
 } from "react-native";
@@ -99,7 +99,7 @@ const OrderScreen = ({ navigation }) => {
               filteredOrder.map((order) => {
                 return (
                   <View key={order.id} style={styles.orderTypeContainer}>
-                    <TouchableOpacity
+                    <Pressable
                       activeOpacity={0.6}
                       onPress={() =>
                         navigation.navigate("OrderDetails", { order })
@@ -205,7 +205,7 @@ const OrderScreen = ({ navigation }) => {
                           </Text>
                         </View>
                       </View>
-                    </TouchableOpacity>
+                    </Pressable>
                   </View>
                 );
               })

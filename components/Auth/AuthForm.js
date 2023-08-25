@@ -11,7 +11,7 @@ import { getArea, getEmirates, postSignUp } from "../../utils/api";
 import { showToast } from "../../utils/helperFunctions";
 import { Text } from "react-native";
 import Dropdown from "../Dropdown";
-import { TouchableOpacity } from "react-native";
+import { Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
@@ -253,9 +253,9 @@ const navigation = useNavigation()
             isInvalid={confirmPasswordIsInvalid}
             />}
         { isLogin && (<View>
-            <TouchableOpacity onPress={forgotPasswordHandler}>
+            <Pressable onPress={forgotPasswordHandler}>
               <Text style={{color:ColorPalate.dgrey,fontFamily:MyFonts.fontregular, marginLeft:3,marginTop:4}}>Forgot Password</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>)}
             </>
         </ScrollView>

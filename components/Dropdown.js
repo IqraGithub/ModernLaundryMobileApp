@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, TouchableOpacity, Text, StyleSheet, ScrollView} from 'react-native';
+import {View, Pressable, Text, StyleSheet, ScrollView} from 'react-native';
 import {ColorPalate, MyFonts} from '../constants/var';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useEffect} from 'react';
@@ -21,7 +21,7 @@ const Dropdown = ({options, onSelect, value, label, selectedValue}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
-      <TouchableOpacity
+      <Pressable
         style={styles.dropdownButton}
         onPress={() => setIsDropdownOpen(!isDropdownOpen)}>
         <Text style={styles.dropdownButtonText}>
@@ -32,7 +32,7 @@ const Dropdown = ({options, onSelect, value, label, selectedValue}) => {
           size={24}
           color={ColorPalate.dgrey}
         />
-      </TouchableOpacity>
+      </Pressable>
       {isDropdownOpen && (
 
         
@@ -40,12 +40,12 @@ const Dropdown = ({options, onSelect, value, label, selectedValue}) => {
           {options?.map((option, index) => (
             //  <ScrollView >
 
-            <TouchableOpacity
+            <Pressable
               key={index}
               style={styles.dropdownListItem}
               onPress={() => handleOptionSelect(option[value])}>
               <Text style={styles.dropdownListItemText}>{option[value]}</Text>
-            </TouchableOpacity>
+            </Pressable>
                 //  </ScrollView>
           ))}
         </View>

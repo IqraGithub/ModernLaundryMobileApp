@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, ScrollView } from 'react-native';
+import { View, Pressable, Text, StyleSheet, ScrollView } from 'react-native';
 import { ColorPalate, MyFonts } from '../constants/var';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useEffect } from 'react';
@@ -100,7 +100,7 @@ const HomeDropdown = ({ options, onSelect, value, selectedValue }) => {
 
   return (
     <View style={styles.container}>
-    <TouchableOpacity
+    <Pressable
       style={styles.dropdownButton}
       activeOpacity={0.7}
       onPress={toggleDropdown}
@@ -114,12 +114,12 @@ const HomeDropdown = ({ options, onSelect, value, selectedValue }) => {
             color={ColorPalate.themeprimary}
           />
         </View>
-      </TouchableOpacity>
+      </Pressable>
 
       {isDropdownOpen && (
         <ScrollView style={styles.dropdownList}>
           {options?.map((option, index) => (
-            <TouchableOpacity
+            <Pressable
               key={index}
               style={styles.dropdownListItem}
               onPress={() =>{ 
@@ -127,7 +127,7 @@ const HomeDropdown = ({ options, onSelect, value, selectedValue }) => {
                 return handleOptionSelect(option[value])}}
                 >
               <Text style={styles.dropdownListItemText}>{option[value]}</Text>
-            </TouchableOpacity>
+            </Pressable>
           ))}
         </ScrollView>
       )}

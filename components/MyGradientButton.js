@@ -1,5 +1,5 @@
 import React, { Children } from 'react';
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import {Pressable, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {ColorPalate, MyFonts} from '../constants/var';
 
@@ -9,7 +9,7 @@ const MyGradientButton = ({
   size,
 }) => {
   return (
-    <TouchableOpacity onPress={onPressBtn} activeOpacity={0.7}>
+    <Pressable onPress={onPressBtn} activeOpacity={0.7}>
       <LinearGradient
         colors={[ColorPalate.themesecondary, ColorPalate.themeprimary]}
         start={{x: 0, y: 0}}
@@ -22,7 +22,7 @@ const MyGradientButton = ({
         ]}>
         <Text style={styles.title}>{title}</Text>
       </LinearGradient>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 const styles = StyleSheet.create({

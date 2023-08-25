@@ -55,7 +55,7 @@
 // });
 
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Pressable } from 'react-native';
 import { ColorPalate, MyFonts } from '../../constants/var';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -83,7 +83,7 @@ function Input({ label, keyboardType, secure, onUpdateValue, value, isInvalid })
           value={value}
         />
         {secure && (
-          <TouchableOpacity
+          <Pressable
             style={styles.iconContainer}
             onPress={togglePasswordVisibility}
           >
@@ -92,7 +92,7 @@ function Input({ label, keyboardType, secure, onUpdateValue, value, isInvalid })
               size={20}
               color={ColorPalate.dgrey}
             />
-          </TouchableOpacity>
+          </Pressable>
         )}
       </View>
     </View>

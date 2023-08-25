@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import React from "react";
 import Input from "../../components/Auth/Input";
 import { useState } from "react";

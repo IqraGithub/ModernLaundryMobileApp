@@ -4,7 +4,7 @@ import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {SafeAreaView} from 'react-native-safe-area-context';
-import {TouchableOpacity} from 'react-native';
+import {Pressable} from 'react-native';
 import {ColorPalate, MyFonts} from '../../constants/var';
 import {TextInput} from 'react-native';
 import DeliveryTypeBtn from '../../components/DeliveryTypeBtn';
@@ -82,18 +82,18 @@ const SelectService = () => {
       <View style={{flex: 3, marginHorizontal: 20, marginVertical: 15}}>
         <DeliveryTypeBtn />
         <Text style={styles.label}>Pick-up Date</Text>
-        <TouchableOpacity onPress={() => handlePickerOpen('pickupDate')}>
+        <Pressable onPress={() => handlePickerOpen('pickupDate')}>
           <View style={styles.input}>
             <Text style={styles.inputText}>
               {dates.pickupDate.toLocaleDateString()}
             </Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
 
         <Text style={styles.label}>Delivery Date</Text>
 
         {/* i disabled deliveryDate button */}
-        <TouchableOpacity
+        <Pressable
           onPress={() => handlePickerOpen('deliveryDate')}
           disabled={true}>
           <View style={styles.input}>
@@ -101,7 +101,7 @@ const SelectService = () => {
               {(cartItems[0]?.deliveryDate || dates.deliveryDate).toLocaleDateString()}
             </Text>
           </View>
-        </TouchableOpacity>
+        </Pressable>
 
         {showPicker && (
           <DateTimePicker

@@ -285,7 +285,7 @@ import {
   FlatList,
   ActivityIndicator,
   Text,
-  TouchableOpacity,
+  Pressable,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import ProductItem from "./ProductItem";
@@ -487,7 +487,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
               paddingHorizontal: 7,
             }}
           >
-            <TouchableOpacity
+            <Pressable
               style={{}}
               onPress={() => headerCollapseHandler(true)}
             >
@@ -499,12 +499,12 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
                   color={ColorPalate.dgrey}
                 />
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         )}
 
         {isSearchExpanded ? (
-          <TouchableOpacity
+          <Pressable
             style={{
               position: "relative",
               height: 45,
@@ -523,7 +523,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
                 />
               </Text>
             </View>
-          </TouchableOpacity>
+          </Pressable>
         ) : (
           <View
             style={{

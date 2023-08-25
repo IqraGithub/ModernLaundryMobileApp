@@ -1,6 +1,6 @@
 import {useState} from 'react';
 import {SafeAreaView} from 'react-native';
-import {Modal, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {Modal, Pressable, View, Text, StyleSheet} from 'react-native';
 
 const Popup = ({checkvisible}) => {
   const [visible, setvisible] = useState(false);

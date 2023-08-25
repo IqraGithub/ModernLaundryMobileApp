@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {View, Text, TouchableOpacity, Image, StyleSheet, Button} from 'react-native';
+import {View, Text, Pressable, Image, StyleSheet, Button} from 'react-native';
 import Caption from '../components/Caption';
 import MyGradientButton from '../components/MyGradientButton';
 import Title from '../components/Title';
@@ -42,9 +42,9 @@ const Welcome = ({navigation}) => {
           onPressBtn={() => navigation.navigate('SignIn')}
         />
       </View>
-      <TouchableOpacity  onPress={() => navigation.navigate('Guest')}>
+      <Pressable  onPress={() => navigation.navigate('Guest')}>
       <Caption text="Login as a Guest" />
-      </TouchableOpacity>
+      </Pressable>
         
     </View>
   );

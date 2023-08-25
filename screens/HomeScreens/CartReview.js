@@ -5,7 +5,7 @@ import {
   FlatList,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  Pressable,
   View,
 } from "react-native";
 
@@ -238,21 +238,21 @@ const CartOld = ({ navigation, route }) => {
               <Text style={styles.quantityText}>{item.quantity}</Text>
 
               <View style={styles.quantityContainer}>
-                <TouchableOpacity
+                <Pressable
                   onPress={() => handleUpdateQuantity(item, "decrease")}
                   style={styles.quantityButton}
                   activeOpacity={0.7}
                 >
                   <Text style={styles.quantityButtonText}>-</Text>
-                </TouchableOpacity>
+                </Pressable>
 
-                <TouchableOpacity
+                <Pressable
                   onPress={() => handleUpdateQuantity(item, "increase")}
                   style={styles.quantityButton}
                   activeOpacity={0.7}
                 >
                   <Text style={styles.quantityButtonText}>+</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
 
@@ -260,7 +260,7 @@ const CartOld = ({ navigation, route }) => {
               AED {(item.quantity * item.service.price).toFixed(2)}
             </Text>
 
-            <TouchableOpacity
+            <Pressable
               onPress={() => handleDeleteItem(item.id)}
               style={styles.deleteButton}
               activeOpacity={0.7}
@@ -272,7 +272,7 @@ const CartOld = ({ navigation, route }) => {
                   color={ColorPalate.dgrey}
                 />
               </Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
         </View>
       </View>
@@ -421,9 +421,9 @@ const CartOld = ({ navigation, route }) => {
       />
 
       <View style={[styles.totalContainer, { marginTop: 10 }]}>
-        <TouchableOpacity onPress={confirmOrder}>
+        <Pressable onPress={confirmOrder}>
           <Text style={styles.totalText}>Confirm Order</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

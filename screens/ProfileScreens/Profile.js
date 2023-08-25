@@ -2,7 +2,7 @@ import {
   View,
   Text,
   Button,
-  TouchableOpacity,
+  Pressable,
   ActivityIndicator,
 } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
@@ -91,7 +91,7 @@ const ProfileScreen = () => {
               <Text style={styles.nameText}>
                 {currentCustomer?.first_name} {currentCustomer?.last_name}
               </Text>
-              <TouchableOpacity
+              <Pressable
                 onPress={() => navigation.navigate("UpdateProfile")}
               >
                 <Text style={styles.editText}>
@@ -101,7 +101,7 @@ const ProfileScreen = () => {
                     color={ColorPalate.themeprimary}
                   />
                 </Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
 
             {currentCustomer?.contact_number && (
@@ -141,9 +141,9 @@ const ProfileScreen = () => {
             />
           </Text>
 
-          <TouchableOpacity onPress={savedAdress}>
+          <Pressable onPress={savedAdress}>
             <Text style={styles.addressText}>Saved Address</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.TnCContainer}>
@@ -154,9 +154,9 @@ const ProfileScreen = () => {
               color={ColorPalate.themeprimary}
             />
           </Text>
-          <TouchableOpacity onPress={termsConditions}>
+          <Pressable onPress={termsConditions}>
             <Text style={styles.addressText}>Term and Conditions</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.supportContainer}>
@@ -167,28 +167,28 @@ const ProfileScreen = () => {
               color={ColorPalate.themeprimary}
             />
           </Text>
-          <TouchableOpacity onPress={supprtHandler}>
+          <Pressable onPress={supprtHandler}>
             <Text style={styles.supportText}>Support</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
 
         <View style={styles.logoutContainer}>
           <Text style={styles.iconText}>
             <MaterialIcons name="exit-to-app" size={18} color={"red"} />
           </Text>
-          <TouchableOpacity onPress={logoutHandler}>
+          <Pressable onPress={logoutHandler}>
             <Text style={styles.logoutText}>Logout</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </View>
 
       <View style={styles.footerContainer}>
         <Text style={styles.footerTextPart1}>Developed by</Text>
-        <TouchableOpacity
+        <Pressable
           onPress={() => handleLinkPress("https://iqratechnology.com/")}
         >
           <Text style={styles.footerTextPart2}>Iqra Technology</Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

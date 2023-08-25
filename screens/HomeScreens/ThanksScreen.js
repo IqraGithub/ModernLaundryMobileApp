@@ -3,7 +3,7 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity,
+  Pressable,
   ActivityIndicator,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
@@ -124,17 +124,17 @@ const ThanksScreen = ({ navigation, route }) => {
             </View>
 
             <View style={styles.cardBorder} />
-            <TouchableOpacity
+            <Pressable
               style={{ alignSelf: "center" }}
               onPress={goToHomeHandler}
             >
               <Text style={{ color: ColorPalate.themeprimary }}>
                 Go To Home
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={viewOrderHandler}>
+            </Pressable>
+            <Pressable style={styles.button} onPress={viewOrderHandler}>
               <Text style={styles.buttonText}>View Orders</Text>
-            </TouchableOpacity>
+            </Pressable>
           </View>
 
           <View style={styles.totalPriceContainer}>

@@ -1,5 +1,5 @@
   import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet } from 'react-native';
 import { getDeliveryTypes } from '../utils/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { getTotal, selectAllCartItems, selectCartTotalPrice, updateDates, updateDeliveryType } from '../store/redux/reduxToolkit/cartSlice';
@@ -56,7 +56,7 @@ const DeliveryTypeBtn = () => {
   return (
     <View style={styles.container}>
       {deliveryTypes.map((item, index) => (
-        <TouchableOpacity
+        <Pressable
           key={item.deliveryTypeID}
           style={[
             styles.button,
@@ -71,7 +71,7 @@ const DeliveryTypeBtn = () => {
             styles.text,
             { color: selectedType === item.deliveryTypeID ? ColorPalate.white : ColorPalate.themeprimary }
           ]}>{item.delivery_type}</Text>
-        </TouchableOpacity>
+        </Pressable>
       ))}
     </View>
   );

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Alert } from "react-native";
+import { View, Text, Pressable, Alert } from "react-native";
 import React from "react";
 import Input from "../../components/Auth/Input";
 import { useState } from "react";
@@ -44,7 +44,7 @@ const EnterEmail = ({ navigation }) => {
       </View>
       <View style={commonStyle.buttonContainer}>
         <MyGradientButton onPressBtn={varifyEmailHandler} title="Send OTP" />
-        <TouchableOpacity onPress={() => navigation.navigate("SignIn")}>
+        <Pressable onPress={() => navigation.navigate("SignIn")}>
           <Text
             style={[
               commonStyle.text,
@@ -53,7 +53,7 @@ const EnterEmail = ({ navigation }) => {
           >
             Go To Login
           </Text>
-        </TouchableOpacity>
+        </Pressable>
       </View>
     </View>
   );

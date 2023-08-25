@@ -4,7 +4,7 @@ import {
   Text,
   StyleSheet,
   Image,
-  TouchableOpacity,
+  Pressable,
   FlatList,
   Alert,
 } from "react-native";
@@ -213,13 +213,13 @@ const ProductItem = React.memo(
               style={styles.itemImage}
             />
             <View style={styles.qntyBtnContainer}>
-              <TouchableOpacity
+              <Pressable
                 onPress={decreaseQtyHandler}
                 activeOpacity={0.7}
                 style={styles.quantityBtn}
               >
                 <Text style={[styles.quantityBtnText]}>-</Text>
-              </TouchableOpacity>
+              </Pressable>
               <Text
                 style={{
                   color: ColorPalate.themesecondary,
@@ -229,13 +229,13 @@ const ProductItem = React.memo(
               >
                 {cartItem?.quantity ?? 0}
               </Text>
-              <TouchableOpacity
+              <Pressable
                 onPress={increaseQtyHandler}
                 activeOpacity={0.7}
                 style={styles.quantityBtn}
               >
                 <Text style={styles.quantityBtnText}>+</Text>
-              </TouchableOpacity>
+              </Pressable>
             </View>
           </View>
           <View
@@ -276,7 +276,7 @@ const ProductItem = React.memo(
                   renderItem={(item) => {
                     return (
                       <>
-                        <TouchableOpacity
+                        <Pressable
                           onPress={() => serviceButtonHandler(item.item)}
                           activeOpacity={0.7}
                           style={[
@@ -303,7 +303,7 @@ const ProductItem = React.memo(
                           >
                             {item.item.service}
                           </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                       </>
                     );
                   }}
@@ -328,7 +328,7 @@ const ProductItem = React.memo(
                   // keyExtractor={(item,index) => index}
                   renderItem={(item, idx) => {
                     return (
-                      <TouchableOpacity
+                      <Pressable
                         // key={idx}
                         onPress={() => deliveryButtonHandler(item.item)}
                         activeOpacity={0.7}
@@ -356,7 +356,7 @@ const ProductItem = React.memo(
                         >
                           {item.item.title}
                         </Text>
-                      </TouchableOpacity>
+                      </Pressable>
                     );
                   }}
                 />

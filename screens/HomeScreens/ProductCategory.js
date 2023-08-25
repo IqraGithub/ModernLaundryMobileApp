@@ -1,5 +1,5 @@
   import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-  import {View, StyleSheet, TouchableOpacity} from 'react-native';
+  import {View, StyleSheet, Pressable} from 'react-native';
   import MyTabView from '../../components/Category/TabView';
   import {ColorPalate, MyFonts} from '../../constants/var';
   import {Totaling} from '../../components/Totaling';
