@@ -303,10 +303,8 @@ import {
   setEmiratesData,
   setOrderData,
 } from "../../store/redux/reduxToolkit/filteredDataSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import debounce from "lodash.debounce";
-import { useGetCustomersQuery } from "../../store/redux/reduxToolkit/apiSlice";
 
 const routes = [
   { key: "Men", title: "Men" },
@@ -513,6 +511,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
             }}
             onPress={() => headerCollapseHandler(false)}
           >
+           
             <View>
               <Text style={{ marginRight: 14 }}>
                 <FontAwesomeIcon

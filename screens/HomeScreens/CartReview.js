@@ -9,8 +9,6 @@ import {
   View,
 } from "react-native";
 
-
-
 import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 import {
@@ -110,8 +108,9 @@ const CartOld = ({ navigation, route }) => {
 
   const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId);
-  const currentCustomer = useSelector((state) =>  state?.filteredData?.currentCustomerData);
-
+  const currentCustomer = useSelector(
+    (state) => state?.filteredData?.currentCustomerData
+  );
 
   // Function to handle item deletion
   const handleDeleteItem = (itemID) => {
@@ -146,7 +145,7 @@ const CartOld = ({ navigation, route }) => {
   };
 
   // Function to confirm and place the order
-  function confirmOrder() {
+  async function confirmOrder() {
     // Prepare the data object with the necessary order details
     const isFieldEmpty =
       currentCustomer &&
@@ -196,15 +195,33 @@ const CartOld = ({ navigation, route }) => {
           try {
             if (data.order_item.length > 0 && customerId) {
               // if (!isFieldEmpty) {
-              postOrder(data);
+              const response = postOrder(data)
+                .then((d) => {
+                
+
+                  if (Object.keys(d.errors).length === 0) {
+                    navigation.navigate("Thanks", {
+                      data,
+                      emirate: currentCustomer?.rate_code,
+                    });
+                   
+                    dispatch(emptyProducts());
+                  } else {
+                    console.log("Order failed!");
+                  }
+
+
+
+                })
+                .catch((e) => {
+                  console.log("Got an error while postin the order ", e);
+                });
+              // console.log("response on post order ", response.json);
+              // console.log(
+              //   "response on post order 2 ",
+              //   JSON.stringify(response)
+              // );
               console.log(data);
-
-              dispatch(emptyProducts());
-
-              navigation.navigate("Thanks", {
-                data,
-                emirate: currentCustomer?.rate_code,
-              });
             } else {
               showToast(
                 "error",
@@ -367,7 +384,7 @@ const CartOld = ({ navigation, route }) => {
                 </Text>
               </View>
 
-              <View style={[styles.reviewTextsContainer,{flexWrap:'wrap'}]}>
+              <View style={[styles.reviewTextsContainer, { flexWrap: "wrap" }]}>
                 <Text
                   style={[
                     styles.reviewOrderTexts,

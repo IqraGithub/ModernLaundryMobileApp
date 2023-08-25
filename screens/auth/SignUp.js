@@ -19,15 +19,13 @@ const Signup = ({navigation}) => {
       return;
     }
     if(userData.Password != userData.confirmPassword){
-      console.log('userdata', userData  )
-      
       Alert.alert(
         "Password Error",
         "The entered passwords do not match. Please try again.",
       );
       return
     }
-    console.log('userData', userData);
+    
     try {
       const response = await postSignUp(userData);
       console.log('Response', response);

@@ -22,7 +22,7 @@ import useEmirates from "../../components/customHooks/getEmirates";
 import { setCurrentCustomerData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const UpdateProfileScreen = ({navigation}) => {
+const UpdateProfileScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   // const [emirates, setEmirates] = useState();
 
@@ -35,21 +35,23 @@ const UpdateProfileScreen = ({navigation}) => {
   const [enteredStreet, setEnteredStreet] = useState("");
   const [enteredApartment, setEnteredApartment] = useState("");
   const [enteredAdress, setEnteredAddress] = useState("");
-  const [enteredAlternativeContactNumber, setEnteredAlternativeContactNumber] = useState("");
+  const [enteredAlternativeContactNumber, setEnteredAlternativeContactNumber] =
+    useState("");
   const [apiArea, setApiArea] = useState();
   const [selectedArea, setSelectedArea] = useState();
 
   const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId, setIsLoading);
-  const currentCustomer = useSelector((state) =>  state?.filteredData?.currentCustomerData);
-
+  const currentCustomer = useSelector(
+    (state) => state?.filteredData?.currentCustomerData
+  );
 
   const emirates = useEmirates();
- const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
- useEffect(()=>{
-  currentCustomer ? setIsLoading(false) : setIsLoading(true)
- },[currentCustomer])
+  useEffect(() => {
+    currentCustomer ? setIsLoading(false) : setIsLoading(true);
+  }, [currentCustomer]);
   useEffect(() => {
     async function fetchArea() {
       try {
@@ -79,7 +81,9 @@ const UpdateProfileScreen = ({navigation}) => {
     setEnteredStreet(currentCustomer?.street_name ?? "");
     setEnteredApartment(currentCustomer?.apartment ?? "");
     setEnteredAddress(currentCustomer?.address ?? "");
-    setEnteredAlternativeContactNumber(currentCustomer?.alter_Contact_Number ?? "")
+    setEnteredAlternativeContactNumber(
+      currentCustomer?.alter_Contact_Number ?? ""
+    );
   }, [currentCustomer]);
 
   const updateProfileHandler = () => {
@@ -95,7 +99,7 @@ const UpdateProfileScreen = ({navigation}) => {
       address: enteredAdress,
       apartment: enteredApartment,
       street_name: enteredStreet,
-      alter_Contact_Number: enteredAlternativeContactNumber
+      alter_Contact_Number: enteredAlternativeContactNumber,
     };
     console.log("put profile", udpatedProfile);
 
@@ -107,19 +111,27 @@ const UpdateProfileScreen = ({navigation}) => {
       },
       async () => {
         try {
-          const response = await putProfile(udpatedProfile);
-          navigation.goBack()
+          const response = putProfile(udpatedProfile)
+            .then(() => {
+              if (Object.keys(d.errors).length === 0) {
+                navigation.goBack();
+              } else {
+                console.log("Update Profile failed!");
+              }
 
-          console.log("updated response", response);
-          dispatch(setCurrentCustomerData(udpatedProfile))
-      
+              console.log("updated response", response);
+              dispatch(setCurrentCustomerData(udpatedProfile));
+            })
+            .catch((e) => {
+              console.log("Got An Error While Updating Profile ", e);
+            });
         } catch (error) {
           console.log(error);
         }
       }
     );
   };
- 
+
   return (
     <View style={styles.rootcontainer}>
       <View style={{ zIndex: 9999 }}>
@@ -174,7 +186,6 @@ const UpdateProfileScreen = ({navigation}) => {
                 />
               </View>
 
-
               <View style={styles.section}>
                 <Input
                   label="Contact Number"
@@ -185,9 +196,10 @@ const UpdateProfileScreen = ({navigation}) => {
               <View style={styles.section}>
                 <Input
                   label="Alternate Contact Number"
-                  value={enteredAlternativeContactNumber
+                  value={enteredAlternativeContactNumber}
+                  onUpdateValue={(value) =>
+                    setEnteredAlternativeContactNumber(value)
                   }
-                  onUpdateValue={(value) => setEnteredAlternativeContactNumber(value)}
                 />
               </View>
               <View style={styles.section}>
@@ -211,7 +223,7 @@ const UpdateProfileScreen = ({navigation}) => {
                   onUpdateValue={(value) => setEnteredAddress(value)}
                 />
               </View>
-{/* 
+              {/* 
               <View style={styles.section}>
               </View> */}
 
