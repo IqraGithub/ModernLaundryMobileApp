@@ -112,7 +112,7 @@ const UpdateProfileScreen = ({ navigation }) => {
       async () => {
         try {
           const response = putProfile(udpatedProfile)
-            .then(() => {
+            .then((d) => {
               if (Object.keys(d.errors).length === 0) {
                 navigation.goBack();
               } else {

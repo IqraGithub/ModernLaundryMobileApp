@@ -147,10 +147,35 @@ const CartOld = ({ navigation, route }) => {
   // Function to confirm and place the order
   async function confirmOrder() {
     // Prepare the data object with the necessary order details
-    const isFieldEmpty =
-      currentCustomer &&
-      Object.values(currentCustomer)?.some((value) => !value);
-    if (isFieldEmpty) {
+    // const isFieldEmpty =
+    //   currentCustomer &&
+    //   Object.values(currentCustomer)?.some((value) => !value);
+
+    // if (isFieldEmpty) {
+      const {
+        first_name,
+        last_name,
+        rate_code,
+        area,
+        street_name,
+        apartment,
+        address,
+        contact_number,
+        alter_Contact_Number,
+        email,
+      } = currentCustomer;
+      if (
+        !first_name ||
+        !last_name ||
+        !rate_code ||
+        !area ||
+        !street_name ||
+        !apartment ||
+        !address ||
+        !contact_number ||
+        !alter_Contact_Number ||
+        !email
+      ) {
       console.log("please fill your details!");
       // Alert.alert("Missing Detail", "Please Enter All Details");
 
@@ -159,7 +184,7 @@ const CartOld = ({ navigation, route }) => {
     }
 
     const data = {
-      branch: "12",
+      branch: "21",
       SpecialRequests: notes,
       customerID: customerId,
       subtotal: totalPrice.toString(),
@@ -197,21 +222,16 @@ const CartOld = ({ navigation, route }) => {
               // if (!isFieldEmpty) {
               const response = postOrder(data)
                 .then((d) => {
-                
-
                   if (Object.keys(d.errors).length === 0) {
                     navigation.navigate("Thanks", {
                       data,
                       emirate: currentCustomer?.rate_code,
                     });
-                   
+
                     dispatch(emptyProducts());
                   } else {
                     console.log("Order failed!");
                   }
-
-
-
                 })
                 .catch((e) => {
                   console.log("Got an error while postin the order ", e);

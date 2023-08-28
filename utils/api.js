@@ -1,6 +1,5 @@
-// // const API = './API_JSON_SERVER.js'
-// // // export const API2 = './API_BACKUP.js'
-
+// const API = "./API_JSON_SERVER.js";
+// // // // export const API2 = './API_BACKUP.js'
 
 // import {
 //   getCustomers,
@@ -15,7 +14,6 @@
 //   putProfile,
 //   postOTP,
 // } from "./API_JSON_SERVER";
-
 
 // export  {
 //   getCustomers,
@@ -45,7 +43,7 @@ import {
   postSignUp,
   putProfile,
   postOTP,
-} from "./API_BACKUP" 
+} from "./API_BACKUP"
 
 export {
   getCustomers,

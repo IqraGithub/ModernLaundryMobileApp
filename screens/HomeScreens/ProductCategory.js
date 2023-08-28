@@ -1,32 +1,31 @@
-  import React, {useEffect, useLayoutEffect, useRef, useState} from 'react';
-  import {View, StyleSheet, Pressable} from 'react-native';
-  import MyTabView from '../../components/Category/TabView';
-  import {ColorPalate, MyFonts} from '../../constants/var';
-  import {Totaling} from '../../components/Totaling';
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { View, StyleSheet, Pressable } from "react-native";
+import MyTabView from "../../components/Category/TabView";
+import { ColorPalate, MyFonts } from "../../constants/var";
+import { Totaling } from "../../components/Totaling";
 
-  const ProductCategory = () => {
-
-    return (
-      <View style={styles.container}>
-        <View style={{flex: 3}}>
-          <MyTabView />
-        </View>
-        <Totaling navigateTo="SelectService"/>
+const ProductCategory = () => {
+  return (
+    <View style={styles.container}>
+      <View style={{ flex: 3 }}>
+        <MyTabView />
       </View>
-    );
-  };
+      <Totaling navigateTo="SelectService" />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   totalContainer: {
     backgroundColor: ColorPalate.themesecondary,
     paddingHorizontal: 10,
     paddingVertical: 15,
-    justifyContent: 'center',
-    flexDirection: 'row',
+    justifyContent: "center",
+    flexDirection: "row",
     borderWidth: 1,
     borderTopColor: ColorPalate.lgrey,
   },

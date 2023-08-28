@@ -10,10 +10,11 @@ import {
   Pressable,
   Image,
   Alert,
+  SafeAreaView,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
 
-import ProductItem from "./ProductItem";
+// import ProductItem from "./ProductItem";
 import HomeDropdown from "../HomeDropdown";
 import { useDispatch, useSelector } from "react-redux";
 import useEmirates from "../customHooks/getEmirates";
@@ -45,12 +46,408 @@ import debounce from "lodash.debounce";
 // ----------
 
 
+const deliveryType = "1";
+const delivery = [{ title: "Folded" }, { title: "Hanger" }];
+
+// const ProductItem = ({ index, product, serviceId, delveryTimeId }) => {
+const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
+  const cartItemPrice = useSelector((state) =>
+    selectItemTotalPrice(state, product.id)
+  );
+  const cartItem = useSelector((state) =>
+    selectCartItemById(state, product.id)
+  );
+  let emirates = useSelector((state) => state.filteredData.emiratesData);
+  let filteredPricing = useSelector(
+    (state) => state.filteredData.filteredPricing[product.id]
+  );
+
+  // const { cartItemPrice, cartItem, emirates, filteredPricing } = useSelector(
+  //   (state) => ({
+  //     cartItemPrice: selectItemTotalPrice(state, product.id),
+  //     cartItem: selectCartItemById(state, product.id),
+  //     emirates: state.filteredData.emiratesData,
+  //     filteredPricing: state.filteredData.filteredPricing[product.id],
+  //   })
+  // );
+
+  const [selectedService, setSelectedService] = useState(
+    cartItem ? cartItem.service : { type: undefined, price: 0 }
+  );
+  const [selectedDelivery, setSelectedDelivery] = useState(
+    cartItem ? cartItem.delivery : { type: undefined }
+  );
+  const [emirateId, setEmirateId] = useState(null);
+  const [filtered, setFiltered] = useState([]);
+
+  const customerId = useCustomerId();
+  const currentCustomer = useCurrentCustomer(customerId);
+  const dispatch = useDispatch();
+
+  // -----------------------
+  // console.log('selectedEmirate',selectedEmirate)
+  // useEffect(() => {
+  //   async function getEmirateId() {
+  //     try {
+  //       const emirate = emirates?.find(
+  //         (emirate) => emirate.rate_code === selectedEmirate
+  //       );
+  //       // console.log('selected Emirate in product item',selectedEmirate)
+  //       if (emirate) {
+  //         setEmirateId(emirate.RateCodeID);
+  //       }
+  //     } catch (error) {
+  //       console.log("got an error while fatching emirates ", error);
+  //     }
+  //   }
+  //   getEmirateId();
+  // }, [currentCustomer]);
+  useEffect(() => {
+    const emirate = emirates?.find((e) => e.rate_code === selectedEmirate);
+    if (emirate) setEmirateId(emirate.RateCodeID);
+  }, [selectedEmirate]);
+  // -----------------------
+
+  // -----------------------
+
+  useEffect(() => {
+    if (emirateId) {
+      let filteredPricingData = product.pricing?.filter(
+        (obj) =>
+          obj.deliveryType === deliveryType && obj.emirate_id == emirateId
+      );
+      // .map(({ service, price }) => ({ service, price }));
+      dispatch(
+        setFilteredData({
+          productId: product.id,
+          filteredData: filteredPricingData,
+        })
+      );
+    }
+  }, [product, emirateId]);
+  // const getFilteredData = useCallback(() => {
+  //   if (emirateId) {
+  //     const filteredPricingData = product?.pricing?.filter(
+  //       (obj) =>
+  //         obj.deliveryType === deliveryType && obj.emirate_id == emirateId
+  //     );
+  //     dispatch(
+  //       setFilteredData({
+  //         productId: product.id,
+  //         filteredData: filteredPricingData,
+  //       })
+  //     );
+  //   }
+  // }, [product, emirateId]);
+
+  // useEffect(getFilteredData, [product, emirateId]);
+  // -------------------------------
+  // -------------------------------
+  // const sortSubArrays = (arr) => {
+  //   return arr.sort((a, b) => a.service.localeCompare(b.service));
+  // };
+
+  // useEffect(() => {
+  //   if (filteredPricing !== undefined) {
+  //     const tr = [...filteredPricing];
+  //     const sortedarr = sortSubArrays(tr);
+  //     setFiltered(sortedarr);
+  //   }
+  // }, [filteredPricing]);
+
+  const sortSubArrays = useCallback((arr) => {
+    return arr.sort((a, b) => a.service.localeCompare(b.service));
+  }, []);
+
+  useEffect(() => {
+    if (filteredPricing) {
+      const sortedArray = sortSubArrays([...filteredPricing]);
+      setFiltered(sortedArray);
+    }
+  }, [filteredPricing]);
+
+  // -------------------------------
+  // Decrease the quantity of the selected service
+  function decreaseQtyHandler() {
+    if (selectedService) {
+      // Check if `cartItem` is truthy
+      cartItem
+        ? cartItem.quantity === 1
+          ? dispatch(removeFromCart(cartItem.id)) // If the quantity is 1, dispatch the `removeFromCart` action with `id` to remove it from the cart
+          : dispatch(
+              updateCartItemQuantity({
+                id: cartItem.id,
+                quantity: cartItem.quantity - 1,
+              })
+            ) // Dispatch the `updateCartItemQuantity` action with the `cartItem.id` and decreased quantity to update the cart item's quantity
+        : {}; // If `cartItem` is falsy, do nothing
+    }
+  }
+
+  // Increase the quantity of the selected service
+  function increaseQtyHandler() {
+    // Check if both service and delivery are selected
+    if (!selectedService.type || !selectedDelivery.type) {
+      Alert.alert("Please select a service and delivery");
+    }
+    // If service and delivery are selected, add or update the cart
+    if (selectedService.type && selectedDelivery.type) {
+      // If the cart item already exists, update its quantity
+      if (cartItem) {
+        dispatch(
+          updateCartItemQuantity({
+            id: cartItem?.id,
+            quantity: cartItem.quantity + 1,
+          })
+        );
+      } else {
+        // If the cart item doesn't exist, add it to the cart
+        dispatch(
+          addToCart({
+            cartItem: product,
+            service: selectedService,
+            delivery: selectedDelivery,
+            id: product.id,
+            name: product.item_name,
+            quantity: 1,
+            category: product.item_cat1,
+            deliveryType,
+            emirateId,
+            emirateName: currentCustomer?.rate_code,
+            pickupDate: new Date(),
+            deliveryDate: new Date(),
+          })
+        );
+      }
+    }
+  }
+
+  // Update the selected service and dispatch the action to update the item's service type
+  function serviceButtonHandler(service) {
+    // Set the selected service
+    setSelectedService({
+      type: service.service,
+      price: Number(parseFloat(service.price).toFixed(2)) ?? 1,
+    });
+
+    // If a cart item exists, dispatch the action to updat/e the item's service type
+    cartItem &&
+      dispatch(
+        updateItemServiceType({
+          id: product.id,
+          serviceType: service.service,
+          servicePrice: Number(parseFloat(service.price).toFixed(2)) ?? 1,
+          deliveryType,
+        })
+      );
+  }
+
+  // Update the selected delivery and dispatch the action to update the item's delivery type
+  function deliveryButtonHandler(delivery) {
+    // Set the selected delivery
+    setSelectedDelivery({ type: delivery.title });
+
+    // If a cart item exists, dispatch the action to update the item's delivery type
+    cartItem &&
+      dispatch(
+        updateItemDelivery({
+          id: product.id,
+          deliveryType: delivery.title,
+        })
+      );
+  }
+
+  return (
+    <View key={index} style={styles.itemContainer}>
+      <Text style={styles.itemName}>{product.item_name}</Text>
+      <View style={styles.contentConatiner}>
+        <View
+          style={{
+            borderRightColor: ColorPalate.themesecondary,
+            borderRightWidth: 1,
+            flex: 1,
+            padding: 10,
+            justifyContent: "flex-start",
+            alignItems: "center",
+          }}
+        >
+          <Image
+            source={{
+              uri: product.image_url,
+            }}
+            style={styles.itemImage}
+          />
+          <View style={styles.qntyBtnContainer}>
+            <Pressable
+              onPress={decreaseQtyHandler}
+              activeOpacity={0.7}
+              style={styles.quantityBtn}
+            >
+              <Text style={[styles.quantityBtnText]}>-</Text>
+            </Pressable>
+            <Text
+              style={{
+                color: ColorPalate.themesecondary,
+                fontSize: 24,
+                fontFamily: MyFonts.fontmid,
+              }}
+            >
+              {cartItem?.quantity ?? 0}
+            </Text>
+            <Pressable
+              onPress={increaseQtyHandler}
+              activeOpacity={0.7}
+              style={styles.quantityBtn}
+            >
+              <Text style={styles.quantityBtnText}>+</Text>
+            </Pressable>
+          </View>
+        </View>
+        <View
+          style={{
+            flex: 3,
+            flexDirection: "row",
+            justifyContent: "space-evenly",
+            paddingVertical: 10,
+          }}
+        >
+          <View style={{}}>
+            <View style={[styles.contentitems, {}]}>
+              <Text
+                style={{
+                  color: ColorPalate.white,
+                  color: ColorPalate.white,
+                  backgroundColor: ColorPalate.themesecondary,
+                  borderRadius: 5,
+                  fontSize: 11,
+                  fontFamily: MyFonts.fontregular,
+                  textTransform: "uppercase",
+                }}
+              >
+                {"service"}
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <FlatList
+                data={filtered && filtered}
+                // data={pricingFilter}
+                keyExtractor={(item, idx) => idx}
+                renderItem={(item) => {
+                  return (
+                    <Pressable
+                      onPress={() => serviceButtonHandler(item.item)}
+                      activeOpacity={0.7}
+                      style={[
+                        styles.slection,
+                        {
+                          backgroundColor:
+                            selectedService.type == item.item.service
+                              ? ColorPalate.themesecondary
+                              : undefined,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.slectionText,
+                          {
+                            color:
+                              selectedService.type == item.item.service
+                                ? "white"
+                                : ColorPalate.themesecondary,
+                            fontFamily: MyFonts.fontbold,
+                          },
+                        ]}
+                      >
+                        {item.item.service}
+                      </Text>
+                    </Pressable>
+                  );
+                }}
+              />
+
+              {/* =============================== */}
+            </View>
+          </View>
+          <View style={{}}>
+            <Text style={styles.contentitems}>delivery</Text>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              {/* =========================================== */}
+              <FlatList
+                listKey={(item, index) => "D" + index.toString()} // Assigning a unique key to each item in the list
+                data={delivery}
+                // keyExtractor={(item,index) => index}
+                renderItem={(item, idx) => {
+                  return (
+                    <Pressable
+                      // key={idx}
+                      onPress={() => deliveryButtonHandler(item.item)}
+                      activeOpacity={0.7}
+                      style={[
+                        styles.slection,
+                        {
+                          backgroundColor:
+                            selectedDelivery.type == item.item.title
+                              ? ColorPalate.themesecondary
+                              : undefined,
+                        },
+                      ]}
+                    >
+                      <Text
+                        style={[
+                          styles.slectionText,
+                          {
+                            color:
+                              selectedDelivery.type == item.item.title
+                                ? "white"
+                                : ColorPalate.themesecondary,
+                            fontFamily: MyFonts.fontmid,
+                          },
+                        ]}
+                      >
+                        {item.item.title}
+                      </Text>
+                    </Pressable>
+                  );
+                }}
+              />
+            </View>
+          </View>
+
+          <View>
+            <Text style={styles.contentitems}>price</Text>
+            <Text style={styles.priceText}>AED</Text>
+            <Text style={[styles.priceText, { fontSize: 20 }]}>
+              {cartItemPrice}
+            </Text>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+});
+
+
+
 const routes = [
   { key: "Men", title: "Men" },
   { key: "Ladies", title: "Ladies" },
   { key: "Kids", title: "Kids" },
   { key: "Home", title: "Home" },
 ];
+
 
 const renderTabBar = (props) => (
   <TabBar
@@ -64,10 +461,6 @@ const renderTabBar = (props) => (
     labelStyle={{ fontFamily: MyFonts.fontregular, fontSize: 12 }}
   />
 );
-
-
-const deliveryType = "1";
-const delivery = [{ title: "Folded" }, { title: "Hanger" }];
 
 const MyTabView = ({ selectedTime, selectedServiceId }) => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -95,10 +488,9 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
 
   useEffect(() => {
     if (emirates) {
-      dispatch(setEmiratesData(emirates));  
+      dispatch(setEmiratesData(emirates));
     }
   }, [emirates]);
-
 
   useEffect(() => {
     const handleSearch = () => {
@@ -118,8 +510,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         setFilteredProducts(products);
       }
     };
-    handleSearch()
-
+    handleSearch();
   }, [searchKeyword, products]);
 
   const headerCollapseHandler = useCallback((shouldExpand) => {
@@ -153,340 +544,15 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.itemID}
-        renderItem={({ item:product, index }) => {
-          const cartItemPrice = useSelector((state) =>
-          selectItemTotalPrice(state, product.id)
-        );
-        const cartItem = useSelector((state) =>
-          selectCartItemById(state, product.id)
-        );
-        // let emirates = useSelector((state) => state.filteredData.emiratesData);
-        // let filteredPricing = useSelector(
-        //   (state) => state.filteredData.filteredPricing[product.id]
-        // );
-      
-        const [selectedService, setSelectedService] = useState(
-          cartItem ? cartItem.service : { type: undefined, price: 0 }
-        );
-        const [selectedDelivery, setSelectedDelivery] = useState(
-          cartItem ? cartItem.delivery : { type: undefined }
-        );
-        const [emirateId, setEmirateId] = useState(null);
-        const [filtered, setFiltered] = useState([]);
-      
-        // const customerId = useCustomerId();
-        // const currentCustomer = useCurrentCustomer(customerId);
-        // const dispatch = useDispatch();
-      
-        
-        useEffect(() => {
-          const emirate = emirates?.find((e) => e.rate_code === selectedEmirate);
-          if (emirate) setEmirateId(emirate.RateCodeID);
-        }, [selectedEmirate]);
-        // -----------------------
-      
-        // -----------------------
-      
-        useEffect(() => {
-          if (emirateId) {
-            let filteredPricingData = product.pricing?.filter(
-              (obj) =>
-                obj.deliveryType === deliveryType && obj.emirate_id == emirateId
-            );
-            // .map(({ service, price }) => ({ service, price }));
-            dispatch(
-              setFilteredData({
-                productId: product.id,
-                filteredData: filteredPricingData,
-              })
-            );
-          }
-        }, [product, emirateId]);
-      
-        const sortSubArrays = useCallback((arr) => {
-          return arr.sort((a, b) => a.service.localeCompare(b.service));
-        }, []);
-      
-        useEffect(() => {
-          if (filteredPricing) {
-            const sortedArray = sortSubArrays([...filteredPricing]);
-            setFiltered(sortedArray);
-          }
-        }, [filteredPricing]);
-      
-        // -------------------------------
-        // Decrease the quantity of the selected service
-        function decreaseQtyHandler() {
-          if (selectedService) {
-            // Check if `cartItem` is truthy
-            cartItem
-              ? cartItem.quantity === 1
-                ? dispatch(removeFromCart(cartItem.id)) // If the quantity is 1, dispatch the `removeFromCart` action with `id` to remove it from the cart
-                : dispatch(
-                    updateCartItemQuantity({
-                      id: cartItem.id,
-                      quantity: cartItem.quantity - 1,
-                    })
-                  ) // Dispatch the `updateCartItemQuantity` action with the `cartItem.id` and decreased quantity to update the cart item's quantity
-              : {}; // If `cartItem` is falsy, do nothing
-          }
-        }
-      
-        // Increase the quantity of the selected service
-        function increaseQtyHandler() {
-          // Check if both service and delivery are selected
-          if (!selectedService.type || !selectedDelivery.type) {
-            Alert.alert("Please select a service and delivery");
-          }
-          // If service and delivery are selected, add or update the cart
-          if (selectedService.type && selectedDelivery.type) {
-            // If the cart item already exists, update its quantity
-            if (cartItem) {
-              dispatch(
-                updateCartItemQuantity({
-                  id: cartItem?.id,
-                  quantity: cartItem.quantity + 1,
-                })
-              );
-            } else {
-              // If the cart item doesn't exist, add it to the cart
-              dispatch(
-                addToCart({
-                  cartItem: product,
-                  service: selectedService,
-                  delivery: selectedDelivery,
-                  id: product.id,
-                  name: product.item_name,
-                  quantity: 1,
-                  category: product.item_cat1,
-                  deliveryType,
-                  emirateId,
-                  emirateName: currentCustomer?.rate_code,
-                  pickupDate: new Date(),
-                  deliveryDate: new Date(),
-                })
-              );
-            }
-          }
-        }
-      
-        // Update the selected service and dispatch the action to update the item's service type
-        function serviceButtonHandler(service) {
-          // Set the selected service
-          setSelectedService({
-            type: service.service,
-            price: Number(parseFloat(service.price).toFixed(2)) ?? 1,
-          });
-      
-          // If a cart item exists, dispatch the action to updat/e the item's service type
-          cartItem &&
-            dispatch(
-              updateItemServiceType({
-                id: product.id,
-                serviceType: service.service,
-                servicePrice: Number(parseFloat(service.price).toFixed(2)) ?? 1,
-                deliveryType,
-              })
-            );
-        }
-      
-        // Update the selected delivery and dispatch the action to update the item's delivery type
-        function deliveryButtonHandler(delivery) {
-          // Set the selected delivery
-          setSelectedDelivery({ type: delivery.title });
-      
-          // If a cart item exists, dispatch the action to update the item's delivery type
-          cartItem &&
-            dispatch(
-              updateItemDelivery({
-                id: product.id,
-                deliveryType: delivery.title,
-              })
-            );
-        }
-      
-        return (
-          <View key={index} style={styles.itemContainer}>
-            <Text style={styles.itemName}>{product.item_name}</Text>
-            <View style={styles.contentConatiner}>
-              <View
-                style={{
-                  borderRightColor: ColorPalate.themesecondary,
-                  borderRightWidth: 1,
-                  flex: 1,
-                  padding: 10,
-                  justifyContent: "flex-start",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={{
-                    uri: product.image_url,
-                  }}
-                  style={styles.itemImage}
-                />
-                <View style={styles.qntyBtnContainer}>
-                  <Pressable
-                    onPress={decreaseQtyHandler}
-                    activeOpacity={0.7}
-                    style={styles.quantityBtn}
-                  >
-                    <Text style={[styles.quantityBtnText]}>-</Text>
-                  </Pressable>
-                  <Text
-                    style={{
-                      color: ColorPalate.themesecondary,
-                      fontSize: 24,
-                      fontFamily: MyFonts.fontmid,
-                    }}
-                  >
-                    {cartItem?.quantity ?? 0}
-                  </Text>
-                  <Pressable
-                    onPress={increaseQtyHandler}
-                    activeOpacity={0.7}
-                    style={styles.quantityBtn}
-                  >
-                    <Text style={styles.quantityBtnText}>+</Text>
-                  </Pressable>
-                </View>
-              </View>
-              <View
-                style={{
-                  flex: 3,
-                  flexDirection: "row",
-                  justifyContent: "space-evenly",
-                  paddingVertical: 10,
-                }}
-              >
-                <View style={{}}>
-                  <View style={[styles.contentitems, {}]}>
-                    <Text
-                      style={{
-                        color: ColorPalate.white,
-                        color: ColorPalate.white,
-                        backgroundColor: ColorPalate.themesecondary,
-                        borderRadius: 5,
-                        fontSize: 11,
-                        fontFamily: MyFonts.fontregular,
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {"service"}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    <FlatList
-                      data={filtered && filtered}
-                      // data={pricingFilter}
-                      keyExtractor={(item, idx) => idx}
-                      renderItem={(item) => {
-                        return (
-                          <Pressable
-                            onPress={() => serviceButtonHandler(item.item)}
-                            activeOpacity={0.7}
-                            style={[
-                              styles.slection,
-                              {
-                                backgroundColor:
-                                  selectedService.type == item.item.service
-                                    ? ColorPalate.themesecondary
-                                    : undefined,
-                              },
-                            ]}
-                          >
-                            <Text
-                              style={[
-                                styles.slectionText,
-                                {
-                                  color:
-                                    selectedService.type == item.item.service
-                                      ? "white"
-                                      : ColorPalate.themesecondary,
-                                  fontFamily: MyFonts.fontbold,
-                                },
-                              ]}
-                            >
-                              {item.item.service}
-                            </Text>
-                          </Pressable>
-                        );
-                      }}
-                    />
-      
-                    {/* =============================== */}
-                  </View>
-                </View>
-                <View style={{}}>
-                  <Text style={styles.contentitems}>delivery</Text>
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      flexDirection: "column",
-                    }}
-                  >
-                    {/* =========================================== */}
-                    <FlatList
-                      listKey={(item, index) => "D" + index.toString()} // Assigning a unique key to each item in the list
-                      data={delivery}
-                      // keyExtractor={(item,index) => index}
-                      renderItem={(item, idx) => {
-                        return (
-                          <Pressable
-                            // key={idx}
-                            onPress={() => deliveryButtonHandler(item.item)}
-                            activeOpacity={0.7}
-                            style={[
-                              styles.slection,
-                              {
-                                backgroundColor:
-                                  selectedDelivery.type == item.item.title
-                                    ? ColorPalate.themesecondary
-                                    : undefined,
-                              },
-                            ]}
-                          >
-                            <Text
-                              style={[
-                                styles.slectionText,
-                                {
-                                  color:
-                                    selectedDelivery.type == item.item.title
-                                      ? "white"
-                                      : ColorPalate.themesecondary,
-                                  fontFamily: MyFonts.fontmid,
-                                },
-                              ]}
-                            >
-                              {item.item.title}
-                            </Text>
-                          </Pressable>
-                        );
-                      }}
-                    />
-                  </View>
-                </View>
-      
-                <View>
-                  <Text style={styles.contentitems}>price</Text>
-                  <Text style={styles.priceText}>AED</Text>
-                  <Text style={[styles.priceText, { fontSize: 20 }]}>
-                    {cartItemPrice}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-        );
-          
-          }  }
+        renderItem={({ item, index }) => (
+          <ProductItem
+            product={item}
+            selectedEmirate={selectedEmirate}
+            index={index}
+            serviceId={selectedServiceId}
+            delveryTimeId={selectedTime}
+          />
+        )}
       />
     );
   };
@@ -496,7 +562,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* <View styles={[styles.collapseContainer]}> */}
       <View
         style={{
@@ -548,10 +614,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
               paddingHorizontal: 7,
             }}
           >
-            <Pressable
-              style={{}}
-              onPress={() => headerCollapseHandler(true)}
-            >
+            <Pressable style={{}} onPress={() => headerCollapseHandler(true)}>
               <Text style={{}}>
                 <FontAwesomeIcon
                   name="search"
@@ -574,7 +637,6 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
             }}
             onPress={() => headerCollapseHandler(false)}
           >
-           
             <View>
               <Text style={{ marginRight: 14 }}>
                 <FontAwesomeIcon
@@ -611,7 +673,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         onIndexChange={setIndex}
         renderTabBar={renderTabBar}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -666,6 +728,118 @@ const styles = StyleSheet.create({
     position: "absolute",
     alignSelf: "center",
     top: 8,
+  },
+
+  // ------------------------------------------------
+
+  container: {
+    flex: 1,
+  },
+  itemContainer: {
+    flexDirection: "column",
+    backgroundColor: "#fff",
+    marginHorizontal: 10,
+    marginVertical: 15,
+    borderBottomEndRadius: 10,
+    borderBottomStartRadius: 10,
+    borderWidth: 2,
+    borderColor: ColorPalate.themesecondary,
+  },
+  itemName: {
+    marginLeft: -1,
+    marginTop: -1,
+    textTransform: "uppercase",
+    fontSize: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    backgroundColor: ColorPalate.themesecondary,
+    color: ColorPalate.white,
+    fontFamily: MyFonts.fontregular,
+  },
+  contentConatiner: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  itemImage: {
+    width: 80,
+    height: 80,
+  },
+  qntyBtnContainer: {
+    marginTop: 10,
+    width: 85,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  quantityBtn: {
+    // width: 27,
+    // height: 25,
+    // // flex:1/2,
+    // // width:40,
+    // color: ColorPalate.white,
+    // backgroundColor: ColorPalate.themesecondary,
+    // // paddingVertical: 0,
+    // // paddingHorizontal: 2,
+    // borderRadius: 5,
+    // alignItems: "center",
+    // justifyContent: "center",
+
+    backgroundColor: ColorPalate.themesecondary,
+    // paddingHorizontal:10,
+    // paddingVertical:5,
+    paddingHorizontal: 7,
+    borderRadius: 5,
+  },
+  quantityBtnText: {
+    // textAlign: "center",
+    fontSize: 20,
+    // // fontWeight: "100",
+    fontFamily: MyFonts.fontmid,
+    color: ColorPalate.white,
+    // marginBottom:8,
+    // paddingHorizontal:8
+  },
+  contentitems: {
+    color: ColorPalate.white,
+    backgroundColor: ColorPalate.themesecondary,
+    paddingHorizontal: 10,
+    selfalign: "center",
+    paddingVertical: 5,
+    borderRadius: 5,
+    fontSize: 11,
+    fontFamily: MyFonts.fontregular,
+    textTransform: "uppercase",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  slection: {
+    width: 80,
+    borderWidth: 1,
+    borderColor: ColorPalate.themesecondary,
+    borderRadius: 5,
+    marginTop: 10,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  slectionText: {
+    fontSize: 11,
+    fontFamily: MyFonts.fontregular,
+    color: ColorPalate.themesecondary,
+    textAlign: "center",
+  },
+  priceText: {
+    marginTop: 5,
+    color: ColorPalate.themesecondary,
+    paddingHorizontal: 5,
+    paddingVertical: 3,
+    textAlign: "center",
+    fontSize: 15,
+    fontFamily: MyFonts.fontregular,
+  },
+  stylePress: {
+    opacity: 0.75,
   },
 });
 

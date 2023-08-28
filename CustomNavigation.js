@@ -54,6 +54,12 @@ const HomeScreenNavigator = () => {
           component={ThanksScreen}
           options={{ headerShown: false }}
         />
+          <Stack.Screen
+        name="UpdateProfile"
+        component={UpdateProfileScreen}
+        options={{ title: "Update Profile" }}
+      />
+
       </Stack.Navigator>
     </>
   );
