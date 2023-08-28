@@ -1,21 +1,19 @@
-// // const API = './API_JSON_SERVER.js'
+const API = "./API_JSON_SERVER.js";
 // // // export const API2 = './API_BACKUP.js'
 
-
-// import {
-//   getCustomers,
-//   getProducts,
-//   getServices,
-//   getDeliveryTypes,
-//   getEmirates,
-//   getArea,
-//   postOrder,
-//   getOrders,
-//   postSignUp,
-//   putProfile,
-//   postOTP,
-// } from "./API_JSON_SERVER";
-
+import {
+  getCustomers,
+  getProducts,
+  getServices,
+  getDeliveryTypes,
+  getEmirates,
+  getArea,
+  postOrder,
+  getOrders,
+  postSignUp,
+  putProfile,
+  postOTP,
+} from "./API_JSON_SERVER";
 
 // export  {
 //   getCustomers,
@@ -33,19 +31,19 @@
 
 // -----------
 
-import {
-  getCustomers,
-  getProducts,
-  getServices,
-  getDeliveryTypes,
-  getEmirates,
-  getArea,
-  postOrder,
-  getOrders,
-  postSignUp,
-  putProfile,
-  postOTP,
-} from "./API_BACKUP" 
+// import {
+//   getCustomers,
+//   getProducts,
+//   getServices,
+//   getDeliveryTypes,
+//   getEmirates,
+//   getArea,
+//   postOrder,
+//   getOrders,
+//   postSignUp,
+//   putProfile,
+//   postOTP,
+// } from "./API_BACKUP"
 
 export {
   getCustomers,

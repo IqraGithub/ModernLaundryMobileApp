@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Text,
   Pressable,
+  SafeAreaView,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import ProductItem from "./ProductItem";
@@ -74,10 +75,9 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
 
   useEffect(() => {
     if (emirates) {
-      dispatch(setEmiratesData(emirates));  
+      dispatch(setEmiratesData(emirates));
     }
   }, [emirates]);
-
 
   useEffect(() => {
     const handleSearch = () => {
@@ -97,8 +97,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         setFilteredProducts(products);
       }
     };
-    handleSearch()
-
+    handleSearch();
   }, [searchKeyword, products]);
 
   const headerCollapseHandler = useCallback((shouldExpand) => {
@@ -150,7 +149,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* <View styles={[styles.collapseContainer]}> */}
       <View
         style={{
@@ -202,10 +201,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
               paddingHorizontal: 7,
             }}
           >
-            <Pressable
-              style={{}}
-              onPress={() => headerCollapseHandler(true)}
-            >
+            <Pressable style={{}} onPress={() => headerCollapseHandler(true)}>
               <Text style={{}}>
                 <FontAwesomeIcon
                   name="search"
@@ -228,7 +224,6 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
             }}
             onPress={() => headerCollapseHandler(false)}
           >
-           
             <View>
               <Text style={{ marginRight: 14 }}>
                 <FontAwesomeIcon
@@ -265,7 +260,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         onIndexChange={setIndex}
         renderTabBar={renderTabBar}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

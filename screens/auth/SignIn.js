@@ -1,14 +1,14 @@
-import {useContext, useState} from 'react';
-import {View, Alert, StyleSheet} from 'react-native';
-import AuthContent from '../../components/Auth/AuthContent';
-import LoadingOverlay from '../../UI/LoadingOverlay';
-import {AuthContext} from '../../store/checkAuth';
-import Title from '../../components/Title';
-import Caption from '../../components/Caption';
-import {useNavigation} from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getCustomers } from '../../utils/api';
-import { useEffect } from 'react';
+import { useContext, useState } from "react";
+import { View, Alert, StyleSheet } from "react-native";
+import AuthContent from "../../components/Auth/AuthContent";
+import LoadingOverlay from "../../UI/LoadingOverlay";
+import { AuthContext } from "../../store/checkAuth";
+import Title from "../../components/Title";
+import Caption from "../../components/Caption";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getCustomers } from "../../utils/api";
+import { useEffect } from "react";
 // const customerData = [
 //   {
 //     area: '1',
@@ -109,7 +109,7 @@ import { useEffect } from 'react';
 //     Password: '1',
 //   },
 // ];
-const SignIn = ({navigation}) => {
+const SignIn = ({ navigation }) => {
   // State variable to track if the user is logging in
   const [isUserLogging, setisUserLogging] = useState(false);
 
@@ -118,50 +118,50 @@ const SignIn = ({navigation}) => {
 
   useEffect(() => {
     if (authCntx.isAuthendicate) {
-      navigation.navigate('Category', {id: authCntx.userId});
+      navigation.navigate("Category", { id: authCntx.userId });
     }
   }, [authCntx.isAuthendicate, navigation]);
-  
-// Handle the login process
-  const handleLogin = async ({email, Password}) => {
-    console.log('loginn: ' + email, Password);
 
-    // Get customer data 
+  // Handle the login process
+  const handleLogin = async ({ email, Password }) => {
+    console.log("loginn: " + email, Password);
+
+    // Get customer data
     const customerData = await getCustomers();
 
-// Set the flag to indicate that the user is logging in
+    // Set the flag to indicate that the user is logging in
     // setisUserLogging(true);
     try {
       // Check if email and password are provided
       if (!email || !Password) {
-        alert('Please enter your email and password.');
+        alert("Please enter your email and password.");
         return;
       }
       // Find the user based on the provided email and password
       const user = customerData.data.find(
-        c => c.email === email && c.Password === Password,
+        (c) => c.email === email && c.Password === Password
       );
-      console.log('user', user);
+      console.log("user", user);
 
       if (user) {
-        console.log('userId', user.serialNo);
+        console.log("userId", user.serialNo);
         // Store the authenticated user's ID in AsyncStorage
-        await AsyncStorage.setItem('customerId', user.serialNo);
+        await AsyncStorage.setItem("customerId", user.serialNo);
         authCntx.authenticate(user.serialNo);
         // navigation.navigate('Category', {id: user.serialNo});
         setisUserLogging(true);
       } else {
-        alert('Invalid email or password');
+        alert("Invalid email or password");
       }
     } catch (error) {
       console.log(error);
-      throw new Error('Unable to login. Please try again later.');
+      throw new Error("Unable to login. Please try again later.");
     }
     // Store the authenticated user's ID in AsyncStorage
     setisUserLogging(false);
   };
 
-  // Show a loading overlay while the user is logging in  
+  // Show a loading overlay while the user is logging in
   if (isUserLogging) {
     return <LoadingOverlay message="Logging you in..." />;
   }
@@ -179,6 +179,6 @@ export default SignIn;
 const styles = StyleSheet.create({
   form: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
 });
