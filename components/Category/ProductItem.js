@@ -27,7 +27,6 @@ import { useCallback } from "react";
 const deliveryType = "1";
 const delivery = [{ title: "Folded" }, { title: "Hanger" }];
 
-// const ProductItem = ({ index, product, serviceId, delveryTimeId }) => {
 const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
   const cartItemPrice = useSelector((state) =>
     selectItemTotalPrice(state, product.id)
@@ -40,14 +39,6 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
     (state) => state.filteredData.filteredPricing[product.id]
   );
 
-  // const { cartItemPrice, cartItem, emirates, filteredPricing } = useSelector(
-  //   (state) => ({
-  //     cartItemPrice: selectItemTotalPrice(state, product.id),
-  //     cartItem: selectCartItemById(state, product.id),
-  //     emirates: state.filteredData.emiratesData,
-  //     filteredPricing: state.filteredData.filteredPricing[product.id],
-  //   })
-  // );
 
   const [selectedService, setSelectedService] = useState(
     cartItem ? cartItem.service : { type: undefined, price: 0 }
@@ -62,24 +53,6 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
   const currentCustomer = useCurrentCustomer(customerId);
   const dispatch = useDispatch();
 
-  // -----------------------
-  // console.log('selectedEmirate',selectedEmirate)
-  // useEffect(() => {
-  //   async function getEmirateId() {
-  //     try {
-  //       const emirate = emirates?.find(
-  //         (emirate) => emirate.rate_code === selectedEmirate
-  //       );
-  //       // console.log('selected Emirate in product item',selectedEmirate)
-  //       if (emirate) {
-  //         setEmirateId(emirate.RateCodeID);
-  //       }
-  //     } catch (error) {
-  //       console.log("got an error while fatching emirates ", error);
-  //     }
-  //   }
-  //   getEmirateId();
-  // }, [currentCustomer]);
   useEffect(() => {
     const emirate = emirates?.find((e) => e.rate_code === selectedEmirate);
     if (emirate) setEmirateId(emirate.RateCodeID);
@@ -103,36 +76,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
       );
     }
   }, [product, emirateId]);
-  // const getFilteredData = useCallback(() => {
-  //   if (emirateId) {
-  //     const filteredPricingData = product?.pricing?.filter(
-  //       (obj) =>
-  //         obj.deliveryType === deliveryType && obj.emirate_id == emirateId
-  //     );
-  //     dispatch(
-  //       setFilteredData({
-  //         productId: product.id,
-  //         filteredData: filteredPricingData,
-  //       })
-  //     );
-  //   }
-  // }, [product, emirateId]);
-
-  // useEffect(getFilteredData, [product, emirateId]);
-  // -------------------------------
-  // -------------------------------
-  // const sortSubArrays = (arr) => {
-  //   return arr.sort((a, b) => a.service.localeCompare(b.service));
-  // };
-
-  // useEffect(() => {
-  //   if (filteredPricing !== undefined) {
-  //     const tr = [...filteredPricing];
-  //     const sortedarr = sortSubArrays(tr);
-  //     setFiltered(sortedarr);
-  //   }
-  // }, [filteredPricing]);
-
+  
   const sortSubArrays = useCallback((arr) => {
     return arr.sort((a, b) => a.service.localeCompare(b.service));
   }, []);

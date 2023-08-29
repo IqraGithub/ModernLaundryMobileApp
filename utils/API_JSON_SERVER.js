@@ -80,7 +80,7 @@ const postSignUp = async (data) => {
 const putProfile = async (updatedData) => {
   console.log("Put Profile ", updatedData);
 };
-
+  
 const postOTP = async (data) => {
   console.log("postOTP ", data);
 };

@@ -85,12 +85,14 @@ const toastConfig = {
 };
 const CartOld = ({ navigation, route }) => {
   const emirates = [
-    { RateCodeID: "3", rate_code: "Dubai" },
-    { RateCodeID: "4", rate_code: "Umm Al Quwain " },
-    { RateCodeID: "1", rate_code: "Ras Al Khaimah" },
-    { RateCodeID: "2", rate_code: "Sharjah" },
-    { RateCodeID: "5", rate_code: "Ajman" },
+    { branchId:"38", RateCodeID: "3", rate_code: "Dubai" },
+    { branchId:"16", RateCodeID: "4", rate_code: "Umm Al Quwain " },
+    { branchId:"24", RateCodeID: "1", rate_code: "Ras Al Khaimah" },
+    { branchId:"21", RateCodeID: "2", rate_code: "Sharjah" },
+    { branchId:"12", RateCodeID: "5", rate_code: "Ajman" },
   ];
+  
+
 
   const services = [
     { id: "1", service: "Dryclean" },
@@ -184,7 +186,9 @@ const CartOld = ({ navigation, route }) => {
     }
 
     const data = {
-      branch: "21",
+      branch: emirates.find(
+        (emirate) => emirate?.rate_code === currentCustomer?.rate_code
+      )?.branchId,
       SpecialRequests: notes,
       customerID: customerId,
       subtotal: totalPrice.toString(),
@@ -193,7 +197,7 @@ const CartOld = ({ navigation, route }) => {
       order_source: "Mobile",
       emirate_id: emirates.find(
         (emirate) => emirate?.rate_code === currentCustomer?.rate_code
-      )?.RateCodeID, //Todo : make it working
+      )?.RateCodeID,
       orderDelete: "-",
       order_item: cartItems.reduce((result, item) => {
         result.push({
@@ -212,13 +216,18 @@ const CartOld = ({ navigation, route }) => {
     setOrderData(data);
     try {
       // Display confirmation alert before placing the order
+      if(data.order_item.length <= 0){
+        Alert.alert("Order Error","There is no item to order",[{text:"Ok", style:{}, onPress:()=>navigation.navigate('Category')}])
+        
+        return
+      }
       confirmationAlert(
         "confirm",
         "confirm order",
         () => console.log("Cancel Pressed"),
         () => {
           try {
-            if (data.order_item.length > 0 && customerId) {
+            if (customerId) {
               // if (!isFieldEmpty) {
               const response = postOrder(data)
                 .then((d) => {
@@ -248,9 +257,11 @@ const CartOld = ({ navigation, route }) => {
                 "Can't orderrrr!",
                 "At least one item is required to place an order."
               );
+            
+
             }
           } catch (e) {
-            console.log("may be your api is not fetched correctly");
+            // console.log("may be your api is not fetched correctly");
           }
         }
       );
@@ -262,6 +273,7 @@ const CartOld = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
     return (
       <View style={[styles.item]}>
+        <Toast />
         <View style={{ flex: 2 }}>
           <Text style={[styles.itemName, { fontSize: 17 }]}>{item.name}</Text>
           <Text style={[styles.itemName, { color: ColorPalate.dgrey }]}>
