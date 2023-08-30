@@ -32,6 +32,7 @@ import { ColorPalate, MyFonts } from "../../constants/var";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useCustomerId from "../../components/customHooks/customerId";
 import useCurrentCustomer from "../../components/customHooks/currentCustomer";
+import { showMessage } from "react-native-flash-message";
 
 // const purchaseType = [
 //   {
@@ -85,14 +86,12 @@ const toastConfig = {
 };
 const CartOld = ({ navigation, route }) => {
   const emirates = [
-    { branchId:"38", RateCodeID: "3", rate_code: "Dubai" },
-    { branchId:"16", RateCodeID: "4", rate_code: "Umm Al Quwain " },
-    { branchId:"24", RateCodeID: "1", rate_code: "Ras Al Khaimah" },
-    { branchId:"21", RateCodeID: "2", rate_code: "Sharjah" },
-    { branchId:"12", RateCodeID: "5", rate_code: "Ajman" },
+    { branchId: "38", RateCodeID: "3", rate_code: "Dubai" },
+    { branchId: "16", RateCodeID: "4", rate_code: "Umm Al Quwain " },
+    { branchId: "24", RateCodeID: "1", rate_code: "Ras Al Khaimah" },
+    { branchId: "21", RateCodeID: "2", rate_code: "Sharjah" },
+    { branchId: "12", RateCodeID: "5", rate_code: "Ajman" },
   ];
-  
-
 
   const services = [
     { id: "1", service: "Dryclean" },
@@ -122,7 +121,12 @@ const CartOld = ({ navigation, route }) => {
       () => console.log("Cancel Pressed"),
       () => {
         dispatch(removeFromCart(itemID));
-        showToast("error", "Item removed", "Your item has been removed.");
+        // showToast("error", "Item removed", "Your item has been removed.");
+        showMessage({
+          message: "Item removed",
+          description: "Your item has been removed.",
+          type: "danger",
+        });  
       }
     );
   };
@@ -149,37 +153,31 @@ const CartOld = ({ navigation, route }) => {
   // Function to confirm and place the order
   async function confirmOrder() {
     // Prepare the data object with the necessary order details
-    // const isFieldEmpty =
-    //   currentCustomer &&
-    //   Object.values(currentCustomer)?.some((value) => !value);
-
-    // if (isFieldEmpty) {
-      const {
-        first_name,
-        last_name,
-        rate_code,
-        area,
-        street_name,
-        apartment,
-        address,
-        contact_number,
-        alter_Contact_Number,
-        email,
-      } = currentCustomer;
-      if (
-        !first_name ||
-        !last_name ||
-        !rate_code ||
-        !area ||
-        !street_name ||
-        !apartment ||
-        !address ||
-        !contact_number ||
-        !alter_Contact_Number ||
-        !email
-      ) {
+    const {
+      first_name,
+      last_name,
+      rate_code,
+      area,
+      street_name,
+      apartment,
+      address,
+      contact_number,
+      alter_Contact_Number,
+      email,
+    } = currentCustomer;
+    if (
+      !first_name ||
+      !last_name ||
+      !rate_code ||
+      !area ||
+      !street_name ||
+      !apartment ||
+      !address ||
+      !contact_number ||
+      !alter_Contact_Number ||
+      !email
+    ) {
       console.log("please fill your details!");
-      // Alert.alert("Missing Detail", "Please Enter All Details");
 
       navigation.navigate("UpdateProfile");
       return;
@@ -213,13 +211,26 @@ const CartOld = ({ navigation, route }) => {
       }, []),
       deliveryDate: deliveryDateString,
     };
+
     setOrderData(data);
     try {
       // Display confirmation alert before placing the order
-      if(data.order_item.length <= 0){
-        Alert.alert("Order Error","There is no item to order",[{text:"Ok", style:{}, onPress:()=>navigation.navigate('Category')}])
-        
-        return
+      if (data.order_item.length <= 0) {
+        // Alert.alert("Order Error", "There is no item to order", [
+        //   {
+        //     text: "Ok",
+        //     style: {},
+        //     onPress: () => navigation.navigate("Category"),
+        //   },
+        // ]);
+
+        showMessage({
+          message: "Order Error",
+          description: "There is no item to order",
+          type: "danger",
+        });
+        navigation.navigate("Category")
+        return;
       }
       confirmationAlert(
         "confirm",
@@ -237,6 +248,12 @@ const CartOld = ({ navigation, route }) => {
                       emirate: currentCustomer?.rate_code,
                     });
 
+                            showMessage({
+          message: "Order Confirmed",
+          description: "Your Order Has Been Confirmed",
+          type: "success",
+        });
+
                     dispatch(emptyProducts());
                   } else {
                     console.log("Order failed!");
@@ -251,14 +268,6 @@ const CartOld = ({ navigation, route }) => {
               //   JSON.stringify(response)
               // );
               console.log(data);
-            } else {
-              showToast(
-                "error",
-                "Can't orderrrr!",
-                "At least one item is required to place an order."
-              );
-            
-
             }
           } catch (e) {
             // console.log("may be your api is not fetched correctly");

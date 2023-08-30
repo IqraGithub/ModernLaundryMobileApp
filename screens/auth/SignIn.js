@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCustomers } from "../../utils/api";
 import { useEffect } from "react";
+import { showMessage } from "react-native-flash-message";
 // const customerData = [
 //   {
 //     area: '1',
@@ -134,7 +135,11 @@ const SignIn = ({ navigation }) => {
     try {
       // Check if email and password are provided
       if (!email || !Password) {
-        alert("Please enter your email and password.");
+        // alert("Please enter your email and password.");
+        showMessage({
+          message: "Please Enter Your Email And Password.",
+          type: "danger",
+        });
         return;
       }
       // Find the user based on the provided email and password
@@ -151,7 +156,12 @@ const SignIn = ({ navigation }) => {
         // navigation.navigate('Category', {id: user.serialNo});
         setisUserLogging(true);
       } else {
-        alert("Invalid email or password");
+        // alert("Invalid email or password");
+        showMessage({
+          message: "Invalid email or password.",
+          type: "danger",
+        });
+
       }
     } catch (error) {
       console.log(error);

@@ -6,6 +6,7 @@ import { ColorPalate, MyFonts } from "../../constants/var";
 import MyGradientButton from "../../components/MyGradientButton";
 import commonStyle from "./commonStyle";
 import { putProfile } from "../../utils/api";
+import { showMessage } from "react-native-flash-message";
 
 const ForgotPasswordScreen = ({ navigation, route }) => {
   const [EnteredPassword, setEnteredPassword] = useState("");
@@ -15,17 +16,38 @@ const ForgotPasswordScreen = ({ navigation, route }) => {
   const ChangePasswordHandler = async () => {
 try{
 
+  if(!EnteredPassword || !EnteredConfirmPassword){
+    showMessage({
+      message: "All Fileds Are Mandatory.",
+      type: "danger",
+    });
+    return;
+  }
+
   if (EnteredPassword === EnteredConfirmPassword) {
     const updatePassword = await putProfile({
       id: customer.id,
       Password: EnteredPassword,
     });
-    updatePassword ? navigation.navigate("SignIn") : null;
+    updatePassword ?(
+       navigation.navigate("SignIn") ,
+       showMessage({
+        message: "Password Has Been Changed",
+        // description: "The entered passwords do not match. Please try again.",
+        type: "success",
+      })
+      ): null;
   }else{
-    Alert.alert(
-      "Password Error",
-      "The entered passwords do not match. Please try again.",
-    );
+    // Alert.alert(
+    //   "Password Error",
+    //   "The entered passwords do not match. Please try again.",
+    // );
+
+    showMessage({
+      message: "Password Error",
+      description: "The entered passwords do not match. Please try again.",
+      type: "danger",
+    });
       }
 }catch(e){
   console.log('got an error while changing password', e)

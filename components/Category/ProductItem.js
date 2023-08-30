@@ -23,6 +23,7 @@ import useCustomerId from "../customHooks/customerId";
 import useCurrentCustomer from "../customHooks/currentCustomer";
 import { setFilteredData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useCallback } from "react";
+import { showMessage, hideMessage } from "react-native-flash-message";  
 
 const deliveryType = "1";
 const delivery = [{ title: "Folded" }, { title: "Hanger" }];
@@ -110,7 +111,12 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
   function increaseQtyHandler() {
     // Check if both service and delivery are selected
     if (!selectedService.type || !selectedDelivery.type) {
-      Alert.alert("Please select a service and delivery");
+      // Alert.alert("Please select a service and delivery");
+      showMessage({
+        message: "Please select a service and delivery",
+        // description: "Profile Has Been Updated",
+        type: "danger",
+      });
     }
     // If service and delivery are selected, add or update the cart
     if (selectedService.type && selectedDelivery.type) {

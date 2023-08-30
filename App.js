@@ -27,6 +27,7 @@ import OTPVarificationScreen from "./screens/auth/OTPVarificationScreen";
 import ForgotPasswordScreen from "./screens/auth/ForgotPasswordScreen";
 import useCurrentUserOrders from "./components/customHooks/getOrders";
 import { setOrderData } from "./store/redux/reduxToolkit/filteredDataSlice";
+import FlashMessage from "react-native-flash-message";
 
 const Stack = createNativeStackNavigator();
 const Bottom = createBottomTabNavigator();
@@ -134,6 +135,7 @@ const App = () => {
         <AuthContentProvider>
           <StatusBar style="light" />
           <TokenCheck />
+          <FlashMessage position="top" />
         </AuthContentProvider>
       </Provider>
     </>

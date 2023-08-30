@@ -9,6 +9,7 @@ import { useEffect } from "react";
 
 import uuid from "react-native-uuid";
 import { postOTP } from "../../utils/api";
+import { showMessage } from "react-native-flash-message";
 const OTPVarificationScreen = ({ navigation, route }) => {
   const [EnteredOTP, setEnteredOTP] = useState("");
   const [OTP, setOTP] = useState(null);
@@ -84,7 +85,12 @@ const OTPVarificationScreen = ({ navigation, route }) => {
     if (EnteredOTP === OTP) {
       navigation.navigate("ForgotPassword",{customer});
     } else {
-      Alert.alert("Not Verfied", "OTP is Incorrrect! Please Enter Correct OTP");
+      // Alert.alert("Not Verfied", "OTP is Incorrrect! Please Enter Correct OTP");
+      showMessage({
+        message: "Not Verfied",
+        description: "OTP is Incorrrect! Please Enter Correct OTP",
+        type: "danger",
+      });
     }
   };
 

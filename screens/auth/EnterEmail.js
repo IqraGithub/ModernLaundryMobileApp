@@ -6,6 +6,7 @@ import { ColorPalate } from "../../constants/var";
 import MyGradientButton from "../../components/MyGradientButton";
 import commonStyle from "./commonStyle";
 import { getCustomers } from "../../utils/api";
+import { showMessage } from "react-native-flash-message";
 
 
 
@@ -17,10 +18,18 @@ const EnterEmail = ({ navigation }) => {
       const emailExist = customers?.data?.find(
         (customer) => customer.email === EnteredEmail
       );
+
+
       if (emailExist) {
         navigation.navigate("OTPVarify", { customer: emailExist });
+        // console.log("exist email")
       } else {  
-        Alert.alert("Incorrect Email", "Pleas Enter Correct Enail");
+        // Alert.alert("Incorrect Email", "Pleas Enter Correct Email");
+        showMessage({
+          message: "Incorrect Email",
+          description: "Pleas Enter Correct Email",
+          type: "danger",
+        });
       }
     } catch (e) {
       console.log("got an error while checking email is valid or not. -->", e);

@@ -7,6 +7,7 @@ import {postSignUp} from '../../utils/api';
 import {AuthContext} from '../../store/checkAuth';
 import LoadingOverlay from '../../UI/LoadingOverlay';
 import {useNavigation} from '@react-navigation/native';
+import { showMessage } from 'react-native-flash-message';
 
 const Signup = ({navigation}) => {
   const [isUserSigningUp, setIsUserSigningUp] = useState(false);
@@ -19,10 +20,15 @@ const Signup = ({navigation}) => {
       return;
     }
     if(userData.Password != userData.confirmPassword){
-      Alert.alert(
-        "Password Error",
-        "The entered passwords do not match. Please try again.",
-      );
+      // Alert.alert(
+      //   "Password Error",
+      //   "The entered passwords do not match. Please try again.",
+      // );
+      showMessage({
+        message: "Password Error",
+        description: "The entered passwords do not match. Please try again.",
+        type: "danger",
+      });
       return
     }
     

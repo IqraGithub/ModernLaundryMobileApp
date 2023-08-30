@@ -29,6 +29,11 @@ import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import debounce from "lodash.debounce";
 import { VirtualizedList } from "react-native";
 
+import DropdownAlert, {
+  DropdownAlertData,
+  DropdownAlertType,
+} from 'react-native-dropdownalert';
+
 const routes = [
   { key: "Men", title: "Men" },
   { key: "Ladies", title: "Ladies" },
@@ -144,21 +149,6 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
           />
         )}
       />
-//       <VirtualizedList
-//   data={filteredData}
-//   keyExtractor={(item) => item.itemID}
-//   renderItem={({ item, index }) => (
-//     <ProductItem
-//       product={item}
-//       selectedEmirate={selectedEmirate}
-//       index={index}
-//       serviceId={selectedServiceId}
-//       delveryTimeId={selectedTime}
-//     />
-//   )}
-//   getItemCount={(data) => data.length}
-//   getItem={(data, index) => data[index]}
-// />
     );
   };
 

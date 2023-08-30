@@ -21,7 +21,7 @@ import Dropdown from "../../components/Dropdown";
 import useEmirates from "../../components/customHooks/getEmirates";
 import { setCurrentCustomerData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useDispatch, useSelector } from "react-redux";
-
+import { showMessage, hideMessage } from "react-native-flash-message";
 const UpdateProfileScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   // const [emirates, setEmirates] = useState();
@@ -114,8 +114,18 @@ const UpdateProfileScreen = ({ navigation }) => {
           const response = putProfile(udpatedProfile)
             .then((d) => {
               if (Object.keys(d.errors).length === 0) {
+                showMessage({
+                  message: "Profile Has Been Updated",
+                  // description: "Profile Has Been Updated",
+                  type: "success",
+                });
                 navigation.goBack();
               } else {
+                showMessage({
+                  message: "Update Profile failed!",
+                  // description: "Profile Has Been Updated",
+                  type: "danger",
+                });
                 console.log("Update Profile failed!");
               }
 
