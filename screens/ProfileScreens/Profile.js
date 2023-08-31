@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  Button,
-  Pressable,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, Button, Pressable, ActivityIndicator } from "react-native";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
@@ -20,12 +14,13 @@ import useCurrentCustomer from "../../components/customHooks/currentCustomer";
 import { Linking } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { emptyProducts } from "../../store/redux/reduxToolkit/cartSlice";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(true);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId, setIsLoading);
 
@@ -66,16 +61,32 @@ const ProfileScreen = () => {
     console.log("supprtHandler clicked");
   };
 
+  // const logoutHandler = () => {
+  //   confirmationAlert(
+  //     "Logout",
+  //     "confirm to logout",
+  //     () => console.log("logout cancelled"),
+  //     () => {
+  //       authCntx.logout();
+  //       dispatch(emptyProducts());
+  //     }
+  //   );
+  // };
   const logoutHandler = () => {
-    confirmationAlert(
-      "Logout",
-      "confirm to logout",
-      () => console.log("logout cancelled"),
-      () => {
+    showMessage({
+      message: "Click me to Logout",
+      description: "Are you sure you want to logout?",
+      type: "info",
+      icon: "default",
+      duration: 5000,
+      autoHide: true,
+      hideOnPress: false,
+      onPress: () => {
         authCntx.logout();
         dispatch(emptyProducts());
-      }
-    );
+        hideMessage();
+      },
+    });
   };
   return (
     // <View style={styles.rootContainer}>
@@ -91,9 +102,7 @@ const ProfileScreen = () => {
               <Text style={styles.nameText}>
                 {currentCustomer?.first_name} {currentCustomer?.last_name}
               </Text>
-              <Pressable
-                onPress={() => navigation.navigate("UpdateProfile")}
-              >
+              <Pressable onPress={() => navigation.navigate("UpdateProfile")}>
                 <Text style={styles.editText}>
                   <MaterialIcons
                     name="edit"

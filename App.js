@@ -47,7 +47,6 @@ function AuthStack() {
 }
 
 function AuthenticatedStack() {
-
   return (
     <Bottom.Navigator
       screenOptions={{
@@ -135,7 +134,15 @@ const App = () => {
         <AuthContentProvider>
           <StatusBar style="light" />
           <TokenCheck />
-          <FlashMessage position="top" />
+          <FlashMessage
+            position="top"
+            textStyle={{
+              fontFamily: MyFonts.fontregular,
+            }}
+            titleStyle={{
+              fontFamily: MyFonts.fontregular,
+            }}
+          />
         </AuthContentProvider>
       </Provider>
     </>
