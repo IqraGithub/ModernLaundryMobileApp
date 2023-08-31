@@ -24,6 +24,7 @@ import useCurrentCustomer from "../customHooks/currentCustomer";
 import { setFilteredData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useCallback } from "react";
 import { showMessage, hideMessage } from "react-native-flash-message";  
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const deliveryType = "1";
 const delivery = [{ title: "Folded" }, { title: "Hanger" }];
@@ -114,7 +115,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
       // Alert.alert("Please select a service and delivery");
       showMessage({
         message: "Please select a service and delivery",
-        // description: "Profile Has Been Updated",
+         icon:()=><MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
     }

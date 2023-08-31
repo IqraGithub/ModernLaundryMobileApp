@@ -8,6 +8,7 @@ import {AuthContext} from '../../store/checkAuth';
 import LoadingOverlay from '../../UI/LoadingOverlay';
 import {useNavigation} from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const Signup = ({navigation}) => {
   const [isUserSigningUp, setIsUserSigningUp] = useState(false);
@@ -16,6 +17,12 @@ const Signup = ({navigation}) => {
   const handleSignUp = async (userData) => {
     const isFieldEmpty = Object.values(userData).some(value => !value);
     if (isFieldEmpty) {
+      showMessage({
+        message: "One or more fields are empty",
+        // description: "The entered passwords do not match. Please try again.",
+        icon:()=><MaterialIcons name="error" size={24} color="white" />,
+        type: "danger",
+      });
       console.log('One or more fields are empty');
       return;
     }
@@ -27,6 +34,7 @@ const Signup = ({navigation}) => {
       showMessage({
         message: "Password Error",
         description: "The entered passwords do not match. Please try again.",
+        icon:()=><MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
       return
@@ -39,18 +47,34 @@ const Signup = ({navigation}) => {
       console.log('1')
       if (response.errors.email) {
         console.log('this is an existing email. ', response.errors.email);
-        Alert.alert('Existing Email', 'please try another email');
+        // Alert.alert('Existing Email', 'please try another email');
+        showMessage({
+          message: "Existing Email",
+          description: "please try another email",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          type: "danger",
+        });
         return;
       }
       console.log('1')
       setIsUserSigningUp(true);
 
       if (response) {
+        showMessage({
+          message: "User Has Been Created",
+          icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
+          type: "success",
+        });
         navigation.replace('SignIn');
         // authContext.authenticate(response.userId);
         // navigation.navigate('Home', {id: response.userId});
       } else {
         // Handle signup failure
+        showMessage({
+          message: "Signup failed",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          type: "danger",
+        });
         console.log('Signup failed');
       }
     } catch (error) {

@@ -22,6 +22,8 @@ import useEmirates from "../../components/customHooks/getEmirates";
 import { setCurrentCustomerData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { showMessage, hideMessage } from "react-native-flash-message";
+
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const UpdateProfileScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   // const [emirates, setEmirates] = useState();
@@ -116,14 +118,14 @@ const UpdateProfileScreen = ({ navigation }) => {
               if (Object.keys(d.errors).length === 0) {
                 showMessage({
                   message: "Profile Has Been Updated",
-                  // description: "Profile Has Been Updated",
+                  icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
                   type: "success",
                 });
                 navigation.goBack();
               } else {
                 showMessage({
                   message: "Update Profile failed!",
-                  // description: "Profile Has Been Updated",
+                  icon:()=><MaterialIcons name="error" size={24} color="white" />,
                   type: "danger",
                 });
                 console.log("Update Profile failed!");

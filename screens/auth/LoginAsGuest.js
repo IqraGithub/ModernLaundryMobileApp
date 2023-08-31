@@ -11,6 +11,8 @@
   import Dropdown from "../../components/Dropdown";
 import { showMessage } from "react-native-flash-message";
 
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
   const LoginAsGuest = ({ navigation }) => {
     const [enteredEmail, setEnteredEmail] = useState("");
     const [enteredPassword, setEnteredPassword] = useState("");
@@ -65,6 +67,7 @@ import { showMessage } from "react-native-flash-message";
           showMessage({
             message: "All the Fields are Required",
             description: "please fill all the fields",
+            icon:()=><MaterialIcons name="error" size={24} color="white" />,
             type: "danger",
           });
           return;
@@ -78,6 +81,7 @@ import { showMessage } from "react-native-flash-message";
           showMessage({
             message: "Password Error",
             description: "The entered passwords do not match. Please try again.",
+            icon:()=><MaterialIcons name="error" size={24} color="white" />,
             type: "danger",
           });
           return
@@ -95,6 +99,7 @@ import { showMessage } from "react-native-flash-message";
             showMessage({
               message: "Existing Email",
               description: "please try another email",
+              icon:()=><MaterialIcons name="error" size={24} color="white" />,
               type: "danger",
             });
             return;

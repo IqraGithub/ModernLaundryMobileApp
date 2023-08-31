@@ -101,7 +101,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
         setEnteredContactNumber(enteredValue);
         break;
       case "email":
-        setEnteredEmail(enteredValue);
+        setEnteredEmail(enteredValue.toLowerCase());
         break;
       case "password":
         setEnteredPassword(enteredValue);  

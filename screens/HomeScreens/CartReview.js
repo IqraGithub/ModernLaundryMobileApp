@@ -57,33 +57,7 @@ const deliveryTypes = [
   { id: 3, name: "Sameday" },
 ];
 
-const toastConfig = {
-  success: (props) => (
-    <BaseToast
-      {...props}
-      style={{ borderLeftColor: "green", opacity: 1 }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
-      text1Style={{
-        fontSize: 15,
-        fontWeight: "400",
-      }}
-    />
-  ),
 
-  error: (props) => (
-    <ErrorToast
-      {...props}
-      style={{ borderLeftColor: "red", opacity: 1 }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
-      text1Style={{
-        fontSize: 17,
-      }}
-      text2Style={{
-        fontSize: 15,
-      }}
-    />
-  ),
-};
 const CartOld = ({ navigation, route }) => {
   const emirates = [
     { branchId: "38", RateCodeID: "3", rate_code: "Dubai" },
@@ -125,6 +99,7 @@ const CartOld = ({ navigation, route }) => {
         showMessage({
           message: "Item removed",
           description: "Your item has been removed.",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });  
       }
@@ -227,6 +202,7 @@ const CartOld = ({ navigation, route }) => {
         showMessage({
           message: "Order Error",
           description: "There is no item to order",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
         navigation.navigate("Category")
@@ -250,7 +226,8 @@ const CartOld = ({ navigation, route }) => {
 
                             showMessage({
           message: "Order Confirmed",
-          description: "Your Order Has Been Confirmed",
+          description: "Your Order Has Been Confirmed", 
+          icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
           type: "success",
         });
 

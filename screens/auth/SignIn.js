@@ -10,6 +10,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { getCustomers } from "../../utils/api";
 import { useEffect } from "react";
 import { showMessage } from "react-native-flash-message";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 // const customerData = [
 //   {
 //     area: '1',
@@ -119,6 +120,7 @@ const SignIn = ({ navigation }) => {
 
   useEffect(() => {
     if (authCntx.isAuthendicate) {
+     
       navigation.navigate("Category", { id: authCntx.userId });
     }
   }, [authCntx.isAuthendicate, navigation]);
@@ -138,18 +140,24 @@ const SignIn = ({ navigation }) => {
         // alert("Please enter your email and password.");
         showMessage({
           message: "Please Enter Your Email And Password.",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
         return;
       }
       // Find the user based on the provided email and password
       const user = customerData.data.find(
-        (c) => c.email === email && c.Password === Password
+        (c) => c.email.toLowerCase() === email && c.Password === Password
       );
       console.log("user", user);
 
       if (user) {
         console.log("userId", user.serialNo);
+        showMessage({
+          message: "Welcome Back!",
+          icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
+          type: "success",
+        });
         // Store the authenticated user's ID in AsyncStorage
         await AsyncStorage.setItem("customerId", user.serialNo);
         authCntx.authenticate(user.serialNo);
@@ -159,6 +167,7 @@ const SignIn = ({ navigation }) => {
         // alert("Invalid email or password");
         showMessage({
           message: "Invalid email or password.",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
 

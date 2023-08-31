@@ -10,6 +10,8 @@ import { useEffect } from "react";
 import uuid from "react-native-uuid";
 import { postOTP } from "../../utils/api";
 import { showMessage } from "react-native-flash-message";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+
 const OTPVarificationScreen = ({ navigation, route }) => {
   const [EnteredOTP, setEnteredOTP] = useState("");
   const [OTP, setOTP] = useState(null);
@@ -53,12 +55,12 @@ const OTPVarificationScreen = ({ navigation, route }) => {
   
     async function sendOTPHandler() {
       if (OTP) {
-        // const data = {
-        //   id: 999,
-        //   customer_id: customer.serialNo,
-        //   email: customer.email,
-        //   otp: 2342,
-        // }
+        const data = {
+          // id: 999,
+          // customer_id: customer.serialNo,
+          email: customer.email,
+          otp: OTP,
+        }
          try {
           const sendOTP = await postOTP(data);
   
@@ -89,6 +91,7 @@ const OTPVarificationScreen = ({ navigation, route }) => {
       showMessage({
         message: "Not Verfied",
         description: "OTP is Incorrrect! Please Enter Correct OTP",
+        icon:()=><MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
     }

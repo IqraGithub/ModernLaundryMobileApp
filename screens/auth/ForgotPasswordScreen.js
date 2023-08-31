@@ -7,6 +7,7 @@ import MyGradientButton from "../../components/MyGradientButton";
 import commonStyle from "./commonStyle";
 import { putProfile } from "../../utils/api";
 import { showMessage } from "react-native-flash-message";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const ForgotPasswordScreen = ({ navigation, route }) => {
   const [EnteredPassword, setEnteredPassword] = useState("");
@@ -19,6 +20,7 @@ try{
   if(!EnteredPassword || !EnteredConfirmPassword){
     showMessage({
       message: "All Fileds Are Mandatory.",
+      icon:()=><MaterialIcons name="error" size={24} color="white" />,
       type: "danger",
     });
     return;
@@ -34,6 +36,7 @@ try{
        showMessage({
         message: "Password Has Been Changed",
         // description: "The entered passwords do not match. Please try again.",
+        icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
         type: "success",
       })
       ): null;
@@ -46,6 +49,7 @@ try{
     showMessage({
       message: "Password Error",
       description: "The entered passwords do not match. Please try again.",
+      icon:()=><MaterialIcons name="error" size={24} color="white" />,
       type: "danger",
     });
       }

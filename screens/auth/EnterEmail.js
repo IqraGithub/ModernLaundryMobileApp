@@ -7,8 +7,7 @@ import MyGradientButton from "../../components/MyGradientButton";
 import commonStyle from "./commonStyle";
 import { getCustomers } from "../../utils/api";
 import { showMessage } from "react-native-flash-message";
-
-
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const EnterEmail = ({ navigation }) => {
   const [EnteredEmail, setEnteredEmail] = useState("");
@@ -28,6 +27,7 @@ const EnterEmail = ({ navigation }) => {
         showMessage({
           message: "Incorrect Email",
           description: "Pleas Enter Correct Email",
+          icon:()=><MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
       }
@@ -48,7 +48,7 @@ const EnterEmail = ({ navigation }) => {
         <Input
           label="Enter Email"
           value={EnteredEmail}
-          onUpdateValue={(value) => setEnteredEmail(value)}
+          onUpdateValue={(value) => setEnteredEmail(value.toLowerCase())}
         />
       </View>
       <View style={commonStyle.buttonContainer}>
