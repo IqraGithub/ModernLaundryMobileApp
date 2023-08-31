@@ -127,7 +127,7 @@ const ProfileScreen = () => {
               {currentCustomer?.street_name &&
                 currentCustomer?.street_name + ", "}
               {currentCustomer?.area && currentCustomer?.area + ", "}
-              {currentCustomer?.rate_code} {""}
+              {currentCustomer?.rate_code}. {""}
             </Text>
             {/* <Text style={styles.infoText}>
                
@@ -212,8 +212,8 @@ const styles = StyleSheet.create({
   detailContainer: {
     marginBottom: 20,
     paddingBottom: 20,
-    borderBottomColor: ColorPalate.dgrey,
-    borderBottomWidth: 4,
+    borderBottomColor: ColorPalate.skyblue,
+    borderBottomWidth: 2,
   },
   nameEditContainer: {
     flexDirection: "row",

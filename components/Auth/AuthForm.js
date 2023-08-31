@@ -101,7 +101,7 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
         setEnteredContactNumber(enteredValue);
         break;
       case "email":
-        setEnteredEmail(enteredValue.toLowerCase());
+        setEnteredEmail(enteredValue);
         break;
       case "password":
         setEnteredPassword(enteredValue);  
@@ -237,6 +237,7 @@ const navigation = useNavigation()
             value={enteredEmail}
             keyboardType="email-address"
             isInvalid={emailIsInvalid}
+            inputMode="email"
           />
           <Input
             label="Password"
@@ -244,6 +245,7 @@ const navigation = useNavigation()
             secure
             value={enteredPassword}
             isInvalid={passwordIsInvalid}
+            returnKeyType="go"
             />
        {  !isLogin && <Input
             label="Confirm Password"

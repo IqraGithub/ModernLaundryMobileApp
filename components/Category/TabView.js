@@ -190,6 +190,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
                 placeholder="Search product"
                 value={searchKeyword}
                 onChangeText={(text) => setSearchKeyword(text)}
+                placeholderTextColor={ColorPalate.dgrey}
               />
               <FontAwesomeIcon
                 name="search"
