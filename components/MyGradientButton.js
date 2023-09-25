@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import {Pressable, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import {ColorPalate, MyFonts} from '../constants/var';
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   title: {
-    // fontFamily:"OpenSans-Bold",
     fontFamily:MyFonts.fontbold,
     color: '#fff',
     fontSize: 16,

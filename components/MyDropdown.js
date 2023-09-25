@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet} from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
-// import { ColorPalate } from '../constants/ColorPalate';
-//   import AntDesign from 'react-native-vector-icons/AntDesign';
 import {ColorPalate} from '../constants/var';
 
 const data = [
@@ -40,9 +38,7 @@ const MyDropdown = ({placeholder, searchPlaceholder}) => {
       onChange={item => {
         setValue(item.value);
       }}
-      // renderLeftIcon={() => (
-      //   <AntDesign style={styles.icon} color="black" name="Safety" size={20} />
-      // )}
+    
     />
   );
 };

@@ -7,76 +7,21 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
-import { getOrders } from "../../utils/api";
 import { useCallback, useEffect, useState } from "react";
 import { useFocusEffect } from "@react-navigation/native";
 import Toast from "react-native-toast-message";
 import useCustomerId from "../../components/customHooks/customerId";
-import useCurrentCustomer from "../../components/customHooks/currentCustomer";
-import { useDispatch, useSelector } from "react-redux";
 import useCurrentUserOrders from "../../components/customHooks/getOrders";
-import { setOrderData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 
 const deliveryTypes = [
   { id: 1, name: "Standard" },
   { id: 2, name: "Express" },
   { id: 3, name: "Sameday" },
 ];
-// console.log(deliveryTypes.find((i)=> i.id == 1))
 const OrderScreen = ({ navigation }) => {
-  // Define state variables
-  // const [filteredOrder, setFilteredOrder] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const customerId = useCustomerId();
-  // const currentCustomer = useCurrentCustomer(customerId);
-
-
-  // Retrieve customer ID from local storage when component mounts
-
-  // Fetch orders for the current customer when component gains focus
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     let isActive = true;
-
-  //     async function fetchOrders() {
-  //       // Call API to retrieve all orders
-  //       try {
-  //         const result = await getOrders();
-  //         // Filter orders to include only those for the current customer
-  //         const filtered = result.data?.filter(
-  //           (i) => i.customerID == customerId
-  //         );
-
-  //         // Update state with filtered orders and set loading flag to false
-  //         if (isActive) {
-  //           setFilteredOrder(filtered);
-  //           // setIsLoading(false);
-  //         }
-  //       } catch (e) {
-  //         console.log(e);
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     }
-
-  //     // If customer ID is available, fetch orders
-  //     if (customerId) {
-  //       fetchOrders();
-  //     }
-
-  //     // Set isActive flag to false when component loses focus
-  //     return () => {
-  //       isActive = false;
-  //     };
-  //   }, [customerId])
-  // );
-
-  const filteredOrder = useCurrentUserOrders()
-  
-  
-  
-  // To prevent Load - but not updating when adding item
-  // const filteredOrder = useSelector((state) =>  state?.filteredData?.orderData);
+  const o = useCurrentUserOrders()
+  let filteredOrder = o?.slice()?.reverse();
   
   useEffect(() => {
     filteredOrder ? setIsLoading(false) : setIsLoading(true)
@@ -245,12 +190,10 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 20,
     width: "90%",
-    // Shadow properties for iOS
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 2,
-    // Elevation for Android (bottom shadow)
     elevation: 5,
   },
   orderTextContainer: {

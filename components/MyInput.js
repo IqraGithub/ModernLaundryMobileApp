@@ -1,5 +1,4 @@
 import {View, Text, TextInput, StyleSheet} from 'react-native';
-// import {ColorPalate} from '../constants/ColorPalate';
 import {ColorPalate} from '../constants/var';
 
 function MyInput({

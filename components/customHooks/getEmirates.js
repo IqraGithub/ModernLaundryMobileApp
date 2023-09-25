@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getEmirates } from '../../utils/api';
 
 const useEmirates = () => {
@@ -21,6 +20,5 @@ const useEmirates = () => {
   return emirates;
 };
 
-// -----------------------
 
 export default useEmirates;

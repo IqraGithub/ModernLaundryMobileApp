@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import uuid from "react-native-uuid";
 import { postOTP } from "../../utils/api";
 import { showMessage } from "react-native-flash-message";
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const OTPVarificationScreen = ({ navigation, route }) => {
   const [EnteredOTP, setEnteredOTP] = useState("");
@@ -25,73 +25,35 @@ const OTPVarificationScreen = ({ navigation, route }) => {
     setOTP(o);
   };
 
-  // async function sendOTPHandler() {
-  //   // if (OTP) {
-  //     const data = {
-  //       id: Date.now().toString() + uuid.v4(),
-  //       customer_id: customer.serialNo,
-  //       email: customer.email,
-  //       otp: 2342,
-  //     }
-  //     try {
-  //       const sendOTP = await postOTP(data);
-
-  //       console.log('-------------------------------');
-  //       console.log('sendOTP',sendOTP)
-  //       console.log(data)
-  //       // console.log("otpp called");
-  //       console.log('-------------------------------');
-  //     } catch (e) {
-  //       console.log('got an error while sending error',e);
-  //     }
-    // }
-  // }
   useEffect(() => {
-    // sendOTPHandler();
-    generateOTP()
-    
+    generateOTP();
   }, []);
   useEffect(() => {
-  
     async function sendOTPHandler() {
       if (OTP) {
         const data = {
-          // id: 999,
-          // customer_id: customer.serialNo,
           email: customer.email,
           otp: OTP,
-        }
-         try {
+        };
+        try {
           const sendOTP = await postOTP(data);
-  
-          console.log('-------------------------------');
-          console.log('sendOTP',sendOTP.data)
-          console.log(data)
-          // console.log("otpp called");
-          console.log('-------------------------------');
         } catch (e) {
-          console.log('got an error while sending error',e);
+          console.log("got an error while sending error", e);
         }
       }
     }
-     
-       
+
     sendOTPHandler();
-  
-      
   }, [OTP]);
 
   const OTPVerificationHandler = () => {
-
-    // generateOTP();
     if (EnteredOTP === OTP) {
-      navigation.navigate("ForgotPassword",{customer});
+      navigation.navigate("ForgotPassword", { customer });
     } else {
-      // Alert.alert("Not Verfied", "OTP is Incorrrect! Please Enter Correct OTP");
       showMessage({
         message: "Not Verfied",
         description: "OTP is Incorrrect! Please Enter Correct OTP",
-        icon:()=><MaterialIcons name="error" size={24} color="white" />,
+        icon: () => <MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
     }

@@ -22,6 +22,5 @@ const useCustomerId = () => {
   return customerId;
 };
 
-// -----------------------
 
 export default useCustomerId;

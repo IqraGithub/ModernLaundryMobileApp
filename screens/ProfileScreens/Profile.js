@@ -3,37 +3,25 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { StyleSheet } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
-import { getCustomers } from "../../utils/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../../store/checkAuth";
-import { confirmationAlert } from "../../utils/helperFunctions";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import FontAwsomeIcon from "react-native-vector-icons/FontAwesome";
-import useCustomerId from "../../components/customHooks/customerId";
-import useCurrentCustomer from "../../components/customHooks/currentCustomer";
 import { Linking } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { emptyProducts } from "../../store/redux/reduxToolkit/cartSlice";
 import { showMessage, hideMessage } from "react-native-flash-message";
-
 const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useDispatch();
-  // const customerId = useCustomerId();
-  // const currentCustomer = useCurrentCustomer(customerId, setIsLoading);
-
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
-  console.log("cuurrent customer", currentCustomer);
 
   useEffect(() => {
     currentCustomer ? setIsLoading(false) : setIsLoading(true);
   }, [currentCustomer]);
 
-  // console.log("CC", currentCustomer);
 
   const authCntx = useContext(AuthContext);
 
@@ -51,27 +39,14 @@ const ProfileScreen = () => {
 
   const savedAdress = () => {
     console.log("savedAdress clicked");
-    console.log(customerId);
-    console.log(currentCustomer);
   };
   const termsConditions = () => {
-    console.log("logged termsConditions clicked");
+    console.log("termsConditions clicked");
   };
   const supprtHandler = () => {
     console.log("supprtHandler clicked");
   };
 
-  // const logoutHandler = () => {
-  //   confirmationAlert(
-  //     "Logout",
-  //     "confirm to logout",
-  //     () => console.log("logout cancelled"),
-  //     () => {
-  //       authCntx.logout();
-  //       dispatch(emptyProducts());
-  //     }
-  //   );
-  // };
   const logoutHandler = () => {
     showMessage({
       message: "Click me to Logout",
@@ -89,7 +64,6 @@ const ProfileScreen = () => {
     });
   };
   return (
-    // <View style={styles.rootContainer}>
     <View style={styles.rootContainer}>
       {
         isLoading ? (
@@ -129,15 +103,8 @@ const ProfileScreen = () => {
               {currentCustomer?.area && currentCustomer?.area + ", "}
               {currentCustomer?.rate_code}. {""}
             </Text>
-            {/* <Text style={styles.infoText}>
-               
-               {currentCustomer?.address}{' '}
-             </Text> */}
           </View>
         )
-        // : (
-        //   <Text>There is something wrong</Text>
-        // )
       }
 
       <View>
@@ -219,11 +186,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    // marginBottom: 10,
   },
   nameText: {
     fontSize: 18,
-    // fontWeight: 'bold',
     color: ColorPalate.themeprimary,
     fontFamily: MyFonts.fontmid,
   },
@@ -291,10 +256,8 @@ const styles = StyleSheet.create({
   },
 
   footerContainer: {
-    // alignItems: 'center',
     justifyContent: "space-between",
     marginTop: "auto",
-    // marginBottom: 20,
     flexDirection: "row",
   },
   footerTextPart1: {

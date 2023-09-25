@@ -1,5 +1,4 @@
 import {Text, View, StyleSheet} from 'react-native';
-// import {ColorPalate} from '../constants/var';
 import {ColorPalate} from '../constants/var';
 
 const CardItem = ({children}) => {

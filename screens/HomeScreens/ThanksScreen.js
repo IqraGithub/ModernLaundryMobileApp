@@ -9,14 +9,9 @@ import {
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Title from "../../components/Title";
 import { ColorPalate, MyFonts } from "../../constants/var";
-import useCurrentCustomer from "../../components/customHooks/currentCustomer";
-import useCustomerId from "../../components/customHooks/customerId";
 import { useState } from "react";
-import useCurrentUserOrders from "../../components/customHooks/getOrders";
 import { useEffect } from "react";
 import { formatDate } from "../../utils/helperFunctions";
-import { setOrderData } from "../../store/redux/reduxToolkit/filteredDataSlice";
-import { useDispatch } from "react-redux";
 
 const ThanksScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +22,6 @@ const ThanksScreen = ({ navigation, route }) => {
     { id: 2, name: "Express" },
     { id: 3, name: "Sameday" },
   ];
-  const customerId = useCustomerId();
 
   const data = route.params.data;
   const {
@@ -38,12 +32,6 @@ const ThanksScreen = ({ navigation, route }) => {
     deliveryDate,
     pickupDate,
   } = data;
-
-  const dispatch = useDispatch();
-  // const orders = useCurrentUserOrders();
-  // useEffect(() => {
-  //   // dispatch(setOrderData(orders));
-  // }, [orders]);
 
   useEffect(() => {
     data ? setIsLoading(false) : setIsLoading(true);
@@ -57,16 +45,10 @@ const ThanksScreen = ({ navigation, route }) => {
   }, [quantity]);
 
   const viewOrderHandler = () => {
-    // setTimeout(() => {
-    //   dispatch(setOrderData(orders));
-    // }, 3000);
     navigation.navigate("OrdersScreen");
   };
 
   const goToHomeHandler = () => {
-    // setTimeout(() => {
-    //   dispatch(setOrderData(orders));
-    // }, 3000);
     navigation.navigate("Category");
   };
 
@@ -78,7 +60,6 @@ const ThanksScreen = ({ navigation, route }) => {
         </View>
       ) : (
         <View style={styles.container}>
-          {/* <View> */}
           <View style={styles.messageContainer}>
             <Title text="Thank You" />
             <Text style={styles.subTitle}>Your order has been confirmed</Text>
@@ -113,11 +94,6 @@ const ThanksScreen = ({ navigation, route }) => {
               <Text style={styles.cardText}>Pickup Date</Text>
               <Text style={styles.cardValue}>{formatDate(pickupDate)}</Text>
             </View>
-            {/* */}
-            {/* <View style={styles.cardItem}>
-              <Text style={styles.cardText}>Total Price</Text>
-              <Text style={styles.cardValue}>AED {subtotal}</Text>
-            </View> */}
             <View style={styles.cardItem}>
               <Text style={styles.cardText}>Total Item</Text>
               <Text style={styles.cardValue}>{quantity}</Text>
@@ -229,5 +205,3 @@ const styles = StyleSheet.create({
 });
 
 export default ThanksScreen;
-
-// ++++++++++++++++++++++++++++++++

@@ -10,7 +10,6 @@ const deliveryTypes = [
   { "deliveryTypeID": "3", "delivery_type": "Same Day" }
 ]
 const DeliveryTypeBtn = () => {
-  // const [deliveryTypes, setDeliveryTypes] = useState();
 
   const cartItems = useSelector((state) => state.cart.products);
 
@@ -26,7 +25,6 @@ const DeliveryTypeBtn = () => {
       // Filter the pricing array based on selectedType, service type, and emirate_id
       const filteredPricingArray = product.cartItem.pricing.filter(
         (price) =>{
-          // console.log(cartItems)
         return  price.deliveryType === selectedType &&
           price.service === product.service.type &&
           price.emirate_id === cartItems[0]?.emirateId}
@@ -46,8 +44,6 @@ const DeliveryTypeBtn = () => {
           })
         );
       }
-
-      // ==================
 
       pickupDate = new Date()
     });

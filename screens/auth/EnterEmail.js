@@ -21,9 +21,8 @@ const EnterEmail = ({ navigation }) => {
 
       if (emailExist) {
         navigation.navigate("OTPVarify", { customer: emailExist });
-        // console.log("exist email")
       } else {  
-        // Alert.alert("Incorrect Email", "Pleas Enter Correct Email");
+       
         showMessage({
           message: "Incorrect Email",
           description: "Pleas Enter Correct Email",

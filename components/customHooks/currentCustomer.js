@@ -1,9 +1,7 @@
 
-import { useState, useEffect, useCallback } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState,useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { getCustomers } from '../../utils/api';
-import { useGetCustomersQuery } from '../../store/redux/reduxToolkit/apiSlice';
 
 const useCurrentCustomer = (customerId,setIsLoading, email) => {
   const [currentCustomer, setCurrentCustomer] = useState(null);
@@ -20,11 +18,10 @@ const useCurrentCustomer = (customerId,setIsLoading, email) => {
 
           if (isActive) {
             setCurrentCustomer(filtered);
-            // setIsLoading(false);
           }
         } catch (error) {
           console.log(error);
-          // handle the error here, e.g. set an error message
+         
         } finally {
           setIsLoading && setIsLoading(false);
         }
@@ -40,7 +37,6 @@ const useCurrentCustomer = (customerId,setIsLoading, email) => {
     }, [customerId,email])
   );
 
-  // Rest of the code...
 
   return currentCustomer;
 };

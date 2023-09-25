@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -6,7 +6,6 @@ import {
   Image,
   Pressable,
   FlatList,
-  Alert,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import { useDispatch, useSelector } from "react-redux";
@@ -23,8 +22,8 @@ import useCustomerId from "../customHooks/customerId";
 import useCurrentCustomer from "../customHooks/currentCustomer";
 import { setFilteredData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useCallback } from "react";
-import { showMessage, hideMessage } from "react-native-flash-message";  
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import { showMessage } from "react-native-flash-message";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 const deliveryType = "1";
 const delivery = [{ title: "Folded" }, { title: "Hanger" }];
@@ -40,7 +39,6 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
   let filteredPricing = useSelector(
     (state) => state.filteredData.filteredPricing[product.id]
   );
-
 
   const [selectedService, setSelectedService] = useState(
     cartItem ? cartItem.service : { type: undefined, price: 0 }
@@ -59,17 +57,15 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
     const emirate = emirates?.find((e) => e.rate_code === selectedEmirate);
     if (emirate) setEmirateId(emirate.RateCodeID);
   }, [selectedEmirate]);
-  // -----------------------
-
-  // -----------------------
-
+ 
   useEffect(() => {
     if (emirateId) {
       let filteredPricingData = product.pricing?.filter(
         (obj) =>
           obj.deliveryType === deliveryType && obj.emirate_id == emirateId
       );
-      // .map(({ service, price }) => ({ service, price }));
+      console.log('emirateId ------------->',emirateId)
+      console.log('selectedEmirate -------------> ',selectedEmirate)
       dispatch(
         setFilteredData({
           productId: product.id,
@@ -77,8 +73,8 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
         })
       );
     }
-  }, [product, emirateId]);
-  
+  }, [product,selectedEmirate, emirateId]);
+
   const sortSubArrays = useCallback((arr) => {
     return arr.sort((a, b) => a.service.localeCompare(b.service));
   }, []);
@@ -90,7 +86,6 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
     }
   }, [filteredPricing]);
 
-  // -------------------------------
   // Decrease the quantity of the selected service
   function decreaseQtyHandler() {
     if (selectedService) {
@@ -115,7 +110,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
       // Alert.alert("Please select a service and delivery");
       showMessage({
         message: "Please select a service and delivery",
-         icon:()=><MaterialIcons name="error" size={24} color="white" />,
+        icon: () => <MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
     }
@@ -301,7 +296,6 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
                 }}
               />
 
-              {/* =============================== */}
             </View>
           </View>
           <View style={{}}>
@@ -313,11 +307,9 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
                 flexDirection: "column",
               }}
             >
-              {/* =========================================== */}
               <FlatList
                 listKey={(item, index) => "D" + index.toString()} // Assigning a unique key to each item in the list
                 data={delivery}
-                // keyExtractor={(item,index) => index}
                 renderItem={(item, idx) => {
                   return (
                     <Pressable
@@ -411,32 +403,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   quantityBtn: {
-    // width: 27,
-    // height: 25,
-    // // flex:1/2,
-    // // width:40,
-    // color: ColorPalate.white,
-    // backgroundColor: ColorPalate.themesecondary,
-    // // paddingVertical: 0,
-    // // paddingHorizontal: 2,
-    // borderRadius: 5,
-    // alignItems: "center",
-    // justifyContent: "center",
-
     backgroundColor: ColorPalate.themesecondary,
-    // paddingHorizontal:10,
-    // paddingVertical:5,
     paddingHorizontal: 7,
     borderRadius: 5,
   },
   quantityBtnText: {
-    // textAlign: "center",
     fontSize: 20,
-    // // fontWeight: "100",
     fontFamily: MyFonts.fontmid,
     color: ColorPalate.white,
-    // marginBottom:8,
-    // paddingHorizontal:8
   },
   contentitems: {
     color: ColorPalate.white,

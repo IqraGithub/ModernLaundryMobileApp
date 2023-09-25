@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   Text,
   Pressable,
+  RefreshControl,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import ProductItem from "./ProductItem";
@@ -19,20 +20,13 @@ import useCurrentCustomer from "../customHooks/currentCustomer";
 import useCurrentUserOrders from "../customHooks/getOrders";
 import { useProducts } from "../customHooks/allProducts";
 import {
-  setAllProductsData,
   setCurrentCustomerData,
-  setEmirateId,
   setEmiratesData,
   setOrderData,
 } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
-import debounce from "lodash.debounce";
-import { VirtualizedList } from "react-native";
-
-import DropdownAlert, {
-  DropdownAlertData,
-  DropdownAlertType,
-} from 'react-native-dropdownalert';
+import { getProducts } from "../../utils/API_BACKUP";
+import { emptyProducts } from "../../store/redux/reduxToolkit/cartSlice";
 
 const routes = [
   { key: "Men", title: "Men" },
@@ -61,8 +55,36 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
   const [selectedEmirate, setSelectedEmirate] = useState();
   const [filteredProducts, setFilteredProducts] = useState([]);
 
-  const { products, isLoading } = useProducts();
-  // const { products, isLoading, isError } = useGetCustomersQuery()
+  // const { products, isLoading } = useProducts();
+  // ------------------------------------
+  const [products, setAllProducts] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
+
+
+  useEffect(() => {handleRefresh()}, []);
+  const handleRefresh = useCallback(() => {
+    const fetchData = async () => {
+      try {
+        setIsRefreshing(true);
+        console.log('refreshing')
+        const productsData = await getProducts();
+
+        setAllProducts(productsData);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setIsLoading(false);
+        setIsRefreshing(false);
+        console.log('refreshed')
+
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // ------------------------------------
   const orders = useCurrentUserOrders();
   const emirates = useEmirates();
   const customerId = useCustomerId();
@@ -80,9 +102,14 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
 
   useEffect(() => {
     if (emirates) {
-      dispatch(setEmiratesData(emirates));  
+      dispatch(setEmiratesData(emirates));
     }
   }, [emirates]);
+  useEffect(() => {
+   
+      dispatch(emptyProducts());
+    
+  }, [selectedEmirate]);
 
   // Got an error while postin the order
   useEffect(() => {
@@ -103,25 +130,12 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         setFilteredProducts(products);
       }
     };
-    handleSearch()
-
+    handleSearch();
   }, [searchKeyword, products]);
 
   const headerCollapseHandler = useCallback((shouldExpand) => {
     setSearchExpanded(shouldExpand);
   }, []);
-
-  // useEffect(() => {
-  //   const register = async () => {
-  //     try {
-  //       const userId = await AsyncStorage.getItem("customerId");
-  //       console.log("userId home--------" + userId);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   register();
-  // }, []);
 
   const CategoryList = ({ categoryName }) => {
     const filteredData = useMemo(() => {
@@ -129,26 +143,46 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         (item) => item.item_cat1 === categoryName
       );
     }, [filteredProducts, categoryName]);
-    // console.log("isloading", isLoading);
     return isLoading ? (
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <ActivityIndicator size="large" color={ColorPalate.themeprimary} />
       </View>
     ) : (
+      // <FlatList
+      //   initialNumToRender={10}
+      //   data={filteredData}
+      //   keyExtractor={(item) => item.itemID}
+      //   renderItem={({ item, index }) => (
+      //     <ProductItem
+      //       product={item}
+      //       selectedEmirate={selectedEmirate}
+      //       index={index}
+      //       serviceId={selectedServiceId}
+      //       delveryTimeId={selectedTime}
+      //     />
+      //   )}
+      // />
+
       <FlatList
-      initialNumToRender={10  }
-        data={filteredData}
-        keyExtractor={(item) => item.itemID}
-        renderItem={({ item, index }) => (
-          <ProductItem
-            product={item}
-            selectedEmirate={selectedEmirate}
-            index={index}
-            serviceId={selectedServiceId}
-            delveryTimeId={selectedTime}
-          />
-        )}
-      />
+  data={filteredData}
+  keyExtractor={(item) => item.itemID}
+  renderItem={({ item, index }) => (
+    <ProductItem
+      product={item}
+      selectedEmirate={selectedEmirate}
+      index={index}
+      serviceId={selectedServiceId}
+      delveryTimeId={selectedTime}
+    />
+  )}
+  refreshControl={
+    <RefreshControl
+      refreshing={isRefreshing}
+      onRefresh={handleRefresh}
+    />
+  }
+/>
+
     );
   };
 
@@ -210,10 +244,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
               paddingHorizontal: 7,
             }}
           >
-            <Pressable
-              style={{}}
-              onPress={() => headerCollapseHandler(true)}
-            >
+            <Pressable style={{}} onPress={() => headerCollapseHandler(true)}>
               <Text style={{}}>
                 <FontAwesomeIcon
                   name="search"
@@ -236,7 +267,6 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
             }}
             onPress={() => headerCollapseHandler(false)}
           >
-           
             <View>
               <Text style={{ marginRight: 14 }}>
                 <FontAwesomeIcon

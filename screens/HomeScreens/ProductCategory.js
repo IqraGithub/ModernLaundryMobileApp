@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React from "react";
 import { View, StyleSheet, Pressable } from "react-native";
 import MyTabView from "../../components/Category/TabView";
 import { ColorPalate, MyFonts } from "../../constants/var";

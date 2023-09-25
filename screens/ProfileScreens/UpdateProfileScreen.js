@@ -1,33 +1,24 @@
 import { View, StyleSheet, ActivityIndicator, ScrollView } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   getArea,
-  getCustomers,
-  getEmirates,
   putProfile,
 } from "../../utils/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Input from "../../components/Auth/Input";
 import MyGradientButton from "../../components/MyGradientButton";
-import { Picker } from "@react-native-picker/picker";
-import { confirmationAlert, showToast } from "../../utils/helperFunctions";
+import { confirmationAlert } from "../../utils/helperFunctions";
 import Toast from "react-native-toast-message";
 import useCustomerId from "../../components/customHooks/customerId";
-import { Text } from "react-native";
-import useCurrentCustomer from "../../components/customHooks/currentCustomer";
 import Dropdown from "../../components/Dropdown";
 import useEmirates from "../../components/customHooks/getEmirates";
 import { setCurrentCustomerData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { showMessage, hideMessage } from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message";
 
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const UpdateProfileScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
-  // const [emirates, setEmirates] = useState();
-
   const [selectedEmirate, setSelectedEmirate] = useState();
   const [enteredFirstName, setEnteredFirstName] = useState("");
   const [enteredLastName, setEnteredLastName] = useState("");
@@ -42,8 +33,6 @@ const UpdateProfileScreen = ({ navigation }) => {
   const [apiArea, setApiArea] = useState();
   const [selectedArea, setSelectedArea] = useState();
 
-  const customerId = useCustomerId();
-  // const currentCustomer = useCurrentCustomer(customerId, setIsLoading);
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
@@ -128,10 +117,8 @@ const UpdateProfileScreen = ({ navigation }) => {
                   icon:()=><MaterialIcons name="error" size={24} color="white" />,
                   type: "danger",
                 });
-                console.log("Update Profile failed!");
               }
 
-              console.log("updated response", response);
               dispatch(setCurrentCustomerData(udpatedProfile));
             })
             .catch((e) => {
@@ -151,7 +138,6 @@ const UpdateProfileScreen = ({ navigation }) => {
       </View>
       <View style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
-          {/* <Text style={styles.heading}>Profile</Text> */}
 
           {isLoading ? (
             <View style={styles.loader}>
@@ -245,10 +231,7 @@ const UpdateProfileScreen = ({ navigation }) => {
               />
             </View>
           )}
-          {/* <Button title='click' onPress={()=>{
-   
-      }
-    }/> */}
+         
         </ScrollView>
       </View>
     </View>
@@ -282,8 +265,6 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     width: "90%",
-    // backgroundColor: ColorPalate.white,
-    // elevation:5,
     borderRadius: 10,
     padding: 20,
   },
@@ -303,8 +284,6 @@ const styles = StyleSheet.create({
   },
   dropdownContainer: {
     marginBottom: 12,
-    // paddingVertical: 8,
-    // paddingHorizontal: 6,
     backgroundColor: ColorPalate.lgrey,
     borderRadius: 5,
     fontSize: 16,

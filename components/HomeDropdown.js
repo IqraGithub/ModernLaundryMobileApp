@@ -38,7 +38,6 @@ const HomeDropdown = ({ options, onSelect, value, selectedValue }) => {
 
           dispatch(setCurrentCustomerData(currentCustomer));
         } catch (error) {
-          // console.log(error);
           console.log("Got An Error While Changing Emirate ", error);
         }
       };
@@ -76,7 +75,6 @@ const HomeDropdown = ({ options, onSelect, value, selectedValue }) => {
               key={index}
               style={styles.dropdownListItem}
               onPress={() => {
-                console.log(option);
                 return handleOptionSelect(option[value]);
               }}
             >
@@ -139,7 +137,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: ColorPalate.lgrey,
     borderRadius: 5,
-    // maxHeight: 250,
     overflow: "scroll",
     zIndex: 10000,
     marginTop: 4,

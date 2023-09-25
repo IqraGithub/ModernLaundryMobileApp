@@ -6,7 +6,6 @@ import Title from '../../components/Title';
 import {postSignUp} from '../../utils/api';
 import {AuthContext} from '../../store/checkAuth';
 import LoadingOverlay from '../../UI/LoadingOverlay';
-import {useNavigation} from '@react-navigation/native';
 import { showMessage } from 'react-native-flash-message';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
@@ -19,18 +18,12 @@ const Signup = ({navigation}) => {
     if (isFieldEmpty) {
       showMessage({
         message: "One or more fields are empty",
-        // description: "The entered passwords do not match. Please try again.",
         icon:()=><MaterialIcons name="error" size={24} color="white" />,
         type: "danger",
       });
-      console.log('One or more fields are empty');
       return;
     }
     if(userData.Password != userData.confirmPassword){
-      // Alert.alert(
-      //   "Password Error",
-      //   "The entered passwords do not match. Please try again.",
-      // );
       showMessage({
         message: "Password Error",
         description: "The entered passwords do not match. Please try again.",
@@ -44,10 +37,8 @@ const Signup = ({navigation}) => {
       const response = await postSignUp(userData);
       console.log('Response', response);
 
-      console.log('1')
       if (response.errors.email) {
         console.log('this is an existing email. ', response.errors.email);
-        // Alert.alert('Existing Email', 'please try another email');
         showMessage({
           message: "Existing Email",
           description: "please try another email",
@@ -56,7 +47,6 @@ const Signup = ({navigation}) => {
         });
         return;
       }
-      console.log('1')
       setIsUserSigningUp(true);
 
       if (response) {
@@ -66,8 +56,6 @@ const Signup = ({navigation}) => {
           type: "success",
         });
         navigation.replace('SignIn');
-        // authContext.authenticate(response.userId);
-        // navigation.navigate('Home', {id: response.userId});
       } else {
         // Handle signup failure
         showMessage({
@@ -75,11 +63,9 @@ const Signup = ({navigation}) => {
           icon:()=><MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
-        console.log('Signup failed');
       }
     } catch (error) {
       console.log('Error occurred during signup:', error);
-      // Handle error
     }
     setIsUserSigningUp(false);
   };

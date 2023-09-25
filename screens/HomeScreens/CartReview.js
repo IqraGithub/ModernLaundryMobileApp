@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Alert,
@@ -9,7 +9,6 @@ import {
   View,
 } from "react-native";
 
-import Toast, { BaseToast, ErrorToast } from "react-native-toast-message";
 
 import {
   emptyProducts,
@@ -22,41 +21,20 @@ import {
 
 import { postOrder } from "../../utils/api";
 import {
-  showToast,
   confirmationAlert,
-  changeEmirateTo,
   formatDate,
 } from "../../utils/helperFunctions";
 
 import { ColorPalate, MyFonts } from "../../constants/var";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useCustomerId from "../../components/customHooks/customerId";
-import useCurrentCustomer from "../../components/customHooks/currentCustomer";
 import { showMessage } from "react-native-flash-message";
-
-// const purchaseType = [
-//   {
-//     id: '1',
-//     type: 'Cash on delivery',
-//   },
-//   {
-//     id: '2',
-//     type: 'Cash on delivery',
-//     //
-//   },
-//   {
-//     id: '3',
-//     type: 'pay online',
-//     //
-//   },
-// ];
 
 const deliveryTypes = [
   { id: 1, name: "Standard" },
   { id: 2, name: "Express" },
   { id: 3, name: "Sameday" },
 ];
-
 
 const CartOld = ({ navigation, route }) => {
   const emirates = [
@@ -95,13 +73,12 @@ const CartOld = ({ navigation, route }) => {
       () => console.log("Cancel Pressed"),
       () => {
         dispatch(removeFromCart(itemID));
-        // showToast("error", "Item removed", "Your item has been removed.");
         showMessage({
           message: "Item removed",
           description: "Your item has been removed.",
-          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          icon: () => <MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
-        });  
+        });
       }
     );
   };
@@ -164,6 +141,7 @@ const CartOld = ({ navigation, route }) => {
       )?.branchId,
       SpecialRequests: notes,
       customerID: customerId,
+      custName: customerId,
       subtotal: totalPrice.toString(),
       deliveryType: cartItems[0]?.deliveryType.toString(),
       pickupDate: pickupDateString,
@@ -202,10 +180,10 @@ const CartOld = ({ navigation, route }) => {
         showMessage({
           message: "Order Error",
           description: "There is no item to order",
-          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          icon: () => <MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
-        navigation.navigate("Category")
+        navigation.navigate("Category");
         return;
       }
       confirmationAlert(
@@ -224,12 +202,18 @@ const CartOld = ({ navigation, route }) => {
                       emirate: currentCustomer?.rate_code,
                     });
 
-                            showMessage({
-          message: "Order Confirmed",
-          description: "Your Order Has Been Confirmed", 
-          icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
-          type: "success",
-        });
+                    showMessage({
+                      message: "Order Confirmed",
+                      description: "Your Order Has Been Confirmed",
+                      icon: () => (
+                        <MaterialIcons
+                          name="check-circle"
+                          size={24}
+                          color="white"
+                        />
+                      ),
+                      type: "success",
+                    });
 
                     dispatch(emptyProducts());
                   } else {
@@ -239,15 +223,11 @@ const CartOld = ({ navigation, route }) => {
                 .catch((e) => {
                   console.log("Got an error while postin the order ", e);
                 });
-              // console.log("response on post order ", response.json);
-              // console.log(
-              //   "response on post order 2 ",
-              //   JSON.stringify(response)
-              // );
+
               console.log(data);
             }
           } catch (e) {
-            // console.log("may be your api is not fetched correctly");
+            console.log("may be your api is not fetched correctly");
           }
         }
       );
@@ -259,7 +239,7 @@ const CartOld = ({ navigation, route }) => {
   const renderItem = ({ item }) => {
     return (
       <View style={[styles.item]}>
-        <Toast />
+        
         <View style={{ flex: 2 }}>
           <Text style={[styles.itemName, { fontSize: 17 }]}>{item.name}</Text>
           <Text style={[styles.itemName, { color: ColorPalate.dgrey }]}>
@@ -316,8 +296,6 @@ const CartOld = ({ navigation, route }) => {
 
   return (
     <View style={[styles.container]}>
-      {/* <View style={{ flex: 1 }}>  */}
-      {/* <Toast config={toastConfig} /> */}
 
       <FlatList
         style={{ zIndex: -1 }}

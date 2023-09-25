@@ -92,7 +92,6 @@ const cartSlice = createSlice({
     updateDates(state, action) {
       const pickupDate = action.payload;
       state.products = state.products.map(p => {
-        // const pickupDate = new Date()
         switch (p.deliveryType) {
           case '1':
             p.pickupDate = pickupDate;
@@ -109,7 +108,6 @@ const cartSlice = createSlice({
             case '3':
               p.pickupDate = pickupDate;
               p.deliveryDate = new Date(new Date(pickupDate).setHours(pickupDate.getHours() + 12));
-            //   p.deliveryDate = new Date(pickupDate.getTime() + (12 * 60 * 60 * 1000));
             break;
           default:
             console.log('something went wrong');

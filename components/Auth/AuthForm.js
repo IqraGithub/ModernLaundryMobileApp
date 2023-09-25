@@ -1,14 +1,9 @@
-// // ====================
-
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import MyGradientButton from "../MyGradientButton";
-
 import Input from "./Input";
-import { Picker } from "@react-native-picker/picker";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import { getArea, getEmirates, postSignUp } from "../../utils/api";
-import { showToast } from "../../utils/helperFunctions";
 import { Text } from "react-native";
 import Dropdown from "../Dropdown";
 import { Pressable } from "react-native";
@@ -48,7 +43,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
         ).RateCodeID;
         const filtered = AREA?.data.filter((i) => i.emirate === rateCodeId);
 
-        console.log("filtered ==> ", filtered);
         setApiArea(filtered);
       } catch (error) {
         console.log(error);
@@ -82,9 +76,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
       case "lastName":
         setEnteredLastName(enteredValue);
         break;
-      // case 'emirate':
-      //   setEnteredEmirate(enteredValue);
-      //   break;
       case "alterContactNumber":
         setEnteredAlternativeContactNumber(enteredValue);
         break;
@@ -113,17 +104,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
   }
 
   function submitHandler() {
-    // const data = {
-    //   firstName: enteredFirstName || "hardcoded",
-    //   lastName: enteredLastName || "lastNameHard" ,
-    //   rate_code: enteredEmirate || 'abu dhabi',
-    //   area: enteredArea || 'area 51',
-    //   streetName: enteredStreetName || "streetNamehardcoded",
-    //   apartment: enteredApartment|| "apartmenthardcoded",
-    //   contactNumber: enteredContactNumber|| "1113336569",
-    //   email: enteredEmail|| "emaailhardcoded@gmail.com",
-    //   password: enteredPassword|| "harddfsdoded123",
-    // }
 
     const data = {
       first_name: enteredFirstName,
@@ -139,7 +119,6 @@ function AuthForm({ isLogin, onSubmit, credentialsInvalid }) {
       Password: enteredPassword,
       confirmPassword : EnteredConfirmPassword
     };
-    console.log('confirm password auth form ',)
     onSubmit(data);
   }
 const navigation = useNavigation()

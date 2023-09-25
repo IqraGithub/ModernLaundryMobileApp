@@ -49,32 +49,6 @@ const OrderDetailsScreen = ({ route }) => {
             <Text style={styles.greyStyle}>Emirate</Text>
             <Text style={styles.value}>{order?.emirate_id}</Text>
           </View>
-
-          {/* <View style={styles.orderDetailItem}>
-  <Text style={styles.greyStyle}>Address</Text>
-  <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
-    <Text style={styles.value}>
-      {currentCustomer?.apartment && currentCustomer?.apartment + " "}
-      {currentCustomer?.street_name && currentCustomer?.street_name + ", "}
-      {currentCustomer?.area && currentCustomer?.area + ", "}
-      {currentCustomer?.rate_code}
-    </Text>
-  </View>
-  
-{/* </View> */}
-
-          {/* </View> */}
-          {/* <View style={styles.orderDetailItem}>
-            <Text style={styles.greyStyle}>Address</Text>
-            
-              <Text style={[styles.value]}>
-                {currentCustomer?.apartment && currentCustomer?.apartment + " "}
-                {currentCustomer?.street_name &&
-                  currentCustomer?.street_name + ", "}
-                {currentCustomer?.area && currentCustomer?.area + ", "}
-                {currentCustomer?.rate_code}
-              </Text>
-          </View> */}
         </View>
 
         <View
@@ -130,18 +104,14 @@ export default OrderDetailsScreen;
 const styles = StyleSheet.create({
   rootContainer: {
     flex: 1,
-    // justifyContent: 'center',
     alignItems: "center",
-    // marginTop: 20,
   },
   container: {
-    // flex:1,
     borderColor: ColorPalate.dgrey,
     borderRadius: 10,
     paddingVertical: 15,
     paddingHorizontal: 8,
     width: "100%",
-    // border
   },
   orderDateContainer: {
     borderWidth: 1,
@@ -167,16 +137,13 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     width: "100%",
 
-    flexWrap:'wrap'
+    flexWrap: "wrap",
   },
   value: {
     fontSize: 15,
     paddingHorizontal: 10,
     fontFamily: MyFonts.fontregular,
     color: ColorPalate.themeprimary,
-    // flexShrink: 1,
-    // width:'100%',
-
   },
 
   itemContainer: {
@@ -185,7 +152,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: ColorPalate.themesecondary,
     marginHorizontal: 5,
-    // borderWidth: 1,
   },
   text: {
     color: ColorPalate.themeprimary,

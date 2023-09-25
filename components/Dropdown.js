@@ -15,7 +15,6 @@ const Dropdown = ({options, onSelect, value, label, selectedValue}) => {
   };
 
   useEffect(() => {
-    // options && !selectedValue ? setSelectedOption (options[0][value]) : null
     selectedValue ? setSelectedOption(selectedValue) : null;
   }, []);
   return (
@@ -76,14 +75,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     flexDirection: 'row',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
   },
   dropdownButtonText: {
     fontFamily: MyFonts.fontregular,
@@ -98,7 +89,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: ColorPalate.lgrey,
     borderRadius: 5,
-    // maxHeight: 250,
     overflow: 'scroll',
     zIndex: 1,
     marginTop: 4,

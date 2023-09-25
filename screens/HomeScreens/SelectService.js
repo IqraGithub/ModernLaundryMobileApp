@@ -11,8 +11,6 @@ import DeliveryTypeBtn from '../../components/DeliveryTypeBtn';
 import {useDispatch, useSelector} from 'react-redux';
 import {Totaling} from '../../components/Totaling';
 import {
-  selectCartTotalPrice,
-  selectCartTotalQuantity,
   updateDates,
 } from '../../store/redux/reduxToolkit/cartSlice';
 
@@ -36,7 +34,6 @@ const SelectService = () => {
   }
 }, [dates]);
 
-// console.log('mount')
    // Get total price, total quantity, and cart items from the Redux store
   useEffect(() => {
     dispatch(updateDates(dates['pickupDate']));
@@ -85,7 +82,8 @@ const SelectService = () => {
         <Pressable onPress={() => handlePickerOpen('pickupDate')}>
           <View style={styles.input}>
             <Text style={styles.inputText}>
-              {dates.pickupDate.toLocaleDateString()}
+              {/* {dates.pickupDate.toLocaleDateString()} */}
+              {dates.pickupDate.toLocaleDateString('en-GB')}
             </Text>
           </View>
         </Pressable>
@@ -98,7 +96,7 @@ const SelectService = () => {
           disabled={true}>
           <View style={styles.input}>
             <Text style={styles.inputText}>
-              {(cartItems[0]?.deliveryDate || dates.deliveryDate).toLocaleDateString()}
+              {(cartItems[0]?.deliveryDate || dates.deliveryDate).toLocaleDateString('en-GB')}
             </Text>
           </View>
         </Pressable>

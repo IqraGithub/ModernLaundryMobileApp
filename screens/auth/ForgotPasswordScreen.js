@@ -1,8 +1,7 @@
-import { View, Text, Pressable, Alert } from "react-native";
+import { View, Text } from "react-native";
 import React from "react";
 import Input from "../../components/Auth/Input";
 import { useState } from "react";
-import { ColorPalate, MyFonts } from "../../constants/var";
 import MyGradientButton from "../../components/MyGradientButton";
 import commonStyle from "./commonStyle";
 import { putProfile } from "../../utils/api";
@@ -35,17 +34,11 @@ try{
        navigation.navigate("SignIn") ,
        showMessage({
         message: "Password Has Been Changed",
-        // description: "The entered passwords do not match. Please try again.",
         icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
         type: "success",
       })
       ): null;
   }else{
-    // Alert.alert(
-    //   "Password Error",
-    //   "The entered passwords do not match. Please try again.",
-    // );
-
     showMessage({
       message: "Password Error",
       description: "The entered passwords do not match. Please try again.",
@@ -85,27 +78,3 @@ try{
 };
 
 export default ForgotPasswordScreen;
-
-// const commonStyle = commonStyleheet.create({
-//   rootContainer: {
-//     flex: 1,
-//     justifyContent: "center",
-//     // alignItems: "center",
-//   },
-//   inputContainer: {
-//     width: "90%",
-//     alignSelf: "center",
-//   },
-//   text: {
-//     alignSelf: "center",
-//     fontSize: 25,
-//     color: ColorPalate.themeprimary,
-//     fontFamily:MyFonts.fontmid,
-//     marginBottom: 20,
-//   },
-//   buttonContainer:{
-//     width:'90%',
-//     alignSelf:'center',
-//     marginTop:20
-//   }
-// });

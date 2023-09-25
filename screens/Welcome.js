@@ -1,12 +1,10 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React from 'react';
-import {View, Text, Pressable, Image, StyleSheet, Button} from 'react-native';
+import {View,  Pressable, Image, StyleSheet} from 'react-native';
 import Caption from '../components/Caption';
 import MyGradientButton from '../components/MyGradientButton';
 import Title from '../components/Title';
-// import {ColorPalate} from '../constants/ColorPalate';
 import {ColorPalate, MyFonts} from '../constants/var';
-import { getCustomers } from '../utils/api';
 
 const Welcome = ({navigation}) => {
   const register = async () => {
@@ -17,12 +15,6 @@ const Welcome = ({navigation}) => {
 
   return (
     <View style={styles.root}>
-     {/* <Image
-        source={{
-          uri: 'http://localhost:8081/assets/welcome.png',
-        }}
-        style={{width: 300, height: 300}}
-      /> */}
       <Image
         source={require("../assets/welcome.png")}
         style={{width: 300, height: 300}}
