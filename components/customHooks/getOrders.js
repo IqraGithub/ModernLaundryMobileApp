@@ -15,9 +15,11 @@ const useCurrentUserOrders =()=>{
       async function fetchOrders() {
         // Call API to retrieve all orders
         try {
-            const allOrders = await getOrders();
+            const allOrders = await getOrders(customerId);
             // Filter orders to include only those for the current customer
-            const currentUserOrders = allOrders?.data?.filter(o => o.customerID == customerId);
+            // const currentUserOrders = allOrders?.data?.filter(o => o.customerID == customerId);
+            const currentUserOrders = allOrders?.data
+            console.log("CurrentCustomer",currentUserOrders)
             
             // Update state with filtered orders and set loading flag to false
             if (isActive) {

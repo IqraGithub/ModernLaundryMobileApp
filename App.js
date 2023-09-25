@@ -96,7 +96,7 @@ function Navigation() {
   const authCntx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {!authCntx.isAuthendicate ? <AuthStack /> :  <AuthenticatedStack />}
+      {!authCntx.isAuthendicate ? <AuthStack /> : <AuthenticatedStack />}
     </NavigationContainer>
   );
 }
@@ -122,7 +122,14 @@ function TokenCheck() {
 
 const App = () => {
   useEffect(() => {
-    RNBootSplash.hide();
+    const clearTime = setTimeout(() => {
+      console.log("HIDING SPLASH SCREEN")
+      RNBootSplash.hide();
+    }, 3000);
+
+    return () => {
+      clearTimeout(clearTime);
+    };
   }, []);
   return (
     <>

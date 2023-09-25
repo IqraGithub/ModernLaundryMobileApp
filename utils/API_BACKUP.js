@@ -34,9 +34,9 @@ async function getProducts() {
   }
 }
 
-async function getCustomers() {
+async function getCustomers(customerID) {
   try {
-    const response = await axios.get(`${API_URL}/jw/api/list/list_customersAPI`, config);
+    const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI${customerID && '?serialNo=' + customerID}`, config);
     const data = await response.data;
     return data;
   } catch (error) {
@@ -69,7 +69,9 @@ async function getDeliveryTypes() {
 
 async function getEmirates() {
   try {
-    const response = await axios.get(`${API_URL}/jw/api/list/list_rateCodesAPI`, config);
+
+      var response = await axios.get(`${API_URL}/jw/api/list/list_rateCodesAPI`, config);
+    
     const data = response.data;
     return data.data
   } catch (error) {
@@ -99,9 +101,9 @@ const postOrder = async (data) => {
 
 }
 
-const getOrders = async () => {
+const getOrders = async (customerId) => {
   try {
-    const response = await axios.get(`${API_URL}/jw/api/list/order_api`, config);
+    const response = await axios.get(`${API_URL}/jw/api/list/order_api?customerID=${customerId}`, config);
     return response.data; 
   } catch (error) {
     console.error(error);
