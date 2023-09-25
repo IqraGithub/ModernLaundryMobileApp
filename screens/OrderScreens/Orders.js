@@ -7,13 +7,11 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
-import { useCallback, useEffect, useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 import Toast from "react-native-toast-message";
-import useCustomerId from "../../components/customHooks/customerId";
 import useCurrentUserOrders from "../../components/customHooks/getOrders";
 
-const deliveryTypes = [
+export const deliveryTypes = [
   { id: 1, name: "Standard" },
   { id: 2, name: "Express" },
   { id: 3, name: "Sameday" },
@@ -21,8 +19,9 @@ const deliveryTypes = [
 const OrderScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const o = useCurrentUserOrders()
-  let filteredOrder = o?.slice()?.reverse();
-  
+  let filteredOrder = o?.slice()?.reverse(); 
+  // let filteredOrder = o?.slice()?.sort((a, b) => b.id - a.id);
+
   useEffect(() => {
     filteredOrder ? setIsLoading(false) : setIsLoading(true)
   }, [filteredOrder]);

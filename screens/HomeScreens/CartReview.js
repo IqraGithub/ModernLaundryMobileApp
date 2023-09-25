@@ -9,7 +9,6 @@ import {
   View,
 } from "react-native";
 
-
 import {
   emptyProducts,
   removeFromCart,
@@ -20,15 +19,13 @@ import {
 } from "../../store/redux/reduxToolkit/cartSlice";
 
 import { postOrder } from "../../utils/api";
-import {
-  confirmationAlert,
-  formatDate,
-} from "../../utils/helperFunctions";
+import { confirmationAlert, formatDate } from "../../utils/helperFunctions";
 
 import { ColorPalate, MyFonts } from "../../constants/var";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import useCustomerId from "../../components/customHooks/customerId";
 import { showMessage } from "react-native-flash-message";
+import { useEffect } from "react";
 
 const deliveryTypes = [
   { id: 1, name: "Standard" },
@@ -37,7 +34,7 @@ const deliveryTypes = [
 ];
 
 const CartOld = ({ navigation, route }) => {
-  const emirates = [
+  const defaultBranch = [
     { branchId: "38", RateCodeID: "3", rate_code: "Dubai" },
     { branchId: "16", RateCodeID: "4", rate_code: "Umm Al Quwain " },
     { branchId: "24", RateCodeID: "1", rate_code: "Ras Al Khaimah" },
@@ -54,16 +51,65 @@ const CartOld = ({ navigation, route }) => {
   const [orderData, setOrderData] = useState(null);
   const dispatch = useDispatch();
   const cartItems = useSelector(selectAllCartItems);
+  console.log('cartItem =================> ', cartItems)
   const { pickupDateString, deliveryDateString, notes } = route.params;
 
   const totalPrice = useSelector(selectCartTotalPrice);
   const totalQty = useSelector(selectCartTotalQuantity);
+
+  const [CalculatedTotalPrice,setCalculatePrice] = useState(0);
 
   const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId);
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
+
+  const {
+    first_name,
+    last_name,
+    rate_code,
+    area,
+    street_name,
+    apartment,
+    address,
+    contact_number,
+    alter_Contact_Number,
+    email,
+    discount: customerDiscount,
+  } = currentCustomer;
+// const [calculatedTotalPrice, setCalculatedPrice] = useState(0)
+
+
+// useEffect(()=>{},[customerDiscount])
+// console.log('cart')
+  function calculateDiscount() {
+    let total = 0;
+    let calculateTotalPrice = 0;
+
+    cartItems.forEach(item => {
+        let itemDiscount = parseFloat(item.service.discount);
+        let price = parseFloat(item.service.price);
+        let quantity = item.quantity;
+
+        calculateTotalPrice += price * quantity
+        // Use the larger discount
+        let discount = Math.max(itemDiscount, +customerDiscount);
+
+        // Calculate the discounted price
+        let discountedPrice = price - (price * discount / 100);
+
+        // Add to the total
+        total += discountedPrice * quantity;
+    });
+
+    return total;
+}
+
+const calculateTotalPrice = calculateDiscount();
+console.log("total discount ", calculateTotalPrice)
+// console.log("total price ", calculateTotalPrice)
+// console.log("total calculated prices ", calculateTotalPrice - total)
 
   // Function to handle item deletion
   const handleDeleteItem = (itemID) => {
@@ -105,18 +151,7 @@ const CartOld = ({ navigation, route }) => {
   // Function to confirm and place the order
   async function confirmOrder() {
     // Prepare the data object with the necessary order details
-    const {
-      first_name,
-      last_name,
-      rate_code,
-      area,
-      street_name,
-      apartment,
-      address,
-      contact_number,
-      alter_Contact_Number,
-      email,
-    } = currentCustomer;
+
     if (
       !first_name ||
       !last_name ||
@@ -136,17 +171,18 @@ const CartOld = ({ navigation, route }) => {
     }
 
     const data = {
-      branch: emirates.find(
+      branch: defaultBranch.find(
         (emirate) => emirate?.rate_code === currentCustomer?.rate_code
       )?.branchId,
       SpecialRequests: notes,
       customerID: customerId,
       custName: customerId,
-      subtotal: totalPrice.toString(),
+      // subtotal: totalPrice.toString(),
+      subtotal: (calculateTotalPrice).toFixed(2).toString(),
       deliveryType: cartItems[0]?.deliveryType.toString(),
       pickupDate: pickupDateString,
       order_source: "Mobile",
-      emirate_id: emirates.find(
+      emirate_id: defaultBranch.find(
         (emirate) => emirate?.rate_code === currentCustomer?.rate_code
       )?.RateCodeID,
       orderDelete: "-",
@@ -158,7 +194,17 @@ const CartOld = ({ navigation, route }) => {
           ).id,
           DELIVERY: item.delivery.type,
           qty: item.quantity.toString(),
-          Price: item.service.price.toString(),
+          // Price: item.service.price.toString(),
+          Price: (() => {
+            let { discount: itemDiscount } = item.service;
+            itemDiscount = +itemDiscount;
+            const bigDiscount =
+              +customerDiscount > itemDiscount
+                ? +customerDiscount
+                : itemDiscount;
+            let CalcPrice = (item.service.price * bigDiscount) / 100;
+            return (item.service.price - CalcPrice).toFixed(2);
+          })(),
         });
         return result;
       }, []),
@@ -169,14 +215,6 @@ const CartOld = ({ navigation, route }) => {
     try {
       // Display confirmation alert before placing the order
       if (data.order_item.length <= 0) {
-        // Alert.alert("Order Error", "There is no item to order", [
-        //   {
-        //     text: "Ok",
-        //     style: {},
-        //     onPress: () => navigation.navigate("Category"),
-        //   },
-        // ]);
-
         showMessage({
           message: "Order Error",
           description: "There is no item to order",
@@ -235,11 +273,24 @@ const CartOld = ({ navigation, route }) => {
       console.log(error);
     }
   }
-
   const renderItem = ({ item }) => {
+    let { discount: itemDiscount } = item.service;
+    itemDiscount = +itemDiscount;
+    console.log("customerDiscount => ", +customerDiscount);
+    console.log(`${item.name} => `, itemDiscount);
+
+    const bigDiscount = customerDiscount > itemDiscount ? +customerDiscount : itemDiscount;
+    console.log(bigDiscount)
+
+
+    const calculatedPrice = () => {
+      let CalcPrice = (item.service.price * bigDiscount) / 100;
+      return item.service.price - CalcPrice;
+      // return item.service.price
+    };
+
     return (
       <View style={[styles.item]}>
-        
         <View style={{ flex: 2 }}>
           <Text style={[styles.itemName, { fontSize: 17 }]}>{item.name}</Text>
           <Text style={[styles.itemName, { color: ColorPalate.dgrey }]}>
@@ -272,7 +323,7 @@ const CartOld = ({ navigation, route }) => {
             </View>
 
             <Text style={styles.itemPrice}>
-              AED {(item.quantity * item.service.price).toFixed(2)}
+              AED {(item.quantity * calculatedPrice()).toFixed(2)}
             </Text>
 
             <Pressable
@@ -296,7 +347,6 @@ const CartOld = ({ navigation, route }) => {
 
   return (
     <View style={[styles.container]}>
-
       <FlatList
         style={{ zIndex: -1 }}
         data={cartItems}
@@ -390,9 +440,7 @@ const CartOld = ({ navigation, route }) => {
                   {" "}
                   address{" : "}
                 </Text>
-                {/* <Text style={styles.reviewOrderTexts}>
-                {currentCustomer?.address}
-              </Text>  */}
+
                 <Text style={styles.reviewOrderTexts}>
                   {currentCustomer?.apartment &&
                     currentCustomer?.apartment + " "}
@@ -413,7 +461,7 @@ const CartOld = ({ navigation, route }) => {
                   {" "}
                   Total{" "}
                 </Text>
-                <Text style={styles.reviewOrderTexts}>{totalPrice}</Text>
+                <Text style={styles.reviewOrderTexts}>{calculateTotalPrice}</Text>
               </View>
 
               <View style={styles.reviewTextsContainer}>

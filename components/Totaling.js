@@ -22,7 +22,6 @@ export const Totaling = ({ navigateTo, detailRoute }) => {
     } else {
       setIsDisabled(true);
     }
-    // console.log(isDisabled);
   }, [totalPrice]);
 
   return (

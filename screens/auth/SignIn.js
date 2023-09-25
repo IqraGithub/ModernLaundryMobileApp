@@ -50,6 +50,7 @@ const SignIn = ({ navigation }) => {
       console.log("user", user);
 
       if (user) {
+        console.log("========== user created ===========")
         console.log("userId", user.serialNo);
         showMessage({
           message: "Welcome Back!",

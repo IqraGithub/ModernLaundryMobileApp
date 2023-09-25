@@ -41,7 +41,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
   );
 
   const [selectedService, setSelectedService] = useState(
-    cartItem ? cartItem.service : { type: undefined, price: 0 }
+    cartItem ? cartItem.service : { type: undefined, price: 0, discount:0 }
   );
   const [selectedDelivery, setSelectedDelivery] = useState(
     cartItem ? cartItem.delivery : { type: undefined }
@@ -64,8 +64,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
         (obj) =>
           obj.deliveryType === deliveryType && obj.emirate_id == emirateId
       );
-      console.log('emirateId ------------->',emirateId)
-      console.log('selectedEmirate -------------> ',selectedEmirate)
+
       dispatch(
         setFilteredData({
           productId: product.id,
@@ -152,6 +151,8 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
     setSelectedService({
       type: service.service,
       price: Number(parseFloat(service.price).toFixed(2)) ?? 1,
+      discount:service.discount
+      
     });
 
     // If a cart item exists, dispatch the action to updat/e the item's service type
@@ -161,6 +162,7 @@ const ProductItem = React.memo(({ product, index, selectedEmirate }) => {
           id: product.id,
           serviceType: service.service,
           servicePrice: Number(parseFloat(service.price).toFixed(2)) ?? 1,
+          discount:service.discount,
           deliveryType,
         })
       );

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { View, Pressable, Text, StyleSheet, ScrollView } from "react-native";
-import { ColorPalate, MyFonts } from "../constants/var";
+import { ColorPalate, MyFonts } from "../../constants/var";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import { useEffect } from "react";
-import useCustomerId from "./customHooks/customerId";
-import useCurrentCustomer from "./customHooks/currentCustomer";
-import { putProfile } from "../utils/api";
-import { setCurrentCustomerData } from "../store/redux/reduxToolkit/filteredDataSlice";
+import useCustomerId from "../customHooks/customerId";
+import useCurrentCustomer from "../customHooks/currentCustomer";
+import { putProfile } from "../../utils/api";
+import { setCurrentCustomerData } from "../../store/redux/reduxToolkit/filteredDataSlice";
 import { useDispatch } from "react-redux";
 import { useCallback } from "react";
 
@@ -59,7 +59,7 @@ const HomeDropdown = ({ options, onSelect, value, selectedValue }) => {
         onPress={toggleDropdown}
       >
         <View style={styles.dropdownButtonContent}>
-          <Text style={styles.dropdownButtonText}>{showEmirate || "Home"}</Text>
+          <Text style={styles.dropdownButtonText}>{showEmirate || "Ras Al Khaima"}</Text>
           <MaterialIcons
             name={isDropdownOpen ? "keyboard-arrow-up" : "keyboard-arrow-down"}
             size={28}

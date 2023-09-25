@@ -96,8 +96,7 @@ function Navigation() {
   const authCntx = useContext(AuthContext);
   return (
     <NavigationContainer>
-      {!authCntx.isAuthendicate && <AuthStack />}
-      {authCntx.isAuthendicate && <AuthenticatedStack />}
+      {!authCntx.isAuthendicate ? <AuthStack /> :  <AuthenticatedStack />}
     </NavigationContainer>
   );
 }
@@ -117,10 +116,7 @@ function TokenCheck() {
     checkStoredToken();
   }, []);
 
-  if (isTryingToLogging) {
-    return <LoadingOverlay message="wait a moment" />;
-  }
-
+  if (isTryingToLogging) return <LoadingOverlay message="wait a moment" />;
   return <Navigation />;
 }
 

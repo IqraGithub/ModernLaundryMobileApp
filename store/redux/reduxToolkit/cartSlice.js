@@ -57,13 +57,14 @@ const cartSlice = createSlice({
 
     // Reducer to update the service type of an item in the cart
     updateItemServiceType: (state, action) => {
-      const {id, serviceType, servicePrice, deliveryType} = action.payload;
+      const {id, serviceType, servicePrice, deliveryType,discount} = action.payload;
       const item = state.products.find(item => item.id === id);
       if (item) {
      
         item.service = {
           type: serviceType,
           price: servicePrice,
+          discount:discount
         };
       }
     },
@@ -81,11 +82,12 @@ const cartSlice = createSlice({
 
     // Reducer to update the delivery type and service price of an item in the cart
     updateDeliveryType(state, action) {
-      const {id, deliveryType, servicePrice} = action.payload;
+      const {id, deliveryType, servicePrice, discount} = action.payload;
       const product = state.products.find(p => p.id === id);
       if (product) {
         product.deliveryType = deliveryType;
         product.service.price = servicePrice;
+        product.service.discount = discount
       }
     },
 

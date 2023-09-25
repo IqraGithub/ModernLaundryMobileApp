@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { ColorPalate, MyFonts } from "../../constants/var";
 import ProductItem from "./ProductItem";
-import HomeDropdown from "../HomeDropdown";
+import HomeDropdown from "./HomeDropdown";
 import { useDispatch } from "react-redux";
 import useEmirates from "../customHooks/getEmirates";
 import useCustomerId from "../customHooks/customerId";
@@ -62,7 +62,6 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);
 
 
-  useEffect(() => {handleRefresh()}, []);
   const handleRefresh = useCallback(() => {
     const fetchData = async () => {
       try {
@@ -77,12 +76,14 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
         setIsLoading(false);
         setIsRefreshing(false);
         console.log('refreshed')
-
+        
       }
     };
-
+    
     fetchData();
-  }, []);
+  }, [selectedEmirate]);
+  
+  useEffect(() => {handleRefresh()}, [selectedEmirate]);
 
   // ------------------------------------
   const orders = useCurrentUserOrders();
@@ -165,6 +166,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
 
       <FlatList
   data={filteredData}
+  initialNumToRender={10}
   keyExtractor={(item) => item.itemID}
   renderItem={({ item, index }) => (
     <ProductItem
@@ -192,7 +194,6 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
 
   return (
     <View style={styles.container}>
-      {/* <View styles={[styles.collapseContainer]}> */}
       <View
         style={{
           height: 53,

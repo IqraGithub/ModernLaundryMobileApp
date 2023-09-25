@@ -5,12 +5,19 @@ import { getOrders } from "../../utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useCurrentCustomer from "../../components/customHooks/currentCustomer";
 import useCustomerId from "../../components/customHooks/customerId";
+// import { deliveryTypes } from "./Orders";
 
+export const deliveryTypes = [
+  { id: 1, name: "Standard" },
+  { id: 2, name: "Express" },
+  { id: 3, name: "Sameday" },
+];
 const OrderDetailsScreen = ({ route }) => {
   const customerId = useCustomerId();
   const currentCustomer = useCurrentCustomer(customerId);
 
   const { order } = route.params;
+  console.log("order", order)
   return (
     <View style={styles.rootContainer}>
       <View style={styles.container}>
@@ -48,6 +55,19 @@ const OrderDetailsScreen = ({ route }) => {
           <View style={styles.orderDetailItem}>
             <Text style={styles.greyStyle}>Emirate</Text>
             <Text style={styles.value}>{order?.emirate_id}</Text>
+          </View>
+
+          <View style={styles.orderDetailItem}>
+            <Text style={styles.greyStyle}>Status</Text>
+            <Text style={styles.value}>{order?.orderStatus}</Text>
+          </View>
+          <View style={styles.orderDetailItem}>
+            <Text style={styles.greyStyle}>Mode</Text>
+            {/* <Text style={styles.value}>{order?.status}</Text> */}
+            <Text style={styles.value}>
+              {/* {order.deliveryType} */}
+              {deliveryTypes?.find((i) => i.id == order.deliveryType)?.name}
+            </Text>
           </View>
         </View>
 
