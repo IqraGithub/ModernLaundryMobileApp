@@ -92,6 +92,7 @@ const MyTabView = ({ selectedTime, selectedServiceId }) => {
   const currentCustomer = useCurrentCustomer(customerId);
   const dispatch = useDispatch();
 
+
   useEffect(() => {
     dispatch(setCurrentCustomerData(currentCustomer));
     setSelectedEmirate(currentCustomer?.rate_code);

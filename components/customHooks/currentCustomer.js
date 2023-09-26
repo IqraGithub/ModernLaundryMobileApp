@@ -10,19 +10,10 @@ const useCurrentCustomer = (customerId, setIsLoading, email) => {
 
       async function fetchCustomers() {
         try {
-          // if (customerId) {
-            const customers = await getCustomers(customerId);
-            const filtered = customers?.data;
-            console.log(customerId);
-            console.log("Customer id exist", filtered)
-          // } else {
-            // var customers = await getCustomers();
-            // var filtered = customers?.data?.find(
-            //   (customer) => customer?.serialNo == customerId
-            //   );
-            //   console.log("Customer id NOT exist", customerId)
-          // }
-
+          const customers = await getCustomers(customerId);
+          const filtered = customers?.data[0];
+          // console.log(customerId);
+          // console.log("Customer id exist", filtered);
           if (isActive) {
             setCurrentCustomer(filtered);
           }

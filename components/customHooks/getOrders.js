@@ -19,7 +19,7 @@ const useCurrentUserOrders =()=>{
             // Filter orders to include only those for the current customer
             // const currentUserOrders = allOrders?.data?.filter(o => o.customerID == customerId);
             const currentUserOrders = allOrders?.data
-            console.log("CurrentCustomer",currentUserOrders)
+            // console.log("CurrentCustomer",currentUserOrders)
             
             // Update state with filtered orders and set loading flag to false
             if (isActive) {

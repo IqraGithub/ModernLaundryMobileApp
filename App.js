@@ -123,7 +123,7 @@ function TokenCheck() {
 const App = () => {
   useEffect(() => {
     const clearTime = setTimeout(() => {
-      console.log("HIDING SPLASH SCREEN")
+      // console.log("HIDING SPLASH SCREEN")
       RNBootSplash.hide();
     }, 3000);
 

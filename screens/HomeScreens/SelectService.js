@@ -1,46 +1,41 @@
-
-
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {Pressable} from 'react-native';
-import {ColorPalate, MyFonts} from '../../constants/var';
-import {TextInput} from 'react-native';
-import DeliveryTypeBtn from '../../components/DeliveryTypeBtn';
-import {useDispatch, useSelector} from 'react-redux';
-import {Totaling} from '../../components/Totaling';
-import {
-  updateDates,
-} from '../../store/redux/reduxToolkit/cartSlice';
+import React, { useEffect, useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Pressable } from "react-native";
+import { ColorPalate, MyFonts } from "../../constants/var";
+import { TextInput } from "react-native";
+import DeliveryTypeBtn from "../../components/DeliveryTypeBtn";
+import { useDispatch, useSelector } from "react-redux";
+import { Totaling } from "../../components/Totaling";
+import { updateDates } from "../../store/redux/reduxToolkit/cartSlice";
 
 const SelectService = () => {
+  const cartItems = useSelector((state) => state.cart.products);
 
-  const cartItems = useSelector(state => state.cart.products);
-
-   // Get total price, total quantity, and cart items from the Redux store
+  // Get total price, total quantity, and cart items from the Redux store
   const [dates, setDates] = useState({
     pickupDate: new Date(),
     deliveryDate: new Date(),
   });
   const [showPicker, setShowPicker] = useState(false);
-  const [pickerType, setPickerType] = useState('');
-  const [notes, setNotes] = useState('');
+  const [pickerType, setPickerType] = useState("");
+  const [notes, setNotes] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-  if (showPicker) {
-    handlePickerClose();
-  }
-}, [dates]);
+    if (showPicker) {
+      handlePickerClose();
+    }
+  }, [dates]);
 
-   // Get total price, total quantity, and cart items from the Redux store
+  // Get total price, total quantity, and cart items from the Redux store
   useEffect(() => {
-    dispatch(updateDates(dates['pickupDate']));
+    dispatch(updateDates(dates["pickupDate"]));
   }, [dates, cartItems[0]?.deliveryType]);
 
-   // Open date picker with the specified type
-  const handlePickerOpen = type => {
+  // Open date picker with the specified type
+  const handlePickerOpen = (type) => {
     setShowPicker(true);
     setPickerType(type);
   };
@@ -50,40 +45,33 @@ const SelectService = () => {
     setShowPicker(false);
   };
 
-  
   // Handle date change in the date picker
   const handleDateChange = (e, selectedDate) => {
-    const now = new Date()
-    // console.log("now", now)
+    const now = new Date();
     let currentDate = selectedDate || dates[pickerType];
 
-    if(currentDate < now){
-      currentDate = now
+    if (currentDate < now) {
+      currentDate = now;
     }
 
-
-
-    setDates({...dates, [pickerType]: currentDate});
+    setDates({ ...dates, [pickerType]: currentDate });
   };
-  
-
-
 
   // Handle notes change
-  const onNotesChange = text => {
+  const onNotesChange = (text) => {
     setNotes(text);
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={{flex: 3, marginHorizontal: 20, marginVertical: 15}}>
+      <View style={{ flex: 3, marginHorizontal: 20, marginVertical: 15 }}>
         <DeliveryTypeBtn />
         <Text style={styles.label}>Pick-up Date</Text>
-        <Pressable onPress={() => handlePickerOpen('pickupDate')}>
+        <Pressable onPress={() => handlePickerOpen("pickupDate")}>
           <View style={styles.input}>
             <Text style={styles.inputText}>
               {/* {dates.pickupDate.toLocaleDateString()} */}
-              {dates.pickupDate.toLocaleDateString('en-GB')}
+              {dates.pickupDate.toLocaleDateString("en-GB")}
             </Text>
           </View>
         </Pressable>
@@ -92,11 +80,14 @@ const SelectService = () => {
 
         {/* i disabled deliveryDate button */}
         <Pressable
-          onPress={() => handlePickerOpen('deliveryDate')}
-          disabled={true}>
+          onPress={() => handlePickerOpen("deliveryDate")}
+          disabled={true}
+        >
           <View style={styles.input}>
             <Text style={styles.inputText}>
-              {(cartItems[0]?.deliveryDate || dates.deliveryDate).toLocaleDateString('en-GB')}
+              {(
+                cartItems[0]?.deliveryDate || dates.deliveryDate
+              ).toLocaleDateString("en-GB")}
             </Text>
           </View>
         </Pressable>
@@ -114,7 +105,7 @@ const SelectService = () => {
         <Text style={styles.label}>Add special request</Text>
         <View style={styles.input}>
           <TextInput
-            style={[styles.inputText, {textAlignVertical: 'top'}]}
+            style={[styles.inputText, { textAlignVertical: "top" }]}
             multiline
             numberOfLines={4}
             onChangeText={onNotesChange}
@@ -126,9 +117,13 @@ const SelectService = () => {
       <Totaling
         navigateTo="CartReview"
         detailRoute={{
-          pickupDateString: (cartItems[0]?.pickupDate || dates.pickupDate).toLocaleDateString(),
-          deliveryDateString: (cartItems[0]?.deliveryDate || dates.deliveryDate).toLocaleDateString(),
-          
+          pickupDateString: (
+            cartItems[0]?.pickupDate || dates.pickupDate
+          ).toLocaleDateString(),
+          deliveryDateString: (
+            cartItems[0]?.deliveryDate || dates.deliveryDate
+          ).toLocaleDateString(),
+
           notes: notes,
         }}
       />

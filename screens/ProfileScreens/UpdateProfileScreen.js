@@ -50,7 +50,7 @@ const UpdateProfileScreen = ({ navigation }) => {
         const rateCodeId = emirates?.find(
           (emirate) => emirate.rate_code === selectedEmirate
         ).RateCodeID;
-        console.log("ratecodeid-> ", rateCodeId);
+        console.log("ratecodeid => ", rateCodeId);
         const filtered = AREA?.data.filter((i) => i.emirate === rateCodeId);
         setApiArea(filtered);
       } catch (error) {

@@ -14,7 +14,7 @@ const filteredDataSlice = createSlice({
       state.filteredPricing[productId] = filteredData;
     },
     setCurrentCustomerData: (state, action) => {
-      state.currentCustomerData = action.payload;
+      state.currentCustomerData = action?.payload;
     },
     setOrderData: (state, action) => {
       state.orderData = action.payload;

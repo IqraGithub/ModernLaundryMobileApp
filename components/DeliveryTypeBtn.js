@@ -35,7 +35,6 @@ const DeliveryTypeBtn = () => {
         // Get the service price from the first matching pricing option
         const servicePrice = filteredPricingArray[0].price;
         const DISCOUNT = filteredPricingArray[0].discount;
-console.log('servicePrice',filteredPricingArray)
         // Dispatch an action to update the delivery type and service price for the product
         dispatch(
           updateDeliveryType({

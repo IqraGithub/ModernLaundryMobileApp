@@ -17,11 +17,10 @@ const ProfileScreen = () => {
   const currentCustomer = useSelector(
     (state) => state?.filteredData?.currentCustomerData
   );
-
+  // console.log("currentCustomer in PROFILE ===> ", currentCustomer);
   useEffect(() => {
     currentCustomer ? setIsLoading(false) : setIsLoading(true);
   }, [currentCustomer]);
-
 
   const authCntx = useContext(AuthContext);
 
@@ -65,47 +64,45 @@ const ProfileScreen = () => {
   };
   return (
     <View style={styles.rootContainer}>
-      {
-        isLoading ? (
-          <View style={{}}>
-            <ActivityIndicator size="large" color={ColorPalate.themeprimary} />
-          </View>
-        ) : (
-          <View style={styles.detailContainer}>
-            <View style={styles.nameEditContainer}>
-              <Text style={styles.nameText}>
-                {currentCustomer?.first_name} {currentCustomer?.last_name}
-              </Text>
-              <Pressable onPress={() => navigation.navigate("UpdateProfile")}>
-                <Text style={styles.editText}>
-                  <MaterialIcons
-                    name="edit"
-                    size={20}
-                    color={ColorPalate.themeprimary}
-                  />
-                </Text>
-              </Pressable>
-            </View>
-
-            {currentCustomer?.contact_number && (
-              <Text style={styles.infoText}>
-                {currentCustomer?.contact_number}{" "}
-              </Text>
-            )}
-
-            {currentCustomer?.email && (
-              <Text style={styles.infoText}>{currentCustomer?.email}</Text>
-            )}
-            <Text style={styles.infoText}>
-              {currentCustomer?.apartment && currentCustomer?.apartment + " "}
-              {currentCustomer?.street_name &&
-                currentCustomer?.street_name + ", "}
-              {currentCustomer?.area && currentCustomer?.area + ", "}
-              {currentCustomer?.rate_code}. {""}
+      {isLoading ? (
+        <View style={{}}>
+          <ActivityIndicator size="large" color={ColorPalate.themeprimary} />
+        </View>
+      ) : (
+        <View style={styles.detailContainer}>
+          <View style={styles.nameEditContainer}>
+            <Text style={styles.nameText}>
+              {currentCustomer?.first_name} {currentCustomer?.last_name}
             </Text>
+            <Pressable onPress={() => navigation.navigate("UpdateProfile")}>
+              <Text style={styles.editText}>
+                <MaterialIcons
+                  name="edit"
+                  size={20}
+                  color={ColorPalate.themeprimary}
+                />
+              </Text>
+            </Pressable>
           </View>
-        )
-      }
+
+          {currentCustomer?.contact_number && (
+            <Text style={styles.infoText}>
+              {currentCustomer?.contact_number}{" "}
+            </Text>
+          )}
+
+          {currentCustomer?.email && (
+            <Text style={styles.infoText}>{currentCustomer?.email}</Text>
+          )}
+          <Text style={styles.infoText}>
+            {currentCustomer?.apartment && currentCustomer?.apartment + " "}
+            {currentCustomer?.street_name &&
+              currentCustomer?.street_name + ", "}
+            {currentCustomer?.area && currentCustomer?.area + ", "}
+            {currentCustomer?.rate_code}. {""}
+          </Text>
+        </View>
+      )}
 
       <View>
         <View style={styles.addressContainer}>

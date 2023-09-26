@@ -36,9 +36,21 @@ async function getProducts() {
 
 async function getCustomers(customerID) {
   try {
-    const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI${customerID && '?serialNo=' + customerID}`, config);
+    if(customerID){
+      
+      const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI${customerID && '?serialNo=' + customerID}`, config);
+      // const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI`, config);
+      const data = await response.data;
+      // console.log("RESPONSE GET CUSTOMER first ==> ", response);
+      return data;
+    }
+
+    const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI`, config);
     const data = await response.data;
+    console.log("RESPONSE GET CUSTOMER else ==> ", response);
     return data;
+
+
   } catch (error) {
     console.log(error);
     throw new Error('Unable to fetch customer data. Please try again later.');
@@ -70,8 +82,7 @@ async function getDeliveryTypes() {
 async function getEmirates() {
   try {
 
-      var response = await axios.get(`${API_URL}/jw/api/list/list_rateCodesAPI`, config);
-    
+    const response = await axios.get(`${API_URL}/jw/api/list/list_rateCodesAPI`, config);
     const data = response.data;
     return data.data
   } catch (error) {

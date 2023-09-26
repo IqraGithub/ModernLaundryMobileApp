@@ -30,7 +30,9 @@ const SignIn = ({ navigation }) => {
   const handleLogin = async ({ email, Password }) => {
 
     // Get customer data
+    // console.log("Customer data sign in ==> 1 ")
     const customerData = await getCustomers();
+    // console.log("Customer data sign in ==> 2",customerData)
 
     try {
       // Check if email and password are provided
@@ -43,6 +45,7 @@ const SignIn = ({ navigation }) => {
         });
         return;
       }
+
       // Find the user based on the provided email and password
       const user = customerData.data.find(
         (c) => c.email.toLowerCase() === email && c.Password === Password
@@ -50,7 +53,6 @@ const SignIn = ({ navigation }) => {
       console.log("user", user);
 
       if (user) {
-        console.log("========== user created ===========")
         console.log("userId", user.serialNo);
         showMessage({
           message: "Welcome Back!",

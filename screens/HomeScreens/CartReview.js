@@ -78,11 +78,7 @@ const CartOld = ({ navigation, route }) => {
     email,
     discount: customerDiscount,
   } = currentCustomer;
-// const [calculatedTotalPrice, setCalculatedPrice] = useState(0)
 
-
-// useEffect(()=>{},[customerDiscount])
-// console.log('cart')
   function calculateDiscount() {
     let total = 0;
     let calculateTotalPrice = 0;
@@ -107,9 +103,7 @@ const CartOld = ({ navigation, route }) => {
 }
 
 const calculateTotalPrice = calculateDiscount();
-console.log("total discount ", calculateTotalPrice)
-// console.log("total price ", calculateTotalPrice)
-// console.log("total calculated prices ", calculateTotalPrice - total)
+
 
   // Function to handle item deletion
   const handleDeleteItem = (itemID) => {
@@ -276,10 +270,11 @@ console.log("total discount ", calculateTotalPrice)
   const renderItem = ({ item }) => {
     let { discount: itemDiscount } = item.service;
     itemDiscount = +itemDiscount;
+    
+    const bigDiscount = customerDiscount > itemDiscount ? +customerDiscount : itemDiscount;
+
     console.log("customerDiscount => ", +customerDiscount);
     console.log(`${item.name} => `, itemDiscount);
-
-    const bigDiscount = customerDiscount > itemDiscount ? +customerDiscount : itemDiscount;
     console.log(bigDiscount)
 
 
