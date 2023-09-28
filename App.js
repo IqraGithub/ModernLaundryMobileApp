@@ -122,14 +122,16 @@ function TokenCheck() {
 
 const App = () => {
   useEffect(() => {
-    const clearTime = setTimeout(() => {
-      // console.log("HIDING SPLASH SCREEN")
       RNBootSplash.hide();
-    }, 3000);
 
-    return () => {
-      clearTimeout(clearTime);
-    };
+    // const clearTime = setTimeout(() => {
+    //   // console.log("HIDING SPLASH SCREEN")
+    //   RNBootSplash.hide();
+    // }, 3000);
+
+    // return () => {
+    //   clearTimeout(clearTime);
+    // };
   }, []);
   return (
     <>

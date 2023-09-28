@@ -51,13 +51,11 @@ const CartOld = ({ navigation, route }) => {
   const [orderData, setOrderData] = useState(null);
   const dispatch = useDispatch();
   const cartItems = useSelector(selectAllCartItems);
-  console.log('cartItem =================> ', cartItems)
+  console.log("cartItem =================> ", cartItems);
   const { pickupDateString, deliveryDateString, notes } = route.params;
 
   const totalPrice = useSelector(selectCartTotalPrice);
   const totalQty = useSelector(selectCartTotalQuantity);
-
-  const [CalculatedTotalPrice,setCalculatePrice] = useState(0);
 
   const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId);
@@ -82,28 +80,28 @@ const CartOld = ({ navigation, route }) => {
   function calculateDiscount() {
     let total = 0;
     let calculateTotalPrice = 0;
+    let discountPrice = 0;
 
-    cartItems.forEach(item => {
-        let itemDiscount = parseFloat(item.service.discount);
-        let price = parseFloat(item.service.price);
-        let quantity = item.quantity;
+    cartItems.forEach((item) => {
+      let itemDiscount = parseFloat(item.service.discount);
+      let price = parseFloat(item.service.price);
+      let quantity = item.quantity;
 
-        calculateTotalPrice += price * quantity
-        // Use the larger discount
-        let discount = Math.max(itemDiscount, +customerDiscount);
+      calculateTotalPrice += price * quantity;
+      // Use the larger discount
+      let discount = Math.max(itemDiscount, +customerDiscount);
 
-        // Calculate the discounted price
-        let discountedPrice = price - (price * discount / 100);
-
-        // Add to the total
-        total += discountedPrice * quantity;
+      // Calculate the discounted price
+      let discountedPrice = (price * discount) / 100;
+      discountPrice += discountedPrice;
+      // Add to the total
+      total += (price - discountedPrice) * quantity;
     });
 
-    return total;
-}
+    return [total, discountPrice];
+  }
 
-const calculateTotalPrice = calculateDiscount();
-
+  const [calculateSubTotalPrice, calculateDiscountPrice] = calculateDiscount();
 
   // Function to handle item deletion
   const handleDeleteItem = (itemID) => {
@@ -172,7 +170,7 @@ const calculateTotalPrice = calculateDiscount();
       customerID: customerId,
       custName: customerId,
       // subtotal: totalPrice.toString(),
-      subtotal: (calculateTotalPrice).toFixed(2).toString(),
+      subtotal: calculateSubTotalPrice.toFixed(2).toString(),
       deliveryType: cartItems[0]?.deliveryType.toString(),
       pickupDate: pickupDateString,
       order_source: "Mobile",
@@ -270,16 +268,17 @@ const calculateTotalPrice = calculateDiscount();
   const renderItem = ({ item }) => {
     let { discount: itemDiscount } = item.service;
     itemDiscount = +itemDiscount;
-    
-    const bigDiscount = customerDiscount > itemDiscount ? +customerDiscount : itemDiscount;
+
+    const bigDiscount =
+      customerDiscount > itemDiscount ? +customerDiscount : itemDiscount;
 
     console.log("customerDiscount => ", +customerDiscount);
     console.log(`${item.name} => `, itemDiscount);
-    console.log(bigDiscount)
-
+    console.log(bigDiscount);
 
     const calculatedPrice = () => {
       let CalcPrice = (item.service.price * bigDiscount) / 100;
+
       return item.service.price - CalcPrice;
       // return item.service.price
     };
@@ -445,7 +444,6 @@ const calculateTotalPrice = calculateDiscount();
                   {currentCustomer?.rate_code}
                 </Text>
               </View>
-
               <View style={styles.reviewTextsContainer}>
                 <Text
                   style={[
@@ -456,7 +454,37 @@ const calculateTotalPrice = calculateDiscount();
                   {" "}
                   Total{" "}
                 </Text>
-                <Text style={styles.reviewOrderTexts}>{calculateTotalPrice}</Text>
+                <Text style={styles.reviewOrderTexts}>
+                  {totalPrice.toFixed(2)}
+                </Text>
+              </View>
+              <View style={styles.reviewTextsContainer}>
+                <Text
+                  style={[
+                    styles.reviewOrderTexts,
+                    { color: ColorPalate.dgrey },
+                  ]}
+                >
+                  {" "}
+                  SubTotal{" "}
+                </Text>
+                <Text style={styles.reviewOrderTexts}>
+                  {calculateSubTotalPrice.toFixed(2)}
+                </Text>
+              </View>
+              <View style={styles.reviewTextsContainer}>
+                <Text
+                  style={[
+                    styles.reviewOrderTexts,
+                    { color: ColorPalate.dgrey },
+                  ]}
+                >
+                  {" "}
+                  Discount Amount{" "}
+                </Text>
+                <Text style={styles.reviewOrderTexts}>
+                  {calculateDiscountPrice.toFixed(2)}
+                </Text>
               </View>
 
               <View style={styles.reviewTextsContainer}>
@@ -467,7 +495,7 @@ const calculateTotalPrice = calculateDiscount();
                   ]}
                 >
                   {" "}
-                  Total items
+                  items
                 </Text>
                 <Text style={styles.reviewOrderTexts}>{totalQty}</Text>
               </View>

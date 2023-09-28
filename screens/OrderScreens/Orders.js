@@ -18,14 +18,13 @@ export const deliveryTypes = [
 ];
 const OrderScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const o = useCurrentUserOrders()
-  let filteredOrder = o?.slice()?.reverse(); 
+  const o = useCurrentUserOrders();
+  let filteredOrder = o?.slice()?.reverse();
   // let filteredOrder = o?.slice()?.sort((a, b) => b.id - a.id);
 
   useEffect(() => {
-    filteredOrder ? setIsLoading(false) : setIsLoading(true)
+    filteredOrder ? setIsLoading(false) : setIsLoading(true);
   }, [filteredOrder]);
-
 
   return (
     <>
@@ -95,10 +94,13 @@ const OrderScreen = ({ navigation }) => {
                           >
                             Pickup Date{" "}
                           </Text>
-                          <Text style={[styles.orderText, styles.serviceText]}>
+                          {/* <Text style={[styles.orderText, styles.serviceText]}>
                             {new Date(order.pickupDate).toLocaleDateString(
                               "en-GB"
                             )}
+                          </Text> */}
+                          <Text style={[styles.orderText, styles.serviceText]}>
+                            {order.pickupDate.split("-").join("-")}
                           </Text>
                         </View>
                         <View style={styles.orderTextContainer}>
@@ -108,10 +110,13 @@ const OrderScreen = ({ navigation }) => {
                             Delivery Date{" "}
                           </Text>
                           <Text style={[styles.orderText, styles.serviceText]}>
+                            {order.deliveryDate.split("-").join("-")}
+                          </Text>
+                          {/* <Text style={[styles.orderText, styles.serviceText]}>
                             {new Date(order.deliveryDate).toLocaleDateString(
                               "en-GB"
                             )}
-                          </Text>
+                          </Text> */}
                         </View>
                         <View style={styles.orderTextContainer}>
                           <Text

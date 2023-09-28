@@ -36,21 +36,15 @@ async function getProducts() {
 
 async function getCustomers(customerID) {
   try {
-    if(customerID){
-      
-      const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI${customerID && '?serialNo=' + customerID}`, config);
-      // const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI`, config);
+      let url = `${API_URL}/jw/api/list/list_customersAPI`;
+
+      if (customerID) {
+        url += `?serialNo=${customerID}`;
+      }
+      const response = await axios.get(url, config);
+
       const data = await response.data;
-      // console.log("RESPONSE GET CUSTOMER first ==> ", response);
       return data;
-    }
-
-    const response =  await axios.get(`${API_URL}/jw/api/list/list_customersAPI`, config);
-    const data = await response.data;
-    console.log("RESPONSE GET CUSTOMER else ==> ", response);
-    return data;
-
-
   } catch (error) {
     console.log(error);
     throw new Error('Unable to fetch customer data. Please try again later.');

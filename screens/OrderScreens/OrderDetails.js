@@ -17,7 +17,7 @@ const OrderDetailsScreen = ({ route }) => {
   const currentCustomer = useCurrentCustomer(customerId);
 
   const { order } = route.params;
-  console.log("order", order)
+  console.log("order", order);
   return (
     <View style={styles.rootContainer}>
       <View style={styles.container}>
@@ -41,14 +41,16 @@ const OrderDetailsScreen = ({ route }) => {
           <View style={styles.orderDetailItem}>
             <Text style={styles.greyStyle}>Pickup Date</Text>
             <Text style={[styles.value, { color: ColorPalate.themeprimary }]}>
-              {new Date(order.pickupDate).toLocaleDateString("en-GB")}
+              {/* {new Date(order.pickupDate).toLocaleDateString("en-GB")} */}
+              {order.pickupDate.split("-").join("-")}
             </Text>
           </View>
 
           <View style={styles.orderDetailItem}>
             <Text style={styles.greyStyle}>Delivery Date</Text>
             <Text style={[styles.value, { color: ColorPalate.themeprimary }]}>
-              {new Date(order.deliveryDate).toLocaleDateString("en-GB")}
+              {/* {new Date(order.deliveryDate).toLocaleDateString("en-GB")} */}
+              {order.deliveryDate.split("-").join("-")}
             </Text>
           </View>
 
