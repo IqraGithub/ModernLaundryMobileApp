@@ -1,0 +1,30 @@
+{
+    "total": 6,
+    "size": 6,
+    "data": [
+      {
+        "categories": "TestA",
+        "serialNo": ""
+      },
+      {
+        "categories": "Kids",
+        "serialNo": "1"
+      },
+      {
+        "categories": "Home",
+        "serialNo": "2"
+      },
+      {
+        "categories": "ABAYA W",
+        "serialNo": "ABAYA"
+      },
+      {
+        "categories": "Ladies",
+        "serialNo": "3"
+      },
+      {
+        "categories": "Men",
+        "serialNo": "4"
+      }
+    ]
+  }

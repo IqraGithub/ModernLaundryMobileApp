@@ -1,0 +1,22 @@
+{
+    "total": 4,
+    "size": 4,
+    "data": [
+      {
+        "deliveryTypeID": "1",
+        "delivery_type": "Standard"
+      },
+      {
+        "deliveryTypeID": "2",
+        "delivery_type": "Express"
+      },
+      {
+        "deliveryTypeID": "3",
+        "delivery_type": "Same Day"
+      },
+      {
+        "deliveryTypeID": "64",
+        "delivery_type": "Test Type"
+      }
+    ]
+  }
