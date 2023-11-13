@@ -57,6 +57,8 @@ const CartOld = ({ navigation, route }) => {
   const totalPrice = useSelector(selectCartTotalPrice);
   const totalQty = useSelector(selectCartTotalQuantity);
 
+  const [CalculatedTotalPrice, setCalculatePrice] = useState(0);
+
   const customerId = useCustomerId();
   // const currentCustomer = useCurrentCustomer(customerId);
   const currentCustomer = useSelector(
@@ -83,7 +85,14 @@ const CartOld = ({ navigation, route }) => {
     let discountPrice = 0;
 
     cartItems.forEach((item) => {
-      let itemDiscount = parseFloat(item.service.discount);
+      
+      let itemDiscount = item.service.discount;
+      if(itemDiscount !== undefined){
+        itemDiscount = parseFloat(item.service.discount);
+      }
+      else{
+        itemDiscount = 0;
+      }
       let price = parseFloat(item.service.price);
       let quantity = item.quantity;
 
@@ -92,16 +101,16 @@ const CartOld = ({ navigation, route }) => {
       let discount = Math.max(itemDiscount, +customerDiscount);
 
       // Calculate the discounted price
-      let discountedPrice = (price * discount) / 100;
-      discountPrice += discountedPrice;
+      let discountedPrice = price - (price * discount) / 100;
+
       // Add to the total
-      total += (price - discountedPrice) * quantity;
+      total += discountedPrice * quantity;
     });
 
-    return [total, discountPrice];
+    return total;
   }
 
-  const [calculateSubTotalPrice, calculateDiscountPrice] = calculateDiscount();
+  const calculateTotalPrice = calculateDiscount();
 
   // Function to handle item deletion
   const handleDeleteItem = (itemID) => {
@@ -170,7 +179,7 @@ const CartOld = ({ navigation, route }) => {
       customerID: customerId,
       custName: customerId,
       // subtotal: totalPrice.toString(),
-      subtotal: calculateSubTotalPrice.toFixed(2).toString(),
+      subtotal: calculateTotalPrice.toFixed(2).toString(),
       deliveryType: cartItems[0]?.deliveryType.toString(),
       pickupDate: pickupDateString,
       order_source: "Mobile",
@@ -267,10 +276,15 @@ const CartOld = ({ navigation, route }) => {
   }
   const renderItem = ({ item }) => {
     let { discount: itemDiscount } = item.service;
-    itemDiscount = +itemDiscount;
+    if(itemDiscount !== undefined){
+
+      itemDiscount = +itemDiscount;
+    }else{
+      itemDiscount = 0;
+    }
 
     const bigDiscount =
-      customerDiscount > itemDiscount ? +customerDiscount : itemDiscount;
+      customerDiscount >= itemDiscount ? +customerDiscount : itemDiscount;
 
     console.log("customerDiscount => ", +customerDiscount);
     console.log(`${item.name} => `, itemDiscount);
@@ -279,8 +293,10 @@ const CartOld = ({ navigation, route }) => {
     const calculatedPrice = () => {
       let CalcPrice = (item.service.price * bigDiscount) / 100;
 
-      return item.service.price - CalcPrice;
-      // return item.service.price
+      if (bigDiscount > 0) 
+        return item.service.price - CalcPrice;
+
+      return item.service.price;
     };
 
     return (
@@ -455,35 +471,7 @@ const CartOld = ({ navigation, route }) => {
                   Total{" "}
                 </Text>
                 <Text style={styles.reviewOrderTexts}>
-                  {totalPrice.toFixed(2)}
-                </Text>
-              </View>
-              <View style={styles.reviewTextsContainer}>
-                <Text
-                  style={[
-                    styles.reviewOrderTexts,
-                    { color: ColorPalate.dgrey },
-                  ]}
-                >
-                  {" "}
-                  SubTotal{" "}
-                </Text>
-                <Text style={styles.reviewOrderTexts}>
-                  {calculateSubTotalPrice.toFixed(2)}
-                </Text>
-              </View>
-              <View style={styles.reviewTextsContainer}>
-                <Text
-                  style={[
-                    styles.reviewOrderTexts,
-                    { color: ColorPalate.dgrey },
-                  ]}
-                >
-                  {" "}
-                  Discount Amount{" "}
-                </Text>
-                <Text style={styles.reviewOrderTexts}>
-                  {calculateDiscountPrice.toFixed(2)}
+                  {calculateTotalPrice}
                 </Text>
               </View>
 

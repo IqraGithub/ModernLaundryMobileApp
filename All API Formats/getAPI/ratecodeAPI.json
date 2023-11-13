@@ -1,0 +1,26 @@
+{
+    "total": 5,
+    "size": 5,
+    "data": [
+      {
+        "RateCodeID": "3",
+        "rate_code": "Dubai"
+      },
+      {
+        "RateCodeID": "4",
+        "rate_code": "Umm Al Quwain "
+      },
+      {
+        "RateCodeID": "1",
+        "rate_code": "Ras Al Khaimah"
+      },
+      {
+        "RateCodeID": "2",
+        "rate_code": "Sharjah"
+      },
+      {
+        "RateCodeID": "5",
+        "rate_code": "Ajman"
+      }
+    ]
+  }

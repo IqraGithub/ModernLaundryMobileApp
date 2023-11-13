@@ -1,0 +1,21 @@
+{
+    "total": 3,
+    "size": 3,
+    "data": [
+      {
+        "AreaName": "Jebal ali",
+        "emirate": "3",
+        "serialNo": "3"
+      },
+      {
+        "AreaName": "Khuzam",
+        "emirate": "1",
+        "serialNo": "1"
+      },
+      {
+        "AreaName": "Nakheel",
+        "emirate": "1",
+        "serialNo": "2"
+      }
+    ]
+  }
