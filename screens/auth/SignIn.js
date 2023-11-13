@@ -21,7 +21,7 @@ const SignIn = ({ navigation }) => {
 
   useEffect(() => {
     if (authCntx.isAuthendicate) {
-     
+
       navigation.navigate("Category", { id: authCntx.userId });
     }
   }, [authCntx.isAuthendicate, navigation]);
@@ -30,9 +30,9 @@ const SignIn = ({ navigation }) => {
   const handleLogin = async ({ email, Password }) => {
 
     // Get customer data
-    // console.log("Customer data sign in ==> 1 ")
+    console.log("Customer data sign in ==> 1 ")
     const customerData = await getCustomers();
-    // console.log("Customer data sign in ==> 2",customerData)
+    console.log("Customer data sign in ==> 2", customerData)
 
     try {
       // Check if email and password are provided
@@ -40,7 +40,7 @@ const SignIn = ({ navigation }) => {
         // alert("Please enter your email and password.");
         showMessage({
           message: "Please Enter Your Email And Password.",
-          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          icon: () => <MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
         return;
@@ -56,7 +56,7 @@ const SignIn = ({ navigation }) => {
         console.log("userId", user.serialNo);
         showMessage({
           message: "Welcome Back!",
-          icon:()=><MaterialIcons name="check-circle" size={24} color="white" />,
+          icon: () => <MaterialIcons name="check-circle" size={24} color="white" />,
           type: "success",
         });
         // Store the authenticated user's ID in AsyncStorage
@@ -68,7 +68,7 @@ const SignIn = ({ navigation }) => {
         // alert("Invalid email or password");
         showMessage({
           message: "Invalid email or password.",
-          icon:()=><MaterialIcons name="error" size={24} color="white" />,
+          icon: () => <MaterialIcons name="error" size={24} color="white" />,
           type: "danger",
         });
 

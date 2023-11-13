@@ -21,7 +21,6 @@ const Welcome = ({navigation}) => {
       />
       <Title text="Modern Laundry App" />
       <Caption text="Discover the Easiest Way to Do Laundry Get Your Laundry Done Effortlessly" />
-
       <View style={styles.btns}>
         <MyGradientButton
           title="Sign Up"
@@ -34,6 +33,7 @@ const Welcome = ({navigation}) => {
           onPressBtn={() => navigation.navigate('SignIn')}
         />
       </View>
+
       <Pressable  onPress={() => navigation.navigate('Guest')}>
       <Caption text="Login as a Guest" />
       </Pressable>

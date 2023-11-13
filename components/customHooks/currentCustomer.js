@@ -11,9 +11,11 @@ const useCurrentCustomer = (customerId, setIsLoading, email) => {
       async function fetchCustomers() {
         try {
           const customers = await getCustomers(customerId);
-          const filtered = customers?.data[0];
-          // console.log(customerId);
-          // console.log("Customer id exist", filtered);
+          const filtered = customers?.data.find(cust => cust.serialNo === customerId);
+          console.log(customerId);
+          console.log('customer data =>>>>', customers?.data)
+          console.log('======================================')
+          console.log("Customer id exist", filtered);
           if (isActive) {
             setCurrentCustomer(filtered);
           }
